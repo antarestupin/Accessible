@@ -113,8 +113,28 @@ class Foo
 
 And that's it! In fact, it would be better to let `Access::SET` in your annotation as it informs that the property can be modified via a setter, even if you define the setter yourself.
 
+If you do so, you could be interested in validating the value given to your setter inside it. It is possible this way:
+
+```php
+class Foo
+{
+  // ...
+
+  public function setBar($newValue)
+  {
+    if (!$this->_validatePropertyValue('bar', $newValue)->count()) {
+      $this->bar = $newValue;
+      return $this;
+    } else {
+      throw new \InvalidArgumentException("The value passsed to Foo#setBar() is not valid.");
+    }
+  }
+}
+```
+
+The method `_validatePropertyValue()` returns a ConstraintViolationList, which `count()` should be equal to 0 if the value to check is ok with your property constraints.
+
 ## Todo
 
 - Add PHPUnit tests
 - Allow the use of a cached annotations reader
-- Allow the user to use the constraints validator in the user-defined setters

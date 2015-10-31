@@ -21,6 +21,28 @@ trait Accessible
     private $_constraintsValidator;
 
     /**
+     * Validates the given value compared to given property constraints.
+     * If the value is valid, a call to `count` to the object returned
+     * by this method should give 0.
+     *
+     * @param  string $property The name of the reference property.
+     * @param  mixed  $value    The value to check.
+     *
+     * @return Symfony\Component\Validator\ConstraintViolationList
+     *         The list of constraints violations the check returns.
+     */
+    private function _validatePropertyValue($property, $value)
+    {
+        if ($this->_constraintsValidator === null) {
+            $this->_constraintsValidator = Validation::createValidatorBuilder()
+                ->enableAnnotationMapping()
+                ->getValidator();
+        }
+
+        return $this->_constraintsValidator->validatePropertyValue($this, $property, $value);
+    }
+
+    /**
      * This function will be called each time a getter or a setter that is not
      * already defined in the class is called.
      *
@@ -42,13 +64,9 @@ trait Accessible
      */
     function __call($name, array $args)
     {
-        if ($this->_accessProperties === null || $this->_constraintsValidator === null) {
+        if ($this->_accessProperties === null) {
             $accessReader = new AccessReader();
             $this->_accessProperties = $accessReader->getAccessProperties($this);
-
-            $this->_constraintsValidator = Validation::createValidatorBuilder()
-                ->enableAnnotationMapping()
-                ->getValidator();
         }
 
         if (preg_match("/(set|get|is|has)([A-Z].*)/", $name, $pregMatches)) {
@@ -72,7 +90,7 @@ trait Accessible
 
                     $arg = $args[0];
 
-                    $constraintsViolations = $this->_constraintsValidator->validatePropertyValue($this, $property, $arg);
+                    $constraintsViolations = $this->_validatePropertyValue($property, $arg);
                     if ($constraintsViolations->count()) {
                         $errorMessage = $constraintsViolations[0]->getMessage();
                         throw new \InvalidArgumentException("Argument given for method $name is invalid; its constraints validation failed with the message \"".$errorMessage."\".");
