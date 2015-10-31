@@ -111,7 +111,7 @@ class Foo
 }
 ```
 
-And that's it! In fact, it would be better to let `Access::SET` in your annotation as it informs that the property can be modified via a setter, even if you define the setter yourself.
+And that's it! In fact, it's better to let `Access::SET` in your annotation as it informs that the property can be modified via a setter, even if you define the setter yourself.
 
 If you do so, you could be interested in validating the value given to your setter inside it. It is possible this way:
 
@@ -132,7 +132,7 @@ class Foo
 }
 ```
 
-The method `_validatePropertyValue()` returns a ConstraintViolationList, which `count()` should be equal to 0 if the value to check is ok with your property constraints.
+The method `_validatePropertyValue()` returns a ConstraintViolationList, which `count()` will equal 0 if the value to check is ok with your property constraints.
 
 ## Todo
 
