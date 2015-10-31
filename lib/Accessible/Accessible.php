@@ -12,13 +12,13 @@ trait Accessible
      *
      * @var array
      */
-    private $accessProperties;
+    private $_accessProperties;
 
     /**
      * The constraints validator used to validate any new value for each property of the object.
      * @var [type]
      */
-    private $constraintsValidator;
+    private $_constraintsValidator;
 
     /**
      * This function will be called each time a getter or a setter that is not
@@ -42,11 +42,11 @@ trait Accessible
      */
     function __call($name, array $args)
     {
-        if ($this->accessProperties === null || $this->constraintsValidator === null) {
+        if ($this->_accessProperties === null || $this->_constraintsValidator === null) {
             $accessReader = new AccessReader();
-            $this->accessProperties = $accessReader->getAccessProperties($this);
+            $this->_accessProperties = $accessReader->getAccessProperties($this);
 
-            $this->constraintsValidator = Validation::createValidatorBuilder()
+            $this->_constraintsValidator = Validation::createValidatorBuilder()
                 ->enableAnnotationMapping()
                 ->getValidator();
         }
@@ -55,7 +55,7 @@ trait Accessible
             $method = $pregMatches[1];
             $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
 
-            if (!in_array($method, $this->accessProperties[$property])) {
+            if (!in_array($method, $this->_accessProperties[$property])) {
                 throw new \BadMethodCallException("Method $name does not exist.");
             }
 
@@ -72,7 +72,7 @@ trait Accessible
 
                     $arg = $args[0];
 
-                    $constraintsViolations = $this->constraintsValidator->validatePropertyValue($this, $property, $arg);
+                    $constraintsViolations = $this->_constraintsValidator->validatePropertyValue($this, $property, $arg);
                     if ($constraintsViolations->count()) {
                         $errorMessage = $constraintsViolations[0]->getMessage();
                         throw new \InvalidArgumentException("Argument given for method $name is invalid; its constraints validation failed with the message \"".$errorMessage."\".");
