@@ -74,6 +74,8 @@ Things are getting really interesting when you want to add constraints to your p
 For example, with this class:
 
 ```php
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Foo
 {
   trait Accessible;
