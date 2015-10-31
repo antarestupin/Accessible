@@ -118,3 +118,4 @@ And that's it! In fact, it would be better to let `Access::SET` in your annotati
 - Add PHPUnit tests
 - Allow the use of a cached annotations reader
 - Add a more precise description of what failed when a call to a setter function throws an Exception because of constraints
+- Allow the user to use the constraints validator in the user-defined setters
