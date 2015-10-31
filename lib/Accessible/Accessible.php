@@ -66,8 +66,8 @@ trait Accessible
                     return $this->$property;
                     break;
                 case 'set':
-                    if (sizeof($args) === 0) {
-                        throw new \BadMethodCallException("An argument is needed for method $name.");
+                    if (sizeof($args) !== 1) {
+                        throw new \BadMethodCallException("One argument is needed for method $name.");
                     }
 
                     $arg = $args[0];
