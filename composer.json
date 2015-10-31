@@ -1,0 +1,23 @@
+{
+    "name": "antares/accessible",
+    "type": "library",
+    "description": "",
+    "keywords": ["access", "get", "set", "pojo", "popo"],
+    "homepage": "https://github.com/antares993/Accessible",
+    "license": "MIT",
+    "authors": [
+        {"name": "Antarès Tupin", "email": "antares993@gmail.com"}
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "doctrine/annotations": "~1.2",
+        "doctrine/cache": "~1.5",
+        "symfony/validator": "~2.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-0": {"Accessible\\": "lib/"}
+    }
+}
