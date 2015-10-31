@@ -24,7 +24,7 @@ use use Accessible\Annotations\Access;
 class Foo
 {
   use Accessible;
-  
+
   /**
    * @Access({Access::GET, Access::SET})
    */
@@ -46,11 +46,11 @@ This is basically as if you defined `getBar()` and `setBar()` like this:
 class Foo
 {
   // ...
-  
+
   function getBar() {
     return $this->bar;
   }
-  
+
   function setBar($bar) {
     $this->bar = $bar;
     return $this;
@@ -77,7 +77,7 @@ For example, with this class:
 class Foo
 {
   trait Accessible;
-  
+
   /**
    * @Access({Access::GET, Access::SET})
    * @Assert\Type("string")
@@ -103,7 +103,7 @@ Let's say you want to define yourself how the property `$bar` should be modified
 class Foo
 {
   // ...
-  
+
   public function setBar($bar) {
     $this->bar = $bar;
     return $this;
@@ -117,5 +117,4 @@ And that's it! In fact, it would be better to let `Access::SET` in your annotati
 
 - Add PHPUnit tests
 - Allow the use of a cached annotations reader
-- Add a more precise description of what failed when a call to a setter function throws an Exception because of constraints
 - Allow the user to use the constraints validator in the user-defined setters

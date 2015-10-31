@@ -74,7 +74,8 @@ trait Accessible
 
                     $constraintsViolations = $this->constraintsValidator->validatePropertyValue($this, $property, $arg);
                     if ($constraintsViolations->count()) {
-                        throw new \InvalidArgumentException("Argument given for method $name is invalid");
+                        $errorMessage = $constraintsViolations[0]->getMessage();
+                        throw new \InvalidArgumentException("Argument given for method $name is invalid; its constraints validation failed with the message \"".$errorMessage."\".");
                     }
 
                     $this->$property = $arg;
