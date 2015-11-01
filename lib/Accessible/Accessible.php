@@ -78,8 +78,14 @@ trait Accessible
 
                     $constraintsViolations = $this->_validatePropertyValue($property, $arg);
                     if ($constraintsViolations->count()) {
-                        $errorMessage = $constraintsViolations[0]->getMessage();
-                        throw new \InvalidArgumentException("Argument given for method $name is invalid; its constraints validation failed with the message \"".$errorMessage."\".");
+                        $errorMessage = "Argument given for method $name is invalid; its constraints validation failed with the following messages: \"";
+                        $errorMessageList = array();
+                        foreach ($constraintsViolations as $violation) {
+                            $errorMessageList[] = $violation->getMessage();
+                        }
+                        $errorMessage .= implode("\", \"", $errorMessageList)."\".";
+
+                        throw new \InvalidArgumentException($errorMessage);
                     }
 
                     $this->$property = $arg;
