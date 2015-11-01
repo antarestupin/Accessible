@@ -14,6 +14,13 @@ trait Accessible
     private $_accessProperties;
 
     /**
+     * Indicates wether the constraints validation should be enabled or not.
+     *
+     * @var boolean
+     */
+    private $_enableConstraintsValidation;
+
+    /**
      * Validates the given value compared to given property constraints.
      * If the value is valid, a call to `count` to the object returned
      * by this method should give 0.
@@ -55,6 +62,10 @@ trait Accessible
             $this->_accessProperties = AccessReader::getAccessProperties($this);
         }
 
+        if ($this->_enableConstraintsValidation === null) {
+            $this->_enableConstraintsValidation = AccessReader::isConstraintsValidationEnabled($this);
+        }
+
         if (preg_match("/(set|get|is|has)([A-Z].*)/", $name, $pregMatches)) {
             $method = $pregMatches[1];
             $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
@@ -76,16 +87,18 @@ trait Accessible
 
                     $arg = $args[0];
 
-                    $constraintsViolations = $this->_validatePropertyValue($property, $arg);
-                    if ($constraintsViolations->count()) {
-                        $errorMessage = "Argument given for method $name is invalid; its constraints validation failed with the following messages: \"";
-                        $errorMessageList = array();
-                        foreach ($constraintsViolations as $violation) {
-                            $errorMessageList[] = $violation->getMessage();
-                        }
-                        $errorMessage .= implode("\", \"", $errorMessageList)."\".";
+                    if ($this->_enableConstraintsValidation) {
+                        $constraintsViolations = $this->_validatePropertyValue($property, $arg);
+                        if ($constraintsViolations->count()) {
+                            $errorMessage = "Argument given for method $name is invalid; its constraints validation failed with the following messages: \"";
+                            $errorMessageList = array();
+                            foreach ($constraintsViolations as $violation) {
+                                $errorMessageList[] = $violation->getMessage();
+                            }
+                            $errorMessage .= implode("\", \"", $errorMessageList)."\".";
 
-                        throw new \InvalidArgumentException($errorMessage);
+                            throw new \InvalidArgumentException($errorMessage);
+                        }
                     }
 
                     $this->$property = $arg;

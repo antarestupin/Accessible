@@ -24,7 +24,14 @@ class AccessReader
      *
      * @var string
      */
-    private static $annotationClass = "Accessible\\Annotations\\Access";
+    private static $accessAnnotationClass = "Accessible\\Annotations\\Access";
+
+    /**
+     * The name of the annotation class that disable the constraints validation for a class.
+     *
+     * @var string
+     */
+    private static $disableConstraintsValidationAnnotationClass = "Accessible\\Annotations\\DisableConstraintsValidation";
 
     /**
      * The constraints validator.
@@ -99,7 +106,7 @@ class AccessReader
         $reflectionObject = new \ReflectionObject($object);
 
         foreach ($reflectionObject->getProperties() as $property) {
-            $annotation = self::getAnnotationReader()->getPropertyAnnotation($property, self::$annotationClass);
+            $annotation = self::getAnnotationReader()->getPropertyAnnotation($property, self::$accessAnnotationClass);
             $propertyName = $property->getName();
 
             $objectAccessProperties[$propertyName] = array();
@@ -110,6 +117,22 @@ class AccessReader
         }
 
         return $objectAccessProperties;
+    }
+
+    /**
+     * Indicates wether the constraints validation is enabled or not for the given object.
+     *
+     * @param object  $object The object to read.
+     *
+     * @return boolean True if the validation is enabled, else false.
+     */
+    public static function isConstraintsValidationEnabled($object)
+    {
+        $reflectionObject = new \ReflectionObject($object);
+
+        $annotation = self::getAnnotationReader()->getClassAnnotation($reflectionObject, self::$disableConstraintsValidationAnnotationClass);
+
+        return $annotation === null;
     }
 
     /**

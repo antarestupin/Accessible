@@ -138,4 +138,3 @@ The method `_validatePropertyValue()` returns a ConstraintViolationList, which `
 ## Todo
 
 - Add PHPUnit tests
-- Add an annotation to deactivate the constraints validation (for Symfony form validation for example)
