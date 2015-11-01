@@ -139,6 +139,4 @@ The method `_validatePropertyValue()` returns a ConstraintViolationList, which `
 ## Todo
 
 - Add PHPUnit tests
-- Use only one instance of the annotations reader
-- Add an annotation to deactive the constraints validation
-- Use the same annotations reader for the setters/getters and for the constraints validator
+- Add an annotation to deactivate the constraints validation
