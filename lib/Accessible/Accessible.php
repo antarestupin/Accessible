@@ -2,7 +2,6 @@
 
 namespace Accessible;
 
-use Symfony\Component\Validator\Validation;
 use \Accessible\Annotations\Access;
 
 trait Accessible
@@ -13,12 +12,6 @@ trait Accessible
      * @var array
      */
     private $_accessProperties;
-
-    /**
-     * The constraints validator used to validate any new value for each property of the object.
-     * @var [type]
-     */
-    private $_constraintsValidator;
 
     /**
      * Validates the given value compared to given property constraints.
@@ -33,13 +26,7 @@ trait Accessible
      */
     private function _validatePropertyValue($property, $value)
     {
-        if ($this->_constraintsValidator === null) {
-            $this->_constraintsValidator = Validation::createValidatorBuilder()
-                ->enableAnnotationMapping()
-                ->getValidator();
-        }
-
-        return $this->_constraintsValidator->validatePropertyValue($this, $property, $value);
+        return AccessReader::validatePropertyValue($this, $property, $value);
     }
 
     /**
@@ -65,8 +52,7 @@ trait Accessible
     function __call($name, array $args)
     {
         if ($this->_accessProperties === null) {
-            $accessReader = AccessReaderFactory::getInstance();
-            $this->_accessProperties = $accessReader->getAccessProperties($this);
+            $this->_accessProperties = AccessReader::getAccessProperties($this);
         }
 
         if (preg_match("/(set|get|is|has)([A-Z].*)/", $name, $pregMatches)) {
