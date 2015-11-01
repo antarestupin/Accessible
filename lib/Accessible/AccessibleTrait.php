@@ -58,35 +58,43 @@ trait AccessibleTrait
      */
     function __call($name, array $args)
     {
+        // if we don't already know the access properties, get them
         if ($this->_accessProperties === null) {
             $this->_accessProperties = AccessReader::getAccessProperties($this);
         }
 
+        // if we don't already know wether the constraints should be validated
         if ($this->_enableConstraintsValidation === null) {
             $this->_enableConstraintsValidation = AccessReader::isConstraintsValidationEnabled($this);
         }
 
+        // check that the called method is a getter or a setter
         if (preg_match("/(set|get|is|has)([A-Z].*)/", $name, $pregMatches)) {
             $method = $pregMatches[1];
             $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
 
+            // check that the getter/setter is accepted by the targeted property
             if (!in_array($method, $this->_accessProperties[$property])) {
                 throw new \BadMethodCallException("Method $name does not exist.");
             }
 
             switch($method) {
+                // getter
                 case 'get':
                 case 'is':
                 case 'has':
                     return $this->$property;
                     break;
+                // setter
                 case 'set':
+                    // a setter should have exactly one argument
                     if (sizeof($args) !== 1) {
                         throw new \BadMethodCallException("One argument is needed for method $name.");
                     }
 
                     $arg = $args[0];
 
+                    // check that the setter argument respects the property constraints
                     if ($this->_enableConstraintsValidation) {
                         $constraintsViolations = $this->_validatePropertyValue($property, $arg);
                         if ($constraintsViolations->count()) {
