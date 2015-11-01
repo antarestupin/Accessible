@@ -15,7 +15,7 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'l
 
 ### Basic use
 
-Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `Accessible` trait.
+Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `AccessibleTrait` trait.
 
 ```php
 use Accessible\AccessibleTrait;
