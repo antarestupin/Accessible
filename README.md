@@ -124,12 +124,11 @@ class Foo
 
   public function setBar($newValue)
   {
-    if (!$this->_validatePropertyValue('bar', $newValue)->count()) {
-      $this->bar = $newValue;
-      return $this;
-    } else {
+    if ($this->_validatePropertyValue('bar', $newValue)->count()) {
       throw new \InvalidArgumentException("The value passsed to Foo#setBar() is not valid.");
     }
+    $this->bar = $newValue;
+    return $this;
   }
 }
 ```
