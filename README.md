@@ -139,4 +139,3 @@ The method `_validatePropertyValue()` returns a ConstraintViolationList, which `
 ## Todo
 
 - Add PHPUnit tests
-- Allow the use of a cached annotations reader

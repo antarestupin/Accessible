@@ -2,6 +2,7 @@
 
 namespace Accessible;
 
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
@@ -18,16 +19,23 @@ class AccessReader
 
     /**
      * The name of the annotation class that define the properties access.
+     *
      * @var string
      */
     private $annotationClass = "Accessible\\Annotations\\Access";
 
     /**
      * Initializes the access reader.
+     *
+     * @param Reader $reader The annotation reader the object will use.
      */
-    public function __construct()
+    public function __construct(Reader $reader = null)
     {
-        $this->reader = new CachedReader(new AnnotationReader(), new ArrayCache());
+        if ($reader === null) {
+            $reader = new CachedReader(new AnnotationReader(), new ArrayCache());
+        }
+
+        $this->reader = $reader;
     }
 
     /**

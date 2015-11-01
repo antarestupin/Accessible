@@ -65,7 +65,7 @@ trait Accessible
     function __call($name, array $args)
     {
         if ($this->_accessProperties === null) {
-            $accessReader = new AccessReader();
+            $accessReader = AccessReaderFactory::getInstance();
             $this->_accessProperties = $accessReader->getAccessProperties($this);
         }
 
