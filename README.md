@@ -62,10 +62,10 @@ class Foo
 
 Let's take again the `Foo` class with its `$bar` property. Here are the values you can put in the `@Access` annotation:
 
-- `Access::GET`: This will allow the method `Foo#getBar()` to be called.
-- `Access::IS`: This will allow the method `Foo#isBar()` to be called.
-- `Access::HAS`: This will allow the method `Foo#getBar()` to be called.
-- `Access::SET`: This will allow the method `Foo#setBar($newVal)` to be called.
+- `Access::GET`: This will allow the property `$bar` to be accessed through the `Foo#getBar()` method.
+- `Access::IS`: This will allow the property `$bar` to be accessed through the `Foo#isBar()` method.
+- `Access::HAS`: This will allow the property `$bar` to be accessed through the `Foo#getBar()` method.
+- `Access::SET`: This will allow the property `$bar` to be modified through the `Foo#setBar($newVal)` method.
 
 ### Add constraints on properties
 
