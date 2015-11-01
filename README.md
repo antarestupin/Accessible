@@ -78,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Foo
 {
-  trait Accessible;
+  use Accessible;
 
   /**
    * @Access({Access::GET, Access::SET})
