@@ -18,12 +18,12 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'l
 Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `Accessible` trait.
 
 ```php
-use Accessible\Accessible;
+use Accessible\AccessibleTrait;
 use use Accessible\Annotations\Access;
 
 class Foo
 {
-  use Accessible;
+  use AccessibleTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -78,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Foo
 {
-  use Accessible;
+  use AccessibleTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
