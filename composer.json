@@ -1,5 +1,5 @@
 {
-    "name": "accessible/accessible",
+    "name": "antares/accessible",
     "type": "library",
     "description": "PHP library that allows you to define your class' getters and setters with docblock annotations.",
     "keywords": ["access", "get", "set", "pojo", "popo", "class", "properties", "getter", "setter"],
