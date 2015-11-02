@@ -4,7 +4,13 @@ Accessible is a PHP library that allows you to define your class' getters and se
 
 ## Download / Install
 
-This library is using Doctrine annotations library, so if it is not already done you must register the Composer loader in the annotation registry:
+You can add this library as a dependency using composer this way:
+
+```php
+composer require antares/accessible
+```
+
+This library uses the Doctrine annotations library, so if it is not already done you must register the Composer loader in the annotation registry:
 
 ```php
 $loader = require __DIR__ . '/vendor/autoload.php';
