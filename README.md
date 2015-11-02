@@ -1,6 +1,7 @@
 # Accessible
 
 [![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antares993/Accessible)
+[![License](https://poser.pugx.org/antares/accessible/license)](https://packagist.org/packages/antares/accessible)
 
 Accessible is a PHP library that allows you to define your class' getters and setters in an elegant and powerful way using docblock annotations.
 
