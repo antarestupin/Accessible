@@ -4,25 +4,16 @@ namespace Accessible\Tests\TestsCases;
 
 use Accessible\AccessibleTrait;
 use Accessible\Annotations\Access;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class BasicTestCase
+class ConstraintsTestCase
 {
     use AccessibleTrait;
 
     /**
      * @Access({Access::GET, Access::SET})
+     * @Assert\Type("string")
+     * @Assert\Length(min=3)
      */
     private $foo = "foo";
-
-    /**
-     * @Access({Access::IS})
-     */
-    private $bar = "bar";
-
-    /**
-     * @Access({Access::HAS})
-     */
-    private $baz = "baz";
-
-    private $notAccessibleProperty;
 }

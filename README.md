@@ -194,7 +194,3 @@ AccessReader::setConstraintsValidator(
         ->getValidator()
 );
 ```
-
-## Todo
-
-- Add PHPUnit tests
