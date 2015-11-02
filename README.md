@@ -4,6 +4,25 @@
 
 Accessible is a PHP library that allows you to define your class' getters and setters in an elegant and powerful way using docblock annotations.
 
+Quick example:
+
+```php
+class Server
+{
+  use AccessibleTrait;
+
+  /**
+   * @Access({Access::GET, Access::SET})
+   * @Assert\Ip
+   */
+  private $ip;
+}
+
+$server = new Server();
+$server->setIp("127.0.0.1");
+$ip = $server->getIp(); // 127.0.0.1
+```
+
 ## Download / Install
 
 You can add this library as a dependency using composer this way:
