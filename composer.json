@@ -2,7 +2,7 @@
     "name": "antares/accessible",
     "type": "library",
     "description": "",
-    "keywords": ["access", "get", "set", "pojo", "popo"],
+    "keywords": ["access", "get", "set", "pojo", "popo", "class", "properties", "getter", "setter"],
     "homepage": "https://github.com/antares993/Accessible",
     "license": "MIT",
     "authors": [
