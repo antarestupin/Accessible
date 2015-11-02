@@ -97,7 +97,7 @@ class Foo
 }
 ```
 
-When a setter will be called on the `$bar` property, the new value given to the setter will be checked to satisfy the defined constraints, so if it is not a string with a minimal length of 3, an `\InvalidArgumentException` will be thrown, including in its message the list of constraints not respected by the value.
+When a setter will be called on the `$email` property, the new value given to the setter will be checked to satisfy the defined constraints, so if it is not an email address, an `\InvalidArgumentException` will be thrown, including in its message a list of the constraints not respected by the value.
 
 ```php
 $foo = new Foo();
