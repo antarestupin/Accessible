@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antares993/Accessible)
 
-Accessible is a PHP library that allows you to define your class' getters and setters with docblock annotations.
+Accessible is a PHP library that allows you to define your class' getters and setters in an elegant and powerful way using docblock annotations.
 
 ## Download / Install
 
@@ -194,3 +194,7 @@ AccessReader::setConstraintsValidator(
         ->getValidator()
 );
 ```
+
+## Compatibility
+
+This library is compatible with PHP 5.4+, PHP 7 and HHVM.
