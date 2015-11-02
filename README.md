@@ -90,10 +90,10 @@ class Foo
 
   /**
    * @Access({Access::GET, Access::SET})
-   * @Assert\Type("string")
-   * @Assert\Length(min=3)
+   * @Assert\NotNull
+   * @Assert\Email
    */
-  private $bar;
+  private $email;
 }
 ```
 
@@ -101,8 +101,8 @@ When a setter will be called on the `$bar` property, the new value given to the 
 
 ```php
 $foo = new Foo();
-$foo->setBar('baz'); // this will work
-$foo->setBar('a'); // this won't, and will throw an \InvalidArgumentException with the message "This value is too short. It should have 3 characters or more."
+$foo->setEmail('john.doe@example.com'); // this will work
+$foo->setEmail('bar'); // this won't, and will throw an \InvalidArgumentException with a message including "This value is not a valid email address."
 ```
 
 ### Disable the constraints validation
@@ -120,6 +120,8 @@ class Foo
   // ...
 
   /**
+   * Given the following constraints, $bar can only be set to a string of 3 characters or more.
+   *
    * @Access({Access::GET, Access::SET})
    * @Assert\Type("string")
    * @Assert\Length(min=3)
@@ -128,7 +130,8 @@ class Foo
 }
 
 $foo = new Foo();
-$foo->setBar('a'); // This will work
+$foo->setBar('bar'); // This is ok
+$foo->setBar('a'); // This is not ok, but it will work anyway
 ```
 
 ### Add hand-made getters and setters
