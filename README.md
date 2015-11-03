@@ -140,7 +140,7 @@ class Foo
   // ...
 
   /**
-   * Given the following constraints, $bar can only be set to a string of 3 characters or more.
+   * Given the following constraints, $bar should only be set to a string of 3 characters or more.
    *
    * @Access({Access::GET, Access::SET})
    * @Assert\Type("string")
