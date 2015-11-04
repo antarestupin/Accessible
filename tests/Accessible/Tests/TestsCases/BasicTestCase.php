@@ -2,12 +2,12 @@
 
 namespace Accessible\Tests\TestsCases;
 
-use Accessible\AccessibleTrait;
+use Accessible\AccessiblePropertiesTrait;
 use Accessible\Annotations\Access;
 
 class BasicTestCase
 {
-    use AccessibleTrait;
+    use AccessiblePropertiesTrait;
 
     /**
      * @Access({Access::GET, Access::SET})

@@ -10,7 +10,7 @@ Quick example:
 ```php
 class Server
 {
-  use AccessibleTrait;
+  use AccessiblePropertiesTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -43,15 +43,15 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'l
 
 ### Basic use
 
-Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `AccessibleTrait` trait.
+Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `AccessiblePropertiesTrait` trait.
 
 ```php
-use Accessible\AccessibleTrait;
+use Accessible\AccessiblePropertiesTrait;
 use use Accessible\Annotations\Access;
 
 class Foo
 {
-  use AccessibleTrait;
+  use AccessiblePropertiesTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -106,7 +106,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Foo
 {
-  use AccessibleTrait;
+  use AccessiblePropertiesTrait;
 
   /**
    * @Access({Access::GET, Access::SET})

@@ -2,7 +2,7 @@
 
 namespace Accessible\Tests;
 
-class AccessibleTraitTest extends \PHPUnit_Framework_TestCase
+class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetMethodCanBeCalled()
     {

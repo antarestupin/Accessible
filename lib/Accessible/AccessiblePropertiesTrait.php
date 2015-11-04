@@ -4,7 +4,7 @@ namespace Accessible;
 
 use \Accessible\Annotations\Access;
 
-trait AccessibleTrait
+trait AccessiblePropertiesTrait
 {
     /**
      * The list of access rights on each property of the object.
