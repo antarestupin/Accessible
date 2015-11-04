@@ -38,6 +38,15 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $testCase->getNotAccessibleProperty();
     }
 
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testCallGetterToInexistentPropertyThrowsAnException()
+    {
+        $testCase = new TestsCases\BasicTestCase();
+        $testCase->getInexistentProperty();
+    }
+
     public function testConstraintsValidationAllowCorrectValues()
     {
         $testCase = new TestsCases\ConstraintsTestCase();

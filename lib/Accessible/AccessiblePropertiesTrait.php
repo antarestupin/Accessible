@@ -74,7 +74,10 @@ trait AccessiblePropertiesTrait
             $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
 
             // check that the getter/setter is accepted by the targeted property
-            if (!in_array($method, $this->_accessProperties[$property])) {
+            if (
+                empty($this->_accessProperties[$property])
+                || !in_array($method, $this->_accessProperties[$property])
+            ) {
                 throw new \BadMethodCallException("Method $name does not exist.");
             }
 
