@@ -2,6 +2,7 @@
 
 namespace Accessible\Reader;
 
+use \Accessible\Configuration;
 use \Accessible\Annotations\Construct;
 
 class AutoConstructReader extends Reader
@@ -23,5 +24,16 @@ class AutoConstructReader extends Reader
     public static function getConstructArguments($object)
     {
         $reflectionObject = new \ReflectionObject($object);
+        $objectClasses = self::getClassesToRead($reflectionObject);
+        $annotationReader = Configuration::getAnnotationReader();
+
+        foreach ($objectClasses as $class) {
+            $annotation = $annotationReader->getClassAnnotation($class, self::$constructAnnotationClass);
+            if ($annotation !== null) {
+                return $annotation->getArguments();
+            }
+        }
+
+        return null;
     }
 }
