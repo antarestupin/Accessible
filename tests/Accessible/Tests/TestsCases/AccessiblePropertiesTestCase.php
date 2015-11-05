@@ -5,7 +5,7 @@ namespace Accessible\Tests\TestsCases;
 use Accessible\AccessiblePropertiesTrait;
 use Accessible\Annotations\Access;
 
-class BasicTestCase
+class AccessiblePropertiesTestCase
 {
     use AccessiblePropertiesTrait;
 

@@ -6,32 +6,32 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetMethodCanBeCalled()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $this->assertEquals($testCase, $testCase->setFoo("bar"));
         $this->assertEquals("bar", $testCase->getFoo());
     }
 
     public function testGetMethodCanBeCalled()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $this->assertEquals("foo", $testCase->getFoo());
     }
 
     public function testIsCaseCanBeCalled()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $this->assertEquals("bar", $testCase->isBar());
     }
 
     public function testHasMethodCanBeCalled()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $this->assertEquals("baz", $testCase->hasBaz());
     }
 
     public function testChildClassCanCallParentMethods()
     {
-        $testCase = new TestsCases\BasicChildTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesChildTestCase();
         $this->assertEquals("foo", $testCase->getFoo());
     }
 
@@ -40,7 +40,7 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnavailableMethodCallThrowsAnException()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $testCase->getNotAccessibleProperty();
     }
 
@@ -49,7 +49,7 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallGetterToInexistentPropertyThrowsAnException()
     {
-        $testCase = new TestsCases\BasicTestCase();
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $testCase->getInexistentProperty();
     }
 
