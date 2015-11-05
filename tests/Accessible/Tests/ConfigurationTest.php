@@ -2,29 +2,29 @@
 
 namespace Accessible\Tests;
 
-use Accessible\AccessReader;
+use Accessible\Configuration;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Validator\Validation;
 
-class AccessReaderTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     public function testAnnotationReaderIsInitialized()
     {
-        $reader = AccessReader::getAnnotationReader();
+        $reader = Configuration::getAnnotationReader();
         $this->assertNotEquals(null, $reader);
     }
 
     public function testAnnotationReaderCanBeModified()
     {
         $reader = new AnnotationReader();
-        AccessReader::setAnnotationReader($reader);
-        $returnedReader = AccessReader::getAnnotationReader();
+        Configuration::setAnnotationReader($reader);
+        $returnedReader = Configuration::getAnnotationReader();
         $this->assertEquals($reader, $returnedReader);
     }
 
     public function testConstraintsValidatorIsInitialized()
     {
-        $validator = AccessReader::getConstraintsValidator();
+        $validator = Configuration::getConstraintsValidator();
         $this->assertNotEquals(null, $validator);
     }
 
@@ -33,8 +33,8 @@ class AccessReaderTest extends \PHPUnit_Framework_TestCase
         $validator = Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
             ->getValidator();
-        AccessReader::setConstraintsValidator($validator);
-        $returnedValidator = AccessReader::getConstraintsValidator();
+        Configuration::setConstraintsValidator($validator);
+        $returnedValidator = Configuration::getConstraintsValidator();
         $this->assertEquals($validator, $returnedValidator);
     }
 }
