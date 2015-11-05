@@ -29,6 +29,12 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("baz", $testCase->hasBaz());
     }
 
+    public function testChildClassCanCallParentMethods()
+    {
+        $testCase = new TestsCases\BasicChildTestCase();
+        $this->assertEquals("foo", $testCase->getFoo());
+    }
+
     /**
      * @expectedException \BadMethodCallException
      */

@@ -105,14 +105,27 @@ class AccessReader
 
         $reflectionObject = new \ReflectionObject($object);
 
-        foreach ($reflectionObject->getProperties() as $property) {
-            $annotation = self::getAnnotationReader()->getPropertyAnnotation($property, self::$accessAnnotationClass);
-            $propertyName = $property->getName();
+        $objectClasses = array($reflectionObject);
+        $parentClass = $reflectionObject->getParentClass();
+        while($parentClass) {
+            $objectClasses[] = $parentClass;
+            $parentClass = $parentClass->getParentClass();
+        }
+        array_reverse($objectClasses);
 
-            $objectAccessProperties[$propertyName] = array();
-            if ($annotation !== null) {
-                $accessProperties = $annotation->getAccessProperties();
-                $objectAccessProperties[$propertyName] = $accessProperties;
+        foreach($objectClasses as $class) {
+            foreach ($class->getProperties() as $property) {
+                $annotation = self::getAnnotationReader()->getPropertyAnnotation($property, self::$accessAnnotationClass);
+                $propertyName = $property->getName();
+
+                if (empty($objectAccessProperties[$propertyName])) {
+                    $objectAccessProperties[$propertyName] = array();
+                }
+
+                if ($annotation !== null) {
+                    $accessProperties = $annotation->getAccessProperties();
+                    $objectAccessProperties[$propertyName] = $accessProperties;
+                }
             }
         }
 
