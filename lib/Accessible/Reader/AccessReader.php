@@ -1,10 +1,11 @@
 <?php
 
-namespace Accessible;
+namespace Accessible\Reader;
 
+use \Accessible\Configuration;
 use \Accessible\Annotations\Access;
 
-class AccessReader
+class AccessReader extends Reader
 {
     /**
      * The name of the annotation class that define the properties access.
@@ -26,42 +27,6 @@ class AccessReader
      * @var string
      */
     private static $disableConstraintsValidationAnnotationClass = "Accessible\\Annotations\\DisableConstraintsValidation";
-
-    /**
-     * Get a list of classes and traits to analyze.
-     *
-     * @param \ReflectionObject $reflectionObject The object to get the parents from.
-     *
-     * @return array The list of classes to read.
-     */
-    private static function getClassesToRead(\ReflectionObject $reflectionObject)
-    {
-        $objectClasses = array($reflectionObject);
-        $objectTraits = $reflectionObject->getTraits();
-        if (!empty($objectTraits)) {
-            foreach ($objectTraits as $trait) {
-                $objectClasses[] = $trait;
-            }
-        }
-
-        $parentClass = $reflectionObject->getParentClass();
-        while($parentClass) {
-            $objectClasses[] = $parentClass;
-
-            $parentTraits = $parentClass->getTraits();
-            if (!empty($parentTraits)) {
-                foreach ($parentTraits as $trait) {
-                    $objectClasses[] = $trait;
-                }
-            }
-
-            $parentClass = $parentClass->getParentClass();
-        }
-
-        array_reverse($objectClasses);
-
-        return $objectClasses;
-    }
 
     /**
      * Get a list of properties and the access that are given to them for given object.

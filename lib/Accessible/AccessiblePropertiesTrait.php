@@ -3,6 +3,7 @@
 namespace Accessible;
 
 use \Accessible\Annotations\Access;
+use \Accessible\Reader\AccessReader;
 
 trait AccessiblePropertiesTrait
 {
