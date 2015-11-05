@@ -180,10 +180,19 @@ class AccessReader
     public static function isConstraintsValidationEnabled($object)
     {
         $reflectionObject = new \ReflectionObject($object);
+        $objectClasses = self::getClassesToRead($reflectionObject);
+        $reader = self::getAnnotationReader();
 
-        $annotation = self::getAnnotationReader()->getClassAnnotation($reflectionObject, self::$disableConstraintsValidationAnnotationClass);
+        foreach ($objectClasses as $class) {
+            if ($reader->getClassAnnotation($class, self::$disableConstraintsValidationAnnotationClass) !== null) {
+                return false;
+            }
+            if ($reader->getClassAnnotation($class, self::$enableConstraintsValidationAnnotationClass) !== null) {
+                return true;
+            }
+        }
 
-        return $annotation === null;
+        return true;
     }
 
     /**

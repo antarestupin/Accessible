@@ -75,4 +75,13 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $testCase->setFoo("a");
         $this->assertEquals("a", $testCase->getFoo());
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstraintsValidationCanBeEnabledManually()
+    {
+        $testCase = new TestsCases\EnableValidationTestCase();
+        $testCase->setFoo("a");
+    }
 }
