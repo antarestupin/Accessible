@@ -27,6 +27,13 @@ class AccessReader
     private static $accessAnnotationClass = "Accessible\\Annotations\\Access";
 
     /**
+     * The name of the annotation class that enable the constraints validation for a class.
+     *
+     * @var string
+     */
+    private static $enableConstraintsValidationAnnotationClass = "Accessible\\Annotations\\EnableConstraintsValidation";
+
+    /**
      * The name of the annotation class that disable the constraints validation for a class.
      *
      * @var string
@@ -93,6 +100,42 @@ class AccessReader
     }
 
     /**
+     * Get a list of classes and traits to analyze.
+     *
+     * @param \ReflectionObject $reflectionObject The object to get the parents from.
+     *
+     * @return array The list of classes to read.
+     */
+    private static function getClassesToRead(\ReflectionObject $reflectionObject)
+    {
+        $objectClasses = array($reflectionObject);
+        $objectTraits = $reflectionObject->getTraits();
+        if (!empty($objectTraits)) {
+            foreach ($objectTraits as $trait) {
+                $objectClasses[] = $trait;
+            }
+        }
+
+        $parentClass = $reflectionObject->getParentClass();
+        while($parentClass) {
+            $objectClasses[] = $parentClass;
+
+            $parentTraits = $parentClass->getTraits();
+            if (!empty($parentTraits)) {
+                foreach ($parentTraits as $trait) {
+                    $objectClasses[] = $trait;
+                }
+            }
+
+            $parentClass = $parentClass->getParentClass();
+        }
+
+        array_reverse($objectClasses);
+
+        return $objectClasses;
+    }
+
+    /**
      * Get a list of properties and the access that are given to them for given object.
      *
      * @param object $object The object to read.
@@ -105,17 +148,12 @@ class AccessReader
 
         $reflectionObject = new \ReflectionObject($object);
 
-        $objectClasses = array($reflectionObject);
-        $parentClass = $reflectionObject->getParentClass();
-        while($parentClass) {
-            $objectClasses[] = $parentClass;
-            $parentClass = $parentClass->getParentClass();
-        }
-        array_reverse($objectClasses);
+        $objectClasses = self::getClassesToRead($reflectionObject);
 
+        $annotationReader = self::getAnnotationReader();
         foreach($objectClasses as $class) {
             foreach ($class->getProperties() as $property) {
-                $annotation = self::getAnnotationReader()->getPropertyAnnotation($property, self::$accessAnnotationClass);
+                $annotation = $annotationReader->getPropertyAnnotation($property, self::$accessAnnotationClass);
                 $propertyName = $property->getName();
 
                 if (empty($objectAccessProperties[$propertyName])) {
