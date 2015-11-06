@@ -62,6 +62,8 @@ When using `AutoConstructTrait`, if no `@Construct` has been added, the construc
 
 For some properties, you may want to fix a value when the object is instanciated. The `@Initialize` and `@InitializeObject` annotations are useful in this situation.
 
+#### `@Initialize`
+
 Simply add these annotations to the concerned properties. Let's begin with `@Initialize`:
 
 ```php
@@ -101,6 +103,8 @@ class Foo
 }
 ```
 
+#### `@InitializeObject`
+
 For the properties which initial value is an object, if this object has to be instancied with a simple `new Something()` without argument, you can use the `@InitializeObject` annotation.
 
 ```php
@@ -118,3 +122,12 @@ class Foo
 ```
 
 A new instance of `ArrayCollection` will be set to `$bar` when instanciating a `Foo` object.
+
+#### Disable the constraints validation for `@Initialize` and `@InitializeObject`
+
+As the value given to `@Initialize` and `@InitializeObject` are fixed, they should be validated only in development. To enable or disable their validation, use the `Accessible\Configuration::setInitializeValuesValidationEnabled()` method:
+
+```php
+$debug = true;
+Accessible\Configuration::setInitializeValuesValidationEnabled($debug);
+```

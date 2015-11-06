@@ -12,12 +12,12 @@ trait AutoConstructTrait
      */
     public function __construct()
     {
-        $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
-
         // Initialize the properties that were defined using the Initialize / InitializeObject annotations
+        $initializeValueValidationEnabled = Configuration::isInitializeValuesValidationEnabled();
+
         $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
         foreach ($initialValues as $propertyName => $value) {
-            if ($constraintsValidationEnabled) {
+            if ($initializeValueValidationEnabled) {
                 $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $propertyName, $value);
                 if ($constraintsViolations->count()) {
                     $errorMessage = "Object Initialization failed; the property $propertyName has been specified with a wrong value; \
@@ -42,6 +42,7 @@ trait AutoConstructTrait
             $givenArguments = func_get_args();
             $numberOfNeededArguments = count($neededArguments);
             $numberOfGivenArguments = count($givenArguments);
+            $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
 
             if ($numberOfGivenArguments !== $numberOfNeededArguments) {
                 throw new \BadMethodCallException("Wrong number of arguments given to the constructor.");

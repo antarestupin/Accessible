@@ -16,7 +16,7 @@ class Configuration
      *
      * @var Doctrine\Common\Annotations\Reader
      */
-    private static $annotationReader = null;
+    private static $annotationReader;
 
     /**
      * The constraints validator.
@@ -24,6 +24,14 @@ class Configuration
      * @var Symfony\Component\Validator\ConstraintValidator
      */
     private static $constraintsValidator;
+
+    /**
+     * Says if the @Initialize and @InitializeObject values have to
+     * be validated with constraints.
+     *
+     * @var bool
+     */
+    private static $initializeValuesValidationEnabled = true;
 
     /**
      * Get the annotation reader that is used.
@@ -75,5 +83,25 @@ class Configuration
     public static function setConstraintsValidator(ValidatorInterface $constraintsValidator)
     {
         self::$constraintsValidator = $constraintsValidator;
+    }
+
+    public static function isInitializeValuesValidationEnabled()
+    {
+        return self::$initializeValuesValidationEnabled;
+    }
+
+    /**
+     * Enable or disable the constraints validation for @Initialize and
+     * @InitializeObject values.
+     *
+     * @param bool $enabled True for enable, false for disable.
+     */
+    public static function setInitializeValuesValidationEnabled($enabled)
+    {
+        if (!in_array($enabled, array(true, false))) {
+            throw new \InvalidArgumentException("This value must be a boolean.");
+        }
+
+        self::$initializeValuesValidationEnabled = $enabled;
     }
 }
