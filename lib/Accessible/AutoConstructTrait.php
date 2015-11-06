@@ -28,7 +28,7 @@ trait AutoConstructTrait
                     }
                     $errorMessage .= implode("\", \"", $errorMessageList)."\".";
 
-                    throw new \InvalidArgumentException($errorMessage);
+                    throw new \LogicException($errorMessage);
                 }
             }
 
