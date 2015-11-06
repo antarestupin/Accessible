@@ -38,7 +38,7 @@ class AutoConstructTestCase
 
     /**
      * @Access({Access::GET})
-     * @InitializeObject(Foo::class)
+     * @InitializeObject(AccessiblePropertiesTestCase::class)
      */
     private $object;
 }

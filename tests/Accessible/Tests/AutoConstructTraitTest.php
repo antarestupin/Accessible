@@ -10,7 +10,7 @@ class AutoConstructTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo", $testCase->getFoo());
         $this->assertEquals(true, $testCase->getBar());
         $this->assertEquals("baz", $testCase->getBaz());
-        $this->assertEquals("baz", $testCase->getObject()->bar());
+        $this->assertEquals("foo", $testCase->getObject()->getFoo());
     }
 
     /**
