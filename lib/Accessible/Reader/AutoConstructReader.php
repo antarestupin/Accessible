@@ -3,7 +3,6 @@
 namespace Accessible\Reader;
 
 use \Accessible\Configuration;
-use \Accessible\Annotation\Construct;
 
 class AutoConstructReader extends Reader
 {

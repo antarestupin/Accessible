@@ -3,7 +3,7 @@
 namespace Accessible;
 
 use \Accessible\Reader\AutoConstructReader;
-use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\ConstraintsReader;
 
 trait AutoConstructTrait
 {
@@ -11,7 +11,7 @@ trait AutoConstructTrait
     {
         $neededArguments = AutoConstructReader::getConstructArguments($this);
         $givenArguments = func_get_args();
-        $constraintsValidationEnabled = AccessReader::isConstraintsValidationEnabled($this);
+        $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
 
         $numberOfNeededArguments = count($neededArguments);
         $numberOfGivenArguments = count($givenArguments);
@@ -30,7 +30,7 @@ trait AutoConstructTrait
             $argument = $givenArguments[$i];
 
             if ($constraintsValidationEnabled) {
-                $constraintsViolations = AccessReader::validatePropertyValue($this, $property, $argument);
+                $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $property, $argument);
                 if ($constraintsViolations->count()) {
                     $errorMessage = "Object Initialization failed; argument given for the property $property is invalid; \
                     its constraints validation failed with the following messages: \"";

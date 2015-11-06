@@ -4,6 +4,7 @@ namespace Accessible;
 
 use \Accessible\Annotation\Access;
 use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\ConstraintsReader;
 
 trait AccessiblePropertiesTrait
 {
@@ -34,7 +35,7 @@ trait AccessiblePropertiesTrait
      */
     private function _validatePropertyValue($property, $value)
     {
-        return AccessReader::validatePropertyValue($this, $property, $value);
+        return ConstraintsReader::validatePropertyValue($this, $property, $value);
     }
 
     /**
@@ -66,7 +67,7 @@ trait AccessiblePropertiesTrait
 
         // if we don't already know wether the constraints should be validated
         if ($this->_enableConstraintsValidation === null) {
-            $this->_enableConstraintsValidation = AccessReader::isConstraintsValidationEnabled($this);
+            $this->_enableConstraintsValidation = ConstraintsReader::isConstraintsValidationEnabled($this);
         }
 
         // check that the called method is a getter or a setter
