@@ -12,9 +12,26 @@ trait AutoConstructTrait
      */
     public function __construct()
     {
+        $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
+
         // Initialize the properties that were defined using the Initialize / InitializeObject annotations
         $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
         foreach ($initialValues as $propertyName => $value) {
+            if ($constraintsValidationEnabled) {
+                $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $propertyName, $value);
+                if ($constraintsViolations->count()) {
+                    $errorMessage = "Object Initialization failed; the property $propertyName has been specified with a wrong value; \
+                    its constraints validation failed with the following messages: \"";
+                    $errorMessageList = array();
+                    foreach ($constraintsViolations as $violation) {
+                        $errorMessageList[] = $violation->getMessage();
+                    }
+                    $errorMessage .= implode("\", \"", $errorMessageList)."\".";
+
+                    throw new \InvalidArgumentException($errorMessage);
+                }
+            }
+
             $this->$propertyName = $value;
         }
 
@@ -23,8 +40,6 @@ trait AutoConstructTrait
 
         if ($neededArguments !== null) {
             $givenArguments = func_get_args();
-            $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
-
             $numberOfNeededArguments = count($neededArguments);
             $numberOfGivenArguments = count($givenArguments);
 
