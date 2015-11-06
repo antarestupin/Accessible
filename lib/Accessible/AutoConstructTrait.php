@@ -7,6 +7,9 @@ use \Accessible\Reader\ConstraintsReader;
 
 trait AutoConstructTrait
 {
+    /**
+     * Initializes the object according to its class specification and given arguments.
+     */
     public function __construct()
     {
         $neededArguments = AutoConstructReader::getConstructArguments($this);
@@ -20,11 +23,13 @@ trait AutoConstructTrait
             throw new \BadMethodCallException("Wrong number of arguments given to the constructor.");
         }
 
+        // Initialize the properties that were defined using the Initialize / InitializeObject annotations
         $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
         foreach ($initialValues as $propertyName => $value) {
             $this->$propertyName = $value;
         }
 
+        // Initialize the propeties using given arguments
         for ($i = 0; $i < $numberOfNeededArguments; $i++) {
             $property = $neededArguments[$i];
             $argument = $givenArguments[$i];
