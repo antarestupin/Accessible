@@ -15,6 +15,20 @@ class AutoConstructReader extends Reader
     private static $constructAnnotationClass = "Accessible\\Annotations\\Construct";
 
     /**
+     * The name of the annotation class that define a property's default value.
+     *
+     * @var string
+     */
+    private static $initializeAnnotationClass = "Accessible\\Annotations\\Initialize";
+
+    /**
+     * The name of the annotation class that define the initial value of an object property.
+     *
+     * @var string
+     */
+    private static $initializeObjectAnnotationClass = "Accessible\\Annotations\\InitializeObject";
+
+    /**
      * Get the list of needed arguments for given object's constructor.
      *
      * @param object $object The object to analyze.
@@ -24,8 +38,9 @@ class AutoConstructReader extends Reader
     public static function getConstructArguments($object)
     {
         $reflectionObject = new \ReflectionObject($object);
-        $objectClasses = self::getClassesToRead($reflectionObject);
         $annotationReader = Configuration::getAnnotationReader();
+        $objectClasses = self::getClassesToRead($reflectionObject);
+        array_reverse($objectClasses);
 
         foreach ($objectClasses as $class) {
             $annotation = $annotationReader->getClassAnnotation($class, self::$constructAnnotationClass);
@@ -35,5 +50,47 @@ class AutoConstructReader extends Reader
         }
 
         return null;
+    }
+
+    /**
+     * Get the list of properties that have to be initialized automatically
+     * during the object construction, plus their value.
+     *
+     * @param object $object The object to analyze.
+     *
+     * @return array The list of properties and values,
+     *               in the form ["property" => "value"].
+     */
+    public static function getPropertiesToInitialize($object)
+    {
+        $reflectionObject = new \ReflectionObject($object);
+        $annotationReader = Configuration::getAnnotationReader();
+        $objectClasses = self::getClassesToRead($reflectionObject);
+        array_reverse($objectClasses);
+
+        $propertiesValues = array();
+
+        foreach ($objectClasses as $class) {
+            foreach ($class->getProperties() as $property) {
+                $propertyName = $property->getName();
+                $initializeAnnotation = $annotationReader->getPropertyAnnotation($property, self::$initializeAnnotationClass);
+                $initializeObjectAnnotation = $annotationReader->getPropertyAnnotation($property, self::$initializeObjectAnnotationClass);
+
+                if ($initializeAnnotation !== null && $initializeObjectAnnotation !== null) {
+                    throw new \LogicException("Two initial values are given for property $propertyName.");
+                }
+
+                if (empty($propertiesValues[$propertyName])) {
+                    if ($initializeAnnotation !== null) {
+                        $propertiesValues[$propertyName] = $initializeAnnotation->getValue();
+                    } else if ($initializeObjectAnnotation !== null) {
+                        $className = $initializeObjectAnnotation->getClassName();
+                        $propertiesValues[$propertyName] = new $className();
+                    }
+                }
+            }
+        }
+
+        return $propertiesValues;
     }
 }

@@ -35,8 +35,6 @@ class Reader
             $parentClass = $parentClass->getParentClass();
         }
 
-        array_reverse($objectClasses);
-
         return $objectClasses;
     }
 }

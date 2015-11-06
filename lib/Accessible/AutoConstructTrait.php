@@ -20,6 +20,11 @@ trait AutoConstructTrait
             throw new \BadMethodCallException("Wrong number of arguments given to the constructor.");
         }
 
+        $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
+        foreach ($initialValues as $propertyName => $value) {
+            $this->$propertyName = $value;
+        }
+
         for ($i = 0; $i < $numberOfNeededArguments; $i++) {
             $property = $neededArguments[$i];
             $argument = $givenArguments[$i];

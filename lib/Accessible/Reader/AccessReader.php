@@ -42,6 +42,7 @@ class AccessReader extends Reader
         $reflectionObject = new \ReflectionObject($object);
 
         $objectClasses = self::getClassesToRead($reflectionObject);
+        array_reverse($objectClasses);
 
         $annotationReader = Configuration::getAnnotationReader();
         foreach($objectClasses as $class) {
