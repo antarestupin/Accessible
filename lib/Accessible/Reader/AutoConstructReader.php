@@ -3,7 +3,7 @@
 namespace Accessible\Reader;
 
 use \Accessible\Configuration;
-use \Accessible\Annotations\Construct;
+use \Accessible\Annotation\Construct;
 
 class AutoConstructReader extends Reader
 {
@@ -12,21 +12,21 @@ class AutoConstructReader extends Reader
      *
      * @var string
      */
-    private static $constructAnnotationClass = "Accessible\\Annotations\\Construct";
+    private static $constructAnnotationClass = "Accessible\\Annotation\\Construct";
 
     /**
      * The name of the annotation class that define a property's default value.
      *
      * @var string
      */
-    private static $initializeAnnotationClass = "Accessible\\Annotations\\Initialize";
+    private static $initializeAnnotationClass = "Accessible\\Annotation\\Initialize";
 
     /**
      * The name of the annotation class that define the initial value of an object property.
      *
      * @var string
      */
-    private static $initializeObjectAnnotationClass = "Accessible\\Annotations\\InitializeObject";
+    private static $initializeObjectAnnotationClass = "Accessible\\Annotation\\InitializeObject";
 
     /**
      * Get the list of needed arguments for given object's constructor.

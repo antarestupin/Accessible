@@ -3,7 +3,7 @@
 namespace Accessible\Reader;
 
 use \Accessible\Configuration;
-use \Accessible\Annotations\Access;
+use \Accessible\Annotation\Access;
 
 class AccessReader extends Reader
 {
@@ -12,21 +12,21 @@ class AccessReader extends Reader
      *
      * @var string
      */
-    private static $accessAnnotationClass = "Accessible\\Annotations\\Access";
+    private static $accessAnnotationClass = "Accessible\\Annotation\\Access";
 
     /**
      * The name of the annotation class that enable the constraints validation for a class.
      *
      * @var string
      */
-    private static $enableConstraintsValidationAnnotationClass = "Accessible\\Annotations\\EnableConstraintsValidation";
+    private static $enableConstraintsValidationAnnotationClass = "Accessible\\Annotation\\EnableConstraintsValidation";
 
     /**
      * The name of the annotation class that disable the constraints validation for a class.
      *
      * @var string
      */
-    private static $disableConstraintsValidationAnnotationClass = "Accessible\\Annotations\\DisableConstraintsValidation";
+    private static $disableConstraintsValidationAnnotationClass = "Accessible\\Annotation\\DisableConstraintsValidation";
 
     /**
      * Get a list of properties and the access that are given to them for given object.

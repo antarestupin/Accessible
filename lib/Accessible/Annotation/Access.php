@@ -1,6 +1,6 @@
 <?php
 
-namespace Accessible\Annotations;
+namespace Accessible\Annotation;
 
 /**
  * @Annotation

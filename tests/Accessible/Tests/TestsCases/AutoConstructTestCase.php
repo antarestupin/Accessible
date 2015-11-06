@@ -5,10 +5,10 @@ namespace Accessible\Tests\TestsCases;
 use Accessible\Tests\SampleClasses\Foo;
 use Accessible\AccessiblePropertiesTrait;
 use Accessible\AutoConstructTrait;
-use Accessible\Annotations\Access;
-use Accessible\Annotations\Construct;
-use Accessible\Annotations\Initialize;
-use Accessible\Annotations\InitializeObject;
+use Accessible\Annotation\Access;
+use Accessible\Annotation\Construct;
+use Accessible\Annotation\Initialize;
+use Accessible\Annotation\InitializeObject;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

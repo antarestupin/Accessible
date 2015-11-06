@@ -47,7 +47,7 @@ Add the annotation `@Access` in your class' properties as following. Don't forge
 
 ```php
 use Accessible\AccessiblePropertiesTrait;
-use use Accessible\Annotations\Access;
+use use Accessible\Annotation\Access;
 
 class Foo
 {
@@ -130,7 +130,7 @@ $foo->setEmail('bar'); // this won't, and will throw an \InvalidArgumentExceptio
 In some cases, for example if you are using Symfony's forms, you may want to use this library to generate the setters of some classes without constraints validation in order to validate the entire class later. To do this, simply add the `@DisableConstraintsValidation` annotation on the docblock of your class.
 
 ```php
-use Accessible\Annotations\DisableConstraintsValidation;
+use Accessible\Annotation\DisableConstraintsValidation;
 
 /**
  * @DisableConstraintsValidation

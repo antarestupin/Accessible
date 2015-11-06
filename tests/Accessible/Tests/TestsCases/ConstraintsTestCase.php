@@ -3,7 +3,7 @@
 namespace Accessible\Tests\TestsCases;
 
 use Accessible\AccessiblePropertiesTrait;
-use Accessible\Annotations\Access;
+use Accessible\Annotation\Access;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ConstraintsTestCase
