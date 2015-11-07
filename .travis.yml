@@ -7,7 +7,7 @@ php:
   - 7
   - hhvm
 
-before_script:
+install:
   - composer install -n
 
 cache:
