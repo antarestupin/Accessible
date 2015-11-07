@@ -30,3 +30,16 @@ Accessible\Configuration::setConstraintsValidator(
         ->getValidator()
 );
 ```
+
+### Use a custom cache driver
+
+You can use a cache in order to avoid the use of the annotation parser whenever possible. This will improve the performance.
+
+```php
+Accessible\Configuration::setCacheDriver(
+    new Doctrine\Common\Cache\ChainCache([
+        new Doctrine\Common\Cache\ArrayCache(),
+        new Doctrine\Common\Cache\FileSystemCache("cache/")
+    ])
+);
+```

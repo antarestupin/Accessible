@@ -37,6 +37,14 @@ class AutoConstructReader extends Reader
     public static function getConstructArguments($object)
     {
         $reflectionObject = new \ReflectionObject($object);
+        $cacheDriver = Configuration::getCacheDriver();
+        $cacheId = "getConstructArguments:" . $reflectionObject->getName();
+        $constructArguments = $cacheDriver->fetch($cacheId);
+        if ($constructArguments !== false) {
+            return $constructArguments;
+        }
+
+        $constructArguments = null;
         $annotationReader = Configuration::getAnnotationReader();
         $objectClasses = self::getClassesToRead($reflectionObject);
         array_reverse($objectClasses);
@@ -44,11 +52,14 @@ class AutoConstructReader extends Reader
         foreach ($objectClasses as $class) {
             $annotation = $annotationReader->getClassAnnotation($class, self::$constructAnnotationClass);
             if ($annotation !== null) {
-                return $annotation->getArguments();
+                $constructArguments = $annotation->getArguments();
+                break;
             }
         }
 
-        return null;
+        $cacheDriver->save($cacheId, $constructArguments);
+
+        return $constructArguments;
     }
 
     /**
@@ -63,6 +74,13 @@ class AutoConstructReader extends Reader
     public static function getPropertiesToInitialize($object)
     {
         $reflectionObject = new \ReflectionObject($object);
+        $cacheDriver = Configuration::getCacheDriver();
+        $cacheId = "getPropertiesToInitialize:" . $reflectionObject->getName();
+        $propertiesValues = $cacheDriver->fetch($cacheId);
+        if ($propertiesValues !== false) {
+            return $propertiesValues;
+        }
+
         $annotationReader = Configuration::getAnnotationReader();
         $objectClasses = self::getClassesToRead($reflectionObject);
         array_reverse($objectClasses);
@@ -89,6 +107,8 @@ class AutoConstructReader extends Reader
                 }
             }
         }
+
+        $cacheDriver->save($cacheId, $propertiesValues);
 
         return $propertiesValues;
     }

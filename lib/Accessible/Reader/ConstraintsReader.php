@@ -30,19 +30,30 @@ class ConstraintsReader extends Reader
     public static function isConstraintsValidationEnabled($object)
     {
         $reflectionObject = new \ReflectionObject($object);
+        $cacheDriver = Configuration::getCacheDriver();
+        $cacheId = "isConstraintsValidationEnabled:" . $reflectionObject->getName();
+        if ($cacheDriver->contains($cacheId)) {
+            $cacheDriver->fetch($cacheId);
+        }
+
         $objectClasses = self::getClassesToRead($reflectionObject);
         $reader = Configuration::getAnnotationReader();
+        $enabled = true;
 
         foreach ($objectClasses as $class) {
             if ($reader->getClassAnnotation($class, self::$disableConstraintsValidationAnnotationClass) !== null) {
-                return false;
+                $enabled = false;
+                break;
             }
             if ($reader->getClassAnnotation($class, self::$enableConstraintsValidationAnnotationClass) !== null) {
-                return true;
+                $enabled = true;
+                break;
             }
         }
 
-        return true;
+        $cacheDriver->save($cacheId, $enabled);
+
+        return $enabled;
     }
 
     /**

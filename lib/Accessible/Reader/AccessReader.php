@@ -22,10 +22,15 @@ class AccessReader extends Reader
      */
     public static function getAccessProperties($object)
     {
-        $objectAccessProperties = array();
-
         $reflectionObject = new \ReflectionObject($object);
+        $cacheDriver = Configuration::getCacheDriver();
+        $cacheId = "getAccessProperties:" . $reflectionObject->getName();
+        $objectAccessProperties = $cacheDriver->fetch($cacheId);
+        if ($objectAccessProperties !== false) {
+            return $objectAccessProperties;
+        }
 
+        $objectAccessProperties = array();
         $objectClasses = self::getClassesToRead($reflectionObject);
         array_reverse($objectClasses);
 
@@ -45,6 +50,8 @@ class AccessReader extends Reader
                 }
             }
         }
+
+        $cacheDriver->save($cacheId, $objectAccessProperties);
 
         return $objectAccessProperties;
     }
