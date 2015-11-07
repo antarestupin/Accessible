@@ -14,7 +14,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals(null, $reader);
     }
 
-    public function testAnnotationReaderCanBeModified()
+    /*public function testAnnotationReaderCanBeModified()
     {
         $reader = new AnnotationReader();
         Configuration::setAnnotationReader($reader);
@@ -36,5 +36,5 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         Configuration::setConstraintsValidator($validator);
         $returnedValidator = Configuration::getConstraintsValidator();
         $this->assertEquals($validator, $returnedValidator);
-    }
+    }*/
 }
