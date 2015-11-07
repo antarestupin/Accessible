@@ -2,13 +2,18 @@
 
 ### Use a custom annotations reader
 
-The default annotations reader used by this library does only cache the annotations in memory, so it will parse your class files each time a request runs. This is quite slow, and you should use a reader that caches the result between requests. With the following piece of code, the result will be cached in a file.
+The default annotations reader used by this library does only cache the annotations in memory, so it will parse your class files each time a request runs. This is quite slow, and you should use a reader that caches the result between requests. With the following piece of code, the result will be cached in the memory plus the filesystem.
 
 ```php
+$cache = new Doctrine\Common\Cache\ChainCache([
+    new Doctrine\Common\Cache\ArrayCache(),
+    new Doctrine\Common\Cache\FileSystemCache("cache/")
+]);
+
 Accessible\Configuration::setAnnotationReader(
-    new Doctrine\Common\Annotations\FileCacheReader(
+    new Doctrine\Common\Annotations\CachedReader(
         new Doctrine\Common\Annotations\AnnotationReader(),
-        "cache/",
+        $cache,
         $debug = false
     )
 );
