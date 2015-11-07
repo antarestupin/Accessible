@@ -38,7 +38,7 @@ class AutoConstructReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheDriver = Configuration::getCacheDriver();
-        $cacheId = "constructArguments:" . $reflectionObject->getName();
+        $cacheId = md5("constructArguments:" . $reflectionObject->getName());
         $constructArguments = $cacheDriver->fetch($cacheId);
         if ($constructArguments !== false) {
             return $constructArguments;
@@ -75,7 +75,7 @@ class AutoConstructReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheDriver = Configuration::getCacheDriver();
-        $cacheId = "propertiesToInitialize:" . $reflectionObject->getName();
+        $cacheId = md5("propertiesToInitialize:" . $reflectionObject->getName());
         $propertiesValues = $cacheDriver->fetch($cacheId);
         if ($propertiesValues !== false) {
             return $propertiesValues;

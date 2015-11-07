@@ -24,7 +24,7 @@ class AccessReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheDriver = Configuration::getCacheDriver();
-        $cacheId = "accessProperties:" . $reflectionObject->getName();
+        $cacheId = md5("accessProperties:" . $reflectionObject->getName());
         $objectAccessProperties = $cacheDriver->fetch($cacheId);
         if ($objectAccessProperties !== false) {
             return $objectAccessProperties;
