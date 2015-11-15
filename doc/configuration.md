@@ -39,7 +39,7 @@ You can use a cache in order to avoid the use of the annotation parser whenever 
 Accessible\Configuration::setCacheDriver(
     new Doctrine\Common\Cache\ChainCache([
         new Doctrine\Common\Cache\ArrayCache(),
-        new Doctrine\Common\Cache\FileSystemCache("cache/")
+        new Doctrine\Common\Cache\FilesystemCache("cache/")
     ])
 );
 ```
