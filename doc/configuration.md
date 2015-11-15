@@ -7,7 +7,7 @@ The default annotations reader used by this library does only cache the annotati
 ```php
 $cache = new Doctrine\Common\Cache\ChainCache([
     new Doctrine\Common\Cache\ArrayCache(),
-    new Doctrine\Common\Cache\FileSystemCache("cache/")
+    new Doctrine\Common\Cache\FilesystemCache("cache/")
 ]);
 
 Accessible\Configuration::setAnnotationReader(
