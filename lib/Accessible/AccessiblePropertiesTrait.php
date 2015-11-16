@@ -2,7 +2,6 @@
 
 namespace Accessible;
 
-use \Accessible\Annotation\Access;
 use \Accessible\Reader\AccessReader;
 use \Accessible\Reader\ConstraintsReader;
 
