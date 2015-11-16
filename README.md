@@ -42,7 +42,7 @@ $server->setIpAddress("foo"); // Throws \InvalidArgumentException
 
 ## Install
 
-If you want to use this library in your Symfony project, take a look at [AntaresAccessibleBundle](https://github.com/antares993/AntaresAccessibleBundle).
+If you want to use this library in your Symfony project, take a look at [AccessibleBundle](https://github.com/antares993/AccessibleBundle).
 
 You can add this library as a dependency using composer this way:
 
