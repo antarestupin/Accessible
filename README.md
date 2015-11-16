@@ -45,7 +45,7 @@ $server->setIpAddress("foo"); // Throws \InvalidArgumentException
 You can add this library as a dependency using composer this way:
 
 ```php
-composer require antares/accessible
+composer require antares/accessible dev-master
 ```
 
 This library uses the Doctrine annotations library, so if it is not already done you must register the Composer loader in the annotation registry:
