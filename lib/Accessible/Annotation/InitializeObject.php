@@ -22,7 +22,7 @@ class InitializeObject
      */
     public function __construct($className)
     {
-        $this->value = $className['value'];
+        $this->className = $className['value'];
     }
 
     /**
@@ -32,6 +32,6 @@ class InitializeObject
      */
     public function getClassName()
     {
-        return $this->value;
+        return $this->className;
     }
 }
