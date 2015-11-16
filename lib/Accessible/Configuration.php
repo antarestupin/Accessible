@@ -27,7 +27,7 @@ class Configuration
     private static $constraintsValidator;
 
     /**
-     * Says if the @Initialize and @InitializeObject values have to
+     * Says if the Initialize and InitializeObject values have to
      * be validated with constraints.
      *
      * @var bool
@@ -107,8 +107,8 @@ class Configuration
     }
 
     /**
-     * Indicates if the constraints validation for @Initialize and
-     * @InitializeObject values is enabled or not.
+     * Indicates if the constraints validation for Initialize and
+     * InitializeObject values is enabled or not.
      *
      * @return boolean True if enabled, else false.
      */
@@ -118,8 +118,8 @@ class Configuration
     }
 
     /**
-     * Enable or disable the constraints validation for @Initialize and
-     * @InitializeObject values.
+     * Enable or disable the constraints validation for Initialize and
+     * InitializeObject values.
      *
      * @param bool $enabled True for enable, false for disable.
      */
