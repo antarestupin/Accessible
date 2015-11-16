@@ -19,6 +19,17 @@ Accessible\Configuration::setAnnotationReader(
 );
 ```
 
+Note that the `FilesystemCache` cache is not optimal, and if you can, you should better use a faster cache. Here is an example with `ApcCache`:
+
+```php
+$cache = new Doctrine\Common\Cache\ChainCache([
+    new Doctrine\Common\Cache\ArrayCache(),
+    new Doctrine\Common\Cache\ApcCache()
+]);
+
+// ...
+```
+
 ### Use a custom constraints validator
 
 If you are already using the Symfony validator in your code, you may want this library to use it, as one validator is enough. You can set which validator will be used this way:
