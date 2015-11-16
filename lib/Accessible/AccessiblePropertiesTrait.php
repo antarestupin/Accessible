@@ -33,7 +33,7 @@ trait AccessiblePropertiesTrait
      * @return Symfony\Component\Validator\ConstraintViolationList
      *         The list of constraints violations the check returns.
      */
-    private function _validatePropertyValue($property, $value)
+    protected function validatePropertyValue($property, $value)
     {
         return ConstraintsReader::validatePropertyValue($this, $property, $value);
     }
@@ -101,7 +101,7 @@ trait AccessiblePropertiesTrait
 
                     // check that the setter argument respects the property constraints
                     if ($this->_enableConstraintsValidation) {
-                        $constraintsViolations = $this->_validatePropertyValue($property, $arg);
+                        $constraintsViolations = $this->validatePropertyValue($property, $arg);
                         if ($constraintsViolations->count()) {
                             $errorMessage = "Argument given for method $name is invalid; its constraints validation failed with the following messages: \"";
                             $errorMessageList = array();

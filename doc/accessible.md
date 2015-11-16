@@ -111,7 +111,7 @@ class Foo
 
   public function setBar($newValue)
   {
-    if ($this->_validatePropertyValue('bar', $newValue)->count()) {
+    if ($this->validatePropertyValue('bar', $newValue)->count()) {
       throw new \InvalidArgumentException("The value passsed to Foo#setBar() is not valid.");
     }
     $this->bar = $newValue;
@@ -120,4 +120,4 @@ class Foo
 }
 ```
 
-The method `_validatePropertyValue()` returns a ConstraintViolationList, which `count()` will equal 0 if the value to check is ok with your property constraints.
+The method `validatePropertyValue()` returns a ConstraintViolationList, which `count()` will equal 0 if the value to check is ok with your property constraints.
