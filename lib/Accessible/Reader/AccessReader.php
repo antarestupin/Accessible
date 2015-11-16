@@ -23,11 +23,20 @@ class AccessReader extends Reader
     public static function getAccessProperties($object)
     {
         $reflectionObject = new \ReflectionObject($object);
-        $cacheDriver = Configuration::getCacheDriver();
         $cacheId = md5("accessProperties:" . $reflectionObject->getName());
-        $objectAccessProperties = $cacheDriver->fetch($cacheId);
-        if ($objectAccessProperties !== false) {
-            return $objectAccessProperties;
+
+        $arrayCache = Configuration::getArrayCache();
+        if ($arrayCache->contains($cacheId)) {
+            return $arrayCache->fetch($cacheId);
+        }
+
+        $cacheDriver = Configuration::getCacheDriver();
+        if ($cacheDriver !== null) {
+            $objectAccessProperties = $cacheDriver->fetch($cacheId);
+            if ($objectAccessProperties !== false) {
+                $arrayCache->save($cacheId, $objectAccessProperties);
+                return $objectAccessProperties;
+            }
         }
 
         $objectAccessProperties = array();
@@ -51,7 +60,10 @@ class AccessReader extends Reader
             }
         }
 
-        $cacheDriver->save($cacheId, $objectAccessProperties);
+        $arrayCache->save($cacheId, $objectAccessProperties);
+        if ($cacheDriver !== null) {
+            $cacheDriver->save($cacheId, $objectAccessProperties);
+        }
 
         return $objectAccessProperties;
     }

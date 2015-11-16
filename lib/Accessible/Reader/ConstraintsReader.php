@@ -30,10 +30,18 @@ class ConstraintsReader extends Reader
     public static function isConstraintsValidationEnabled($object)
     {
         $reflectionObject = new \ReflectionObject($object);
-        $cacheDriver = Configuration::getCacheDriver();
         $cacheId = md5("validationEnabled:" . $reflectionObject->getName());
-        if ($cacheDriver->contains($cacheId)) {
-            return $cacheDriver->fetch($cacheId);
+
+        $arrayCache = Configuration::getArrayCache();
+        if ($arrayCache->contains($cacheId)) {
+            return $arrayCache->fetch($cacheId);
+        }
+
+        $cacheDriver = Configuration::getCacheDriver();
+        if ($cacheDriver !== null && $cacheDriver->contains($cacheId)) {
+            $enabled = $cacheDriver->fetch($cacheId);
+            $arrayCache->save($cacheId, $enabled);
+            return $enabled;
         }
 
         $objectClasses = self::getClassesToRead($reflectionObject);
@@ -51,7 +59,10 @@ class ConstraintsReader extends Reader
             }
         }
 
-        $cacheDriver->save($cacheId, $enabled);
+        $arrayCache->save($cacheId, $enabled);
+        if ($cacheDriver !== null) {
+            $cacheDriver->save($cacheId, $enabled);
+        }
 
         return $enabled;
     }

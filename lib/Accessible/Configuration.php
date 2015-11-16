@@ -49,6 +49,12 @@ class Configuration
     private static $cacheDefaultNamespace = 'antares_accessible_';
 
     /**
+     * The in-memory cache that will be used.
+     * @var ArrayCache
+     */
+    private static $arrayCache;
+
+    /**
      * Get the annotation reader that is used.
      * Initializes it if it doesn't already exists.
      *
@@ -128,16 +134,11 @@ class Configuration
 
     /**
      * Get the cache driver that will be used.
-     * Initialize it if it doesn't already exist.
      *
      * @return Cache The cache driver.
      */
     public static function getCacheDriver()
     {
-        if (self::$cacheDriver === null) {
-            self::setCacheDriver(new ArrayCache());
-        }
-
         return self::$cacheDriver;
     }
 
@@ -159,5 +160,39 @@ class Configuration
 
         self::$cacheDriver = $cache;
         self::$cacheDriver->setNamespace($namespace);
+    }
+
+    /**
+     * Get the array cache that will be used.
+     * Initialize it if it doesn't already exist.
+     *
+     * @return Cache The cache driver.
+     */
+    public static function getArrayCache()
+    {
+        if (self::$arrayCache === null) {
+            self::setArrayCache(new ArrayCache());
+        }
+
+        return self::$arrayCache;
+    }
+
+    /**
+     * Set the array cache that will be used.
+     *
+     * @param Cache  $cache The cache driver.
+     * @param string $namespace The cache namespace.
+     */
+    public static function setArrayCache(Cache $cache, $namespace = null) {
+        if ($namespace === null) {
+            $namespace = self::$cacheDefaultNamespace;
+        }
+
+        if (!is_string($namespace)) {
+            throw new \InvalidArgumentException("The namespace must be a string.");
+        }
+
+        self::$arrayCache = $cache;
+        self::$arrayCache->setNamespace($namespace);
     }
 }
