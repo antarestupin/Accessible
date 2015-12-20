@@ -125,7 +125,7 @@ A new instance of `ArrayCollection` will be set to `$bar` when instanciating a `
 
 #### Disable the constraints validation for `@Initialize` and `@InitializeObject`
 
-As the value given to `@Initialize` and `@InitializeObject` are fixed, they should be validated only in development. To enable or disable their validation, use the `Accessible\Configuration::setInitializeValuesValidationEnabled()` method:
+As the values given to `@Initialize` and `@InitializeObject` are fixed, they should be validated only in development. To enable or disable their validation, use the `Accessible\Configuration::setInitializeValuesValidationEnabled()` method:
 
 ```php
 $debug = true;
