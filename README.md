@@ -48,7 +48,7 @@ If you want to use this library in your Symfony project, take a look at [Accessi
 
 You can add this library as a dependency using composer this way:
 
-```php
+```
 composer require antares/accessible dev-master
 ```
 
