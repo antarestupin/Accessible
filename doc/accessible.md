@@ -120,4 +120,4 @@ class Foo
 }
 ```
 
-The method `validatePropertyValue()` returns a ConstraintViolationList, which `count()` will equal 0 if the value to check is ok with your property constraints.
+The method `validatePropertyValue()` returns a `ConstraintViolationList`, which `count()` will equal 0 if the value to check is ok with your property constraints.
