@@ -49,7 +49,7 @@ If you want to use this library in your Symfony project, take a look at [Accessi
 You can add this library as a dependency using composer this way:
 
 ```
-composer require antares/accessible dev-master
+composer require antares/accessible
 ```
 
 This library uses the Doctrine annotations library, so if it is not already done you must register the Composer loader in the annotation registry:
