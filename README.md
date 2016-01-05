@@ -2,6 +2,7 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98/mini.png)](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98)
 [![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antares993/Accessible)
+[![Latest Stable Version](https://poser.pugx.org/antares/accessible/v/stable)](https://packagist.org/packages/antares/accessible)
 [![License](https://poser.pugx.org/antares/accessible/license)](https://packagist.org/packages/antares/accessible)
 
 
