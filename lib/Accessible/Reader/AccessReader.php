@@ -14,6 +14,17 @@ class AccessReader extends Reader
     private static $accessAnnotationClass = "Accessible\\Annotation\\Access";
 
     /**
+     * The name of the annotation classes that define a collection behavior.
+     *
+     * @var string
+     */
+    private static $collectionAnnotationClasses = array(
+        "list" => "Accessible\\Annotation\\ListBehavior",
+        "map" => "Accessible\\Annotation\\MapBehavior",
+        "set" => "Accessible\\Annotation\\SetBehavior",
+    );
+
+    /**
      * Get a list of properties and the access that are given to them for given object.
      *
      * @param object $object The object to read.
@@ -46,17 +57,38 @@ class AccessReader extends Reader
         $annotationReader = Configuration::getAnnotationReader();
         foreach($objectClasses as $class) {
             foreach ($class->getProperties() as $property) {
-                $annotation = $annotationReader->getPropertyAnnotation($property, self::$accessAnnotationClass);
                 $propertyName = $property->getName();
 
                 if (empty($objectAccessProperties[$propertyName])) {
                     $objectAccessProperties[$propertyName] = array();
                 }
 
-                if ($annotation !== null) {
-                    $accessProperties = $annotation->getAccessProperties();
-                    $objectAccessProperties[$propertyName] = $accessProperties;
+                // Getters / Setters related annotations
+                $propertyAccessAnnotation = $annotationReader->getPropertyAnnotation($property, self::$accessAnnotationClass);
+
+                $accessProperties = array();
+                if ($propertyAccessAnnotation !== null) {
+                    $accessProperties = $propertyAccessAnnotation->getAccessProperties();
                 }
+
+                // Collection related annotations
+                $collectionAnnotation = null;
+                $behavior = null;
+                foreach (self::$collectionAnnotationClasses as $annotationBehavior => $annotationClass) {
+                    $collectionAnnotation = $annotationReader->getPropertyAnnotation($property, $annotationClass);
+                    if ($collectionAnnotation !== null) {
+                        $behavior = $annotationBehavior;
+                        break;
+                    }
+                }
+
+                $collectionMethods = array();
+                if ($collectionAnnotation !== null) {
+                    $collectionMethods = $collectionAnnotation->getMethods();
+                }
+
+                // Merge and save the two arrays
+                $objectAccessProperties[$propertyName] = array_merge($accessProperties, $collectionMethods);
             }
         }
 

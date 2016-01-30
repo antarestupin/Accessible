@@ -2,7 +2,12 @@
 
 namespace Accessible;
 
+use \Accessible\MethodManager\MethodCallManager;
+use \Accessible\MethodManager\ListManager;
+use \Accessible\MethodManager\MapManager;
+use \Accessible\MethodManager\SetManager;
 use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\CollectionsReader;
 use \Accessible\Reader\ConstraintsReader;
 
 trait AccessiblePropertiesTrait
@@ -15,6 +20,14 @@ trait AccessiblePropertiesTrait
     private $_accessProperties;
 
     /**
+     * The list of collection properties and their item names.
+     * Ex: ["user" => ["property" => "users", "behavior" => "list", "methods" => ["add", "remove"]]]
+     *
+     * @var array
+     */
+    private $_collectionsItemNames;
+
+    /**
      * Indicates wether the constraints validation should be enabled or not.
      *
      * @var boolean
@@ -23,18 +36,28 @@ trait AccessiblePropertiesTrait
 
     /**
      * Validates the given value compared to given property constraints.
-     * If the value is valid, a call to `count` to the object returned
-     * by this method should give 0.
+     * If the value is not valid, an InvalidArgumentException will be thrown.
      *
      * @param  string $property The name of the reference property.
      * @param  mixed  $value    The value to check.
      *
-     * @return Symfony\Component\Validator\ConstraintViolationList
-     *         The list of constraints violations the check returns.
+     * @throws \InvalidArgumentException If the value is not valid.
      */
     protected function validatePropertyValue($property, $value)
     {
-        return ConstraintsReader::validatePropertyValue($this, $property, $value);
+        if ($this->_enableConstraintsValidation) {
+            $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $property, $value);
+            if ($constraintsViolations->count()) {
+                $errorMessage = "Argument given is invalid; its constraints validation failed with the following messages: \"";
+                $errorMessageList = array();
+                foreach ($constraintsViolations as $violation) {
+                    $errorMessageList[] = $violation->getMessage();
+                }
+                $errorMessage .= implode("\", \n\"", $errorMessageList)."\".";
+
+                throw new \InvalidArgumentException($errorMessage);
+            }
+        }
     }
 
     /**
@@ -64,60 +87,86 @@ trait AccessiblePropertiesTrait
             $this->_accessProperties = AccessReader::getAccessProperties($this);
         }
 
+        // if we don't already have the list of collections item names, get it
+        if ($this->_collectionsItemNames === null) {
+            $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
+        }
+
         // if we don't already know wether the constraints should be validated
         if ($this->_enableConstraintsValidation === null) {
             $this->_enableConstraintsValidation = ConstraintsReader::isConstraintsValidationEnabled($this);
         }
 
-        // check that the called method is a getter or a setter
-        if (preg_match("/(set|get|is)([A-Z].*)/", $name, $pregMatches)) {
-            $method = $pregMatches[1];
-            $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
-
-            // check that the getter/setter is accepted by the targeted property
-            if (
-                empty($this->_accessProperties[$property])
-                || !in_array($method, $this->_accessProperties[$property])
-            ) {
-                throw new \BadMethodCallException("Method $name does not exist.");
-            }
-
-            switch($method) {
-                // getter
-                case 'get':
-                case 'is':
-                    return $this->$property;
-                    break;
-                // setter
-                case 'set':
-                    // a setter should have exactly one argument
-                    if (sizeof($args) !== 1) {
-                        throw new \BadMethodCallException("One argument is needed for method $name.");
-                    }
-
-                    $arg = $args[0];
-
-                    // check that the setter argument respects the property constraints
-                    if ($this->_enableConstraintsValidation) {
-                        $constraintsViolations = $this->validatePropertyValue($property, $arg);
-                        if ($constraintsViolations->count()) {
-                            $errorMessage = "Argument given for method $name is invalid; its constraints validation failed with the following messages: \"";
-                            $errorMessageList = array();
-                            foreach ($constraintsViolations as $violation) {
-                                $errorMessageList[] = $violation->getMessage();
-                            }
-                            $errorMessage .= implode("\", \"", $errorMessageList)."\".";
-
-                            throw new \InvalidArgumentException($errorMessage);
-                        }
-                    }
-
-                    $this->$property = $arg;
-                    return $this;
-                    break;
-            }
-        } else {
+        // check that the called method is a valid method name
+        // also get the call type and the property to access
+        $callIsValid = preg_match("/(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
+        if (!$callIsValid) {
             throw new \BadMethodCallException("Method $name does not exist.");
+        }
+
+        $method = $pregMatches[1];
+        $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
+        $collectionProperties;
+        if (in_array($method, array('add', 'remove'))) {
+            $collectionProperties = $this->_collectionsItemNames[$property];
+            $property = $collectionProperties['property'];
+        }
+
+        // check that the method is accepted by the targeted property
+        if (
+            empty($this->_accessProperties[$property])
+            || !in_array($method, $this->_accessProperties[$property])
+        ) {
+            throw new \BadMethodCallException("Method $name does not exist.");
+        }
+
+        switch($method) {
+            case 'get':
+            case 'is':
+                return $this->$property;
+                break;
+
+            case 'set':
+                // a setter should have exactly one argument
+                MethodCallManager::assertArgsNumber(1, $args);
+                $arg = $args[0];
+
+                // check that the setter argument respects the property constraints
+                $this->validatePropertyValue($property, $arg);
+
+                $this->$property = $arg;
+                return $this;
+                break;
+
+            case 'add':
+                switch ($collectionProperties['behavior']) {
+                    case 'list':
+                        ListManager::add($this->$property, $args);
+                        break;
+                    case 'map':
+                        MapManager::add($this->$property, $args);
+                        break;
+                    case 'set':
+                        SetManager::add($this->$property, $args);
+                        break;
+                }
+                return $this;
+                break;
+
+            case 'remove':
+                switch ($collectionProperties['behavior']) {
+                    case 'list':
+                        ListManager::remove($this->$property, $args);
+                        break;
+                    case 'map':
+                        MapManager::remove($this->$property, $args);
+                        break;
+                    case 'set':
+                        SetManager::remove($this->$property, $args);
+                        break;
+                }
+                return $this;
+                break;
         }
     }
 }

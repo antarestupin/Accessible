@@ -9,6 +9,8 @@ use Accessible\Annotation\Access;
 use Accessible\Annotation\Construct;
 use Accessible\Annotation\Initialize;
 use Accessible\Annotation\InitializeObject;
+use Accessible\Annotation\ListBehavior;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,4 +43,11 @@ class AutoConstructTestCase
      * @InitializeObject(AccessiblePropertiesTestCase::class)
      */
     private $object;
+
+    /**
+     * @Access({Access::GET})
+     * @ListBehavior
+     * @InitializeObject(ArrayCollection::class)
+     */
+    private $listItems;
 }
