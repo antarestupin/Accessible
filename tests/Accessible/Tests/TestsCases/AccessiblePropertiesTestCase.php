@@ -19,10 +19,5 @@ class AccessiblePropertiesTestCase
      */
     private $bar = "bar";
 
-    /**
-     * @Access({Access::HAS})
-     */
-    private $baz = "baz";
-
     private $notAccessibleProperty;
 }

@@ -70,7 +70,7 @@ trait AccessiblePropertiesTrait
         }
 
         // check that the called method is a getter or a setter
-        if (preg_match("/(set|get|is|has)([A-Z].*)/", $name, $pregMatches)) {
+        if (preg_match("/(set|get|is)([A-Z].*)/", $name, $pregMatches)) {
             $method = $pregMatches[1];
             $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
 
@@ -86,7 +86,6 @@ trait AccessiblePropertiesTrait
                 // getter
                 case 'get':
                 case 'is':
-                case 'has':
                     return $this->$property;
                     break;
                 // setter

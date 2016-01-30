@@ -23,13 +23,6 @@ class Access
     const IS = 'is';
 
     /**
-     * The property can be accessed through a hasX method.
-     *
-     * @var string
-     */
-    const HAS = 'has';
-
-    /**
      * The property can be modified through a setX method.
      *
      * @var string
@@ -47,7 +40,7 @@ class Access
      * Initializes the annotation.
      *
      * @param array $accessProperties List of access rights given to the property.
-     *                                The access should be in [GET,IS,HAS,SET].
+     *                                The access should be in [GET,IS,SET].
      */
     public function __construct(array $accessProperties)
     {
