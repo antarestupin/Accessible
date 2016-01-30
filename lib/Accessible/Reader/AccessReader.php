@@ -73,11 +73,9 @@ class AccessReader extends Reader
 
                 // Collection related annotations
                 $collectionAnnotation = null;
-                $behavior = null;
                 foreach (self::$collectionAnnotationClasses as $annotationBehavior => $annotationClass) {
                     $collectionAnnotation = $annotationReader->getPropertyAnnotation($property, $annotationClass);
                     if ($collectionAnnotation !== null) {
-                        $behavior = $annotationBehavior;
                         break;
                     }
                 }
