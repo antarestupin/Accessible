@@ -2,11 +2,13 @@
 
 namespace Accessible;
 
+use \Accessible\MethodManager\CollectionManager;
 use \Accessible\MethodManager\MethodCallManager;
 use \Accessible\MethodManager\ListManager;
 use \Accessible\MethodManager\MapManager;
 use \Accessible\MethodManager\SetManager;
 use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\AssociationReader;
 use \Accessible\Reader\CollectionsReader;
 use \Accessible\Reader\ConstraintsReader;
 
@@ -21,11 +23,22 @@ trait AccessiblePropertiesTrait
 
     /**
      * The list of collection properties and their item names.
-     * Ex: ["user" => ["property" => "users", "behavior" => "list", "methods" => ["add", "remove"]]]
+     * Ex: [
+     *   "byItemName" => "user" => ["property" => "users", "behavior" => "list", "methods" => ["add", "remove"]],
+     *   "byProperty" => "users" => ["itemName" => "user", "behavior" => "list", "methods" => ["add", "remove"]]
+     * ]
      *
      * @var array
      */
     private $_collectionsItemNames;
+
+    /**
+     * The list of associations for each property
+     * Ex: ["products" => ["property" => "cart", "association" => "inverted"]]
+     *
+     * @var array
+     */
+    private $_associationsList;
 
     /**
      * Indicates wether the constraints validation should be enabled or not.
@@ -92,6 +105,11 @@ trait AccessiblePropertiesTrait
             $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
         }
 
+        // if we don't already have the list of associations, get it
+        if ($this->_associationsList === null) {
+            $this->_associationsList = AssociationReader::getAssociations($this);
+        }
+
         // if we don't already know wether the constraints should be validated
         if ($this->_enableConstraintsValidation === null) {
             $this->_enableConstraintsValidation = ConstraintsReader::isConstraintsValidationEnabled($this);
@@ -108,7 +126,7 @@ trait AccessiblePropertiesTrait
         $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
         $collectionProperties = null;
         if (in_array($method, array('add', 'remove'))) {
-            $collectionProperties = $this->_collectionsItemNames[$property];
+            $collectionProperties = $this->_collectionsItemNames['byItemName'][$property];
             $property = $collectionProperties['property'];
         }
 
@@ -120,6 +138,9 @@ trait AccessiblePropertiesTrait
             throw new \BadMethodCallException("Method $name does not exist.");
         }
 
+        $oldValue = null;
+        $newValue = null;
+
         switch($method) {
             case 'get':
             case 'is':
@@ -129,44 +150,84 @@ trait AccessiblePropertiesTrait
             case 'set':
                 // a setter should have exactly one argument
                 MethodCallManager::assertArgsNumber(1, $args);
-                $arg = $args[0];
-
+                $oldValue = $this->$property;
+                $newValue = $args[0];
                 // check that the setter argument respects the property constraints
-                $this->validatePropertyValue($property, $arg);
+                $this->validatePropertyValue($property, $newValue);
 
-                $this->$property = $arg;
-                return $this;
+                if ($oldValue !== $newValue) {
+                    $this->$property = $newValue;
+                }
                 break;
 
             case 'add':
                 switch ($collectionProperties['behavior']) {
                     case 'list':
                         ListManager::add($this->$property, $args);
+                        $newValue = $args[0];
                         break;
                     case 'map':
                         MapManager::add($this->$property, $args);
                         break;
                     case 'set':
                         SetManager::add($this->$property, $args);
+                        $newValue = $args[0];
                         break;
                 }
-                return $this;
                 break;
 
             case 'remove':
                 switch ($collectionProperties['behavior']) {
                     case 'list':
                         ListManager::remove($this->$property, $args);
+                        $oldValue = $args[0];
                         break;
                     case 'map':
                         MapManager::remove($this->$property, $args);
                         break;
                     case 'set':
                         SetManager::remove($this->$property, $args);
+                        $oldValue = $args[0];
                         break;
                 }
-                return $this;
                 break;
         }
+
+        $association = $this->_associationsList[$property];
+        //var_dump(empty($association));
+        // manage associations
+        if (
+            in_array($method, array('set', 'add', 'remove'))
+            && !empty($association)
+        ) {
+            $associatedProperty = $association['property'];
+            switch ($association['association']) {
+                case 'inverted':
+                    $invertedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
+                    $invertedSetMethod = 'set'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
+                    if ($oldValue !== null && $oldValue->$invertedGetMethod() === $this) {
+                        $oldValue->$invertedSetMethod(null);
+                    }
+                    if ($newValue !== null && $newValue->$invertedGetMethod() !== $this) {
+                        $newValue->$invertedSetMethod($this);
+                    }
+                    break;
+                case 'mapped':
+                    $itemName = $association['itemName'];
+                    $mappedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
+                    $mappedAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
+                    $mappedRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
+
+                    if ($oldValue !== null && CollectionManager::collectionContains($this, $oldValue->$mappedGetMethod())) {
+                        $oldValue->$mappedRemoveMethod($this);
+                    }
+                    if ($newValue !== null && !CollectionManager::collectionContains($this, $newValue->$mappedGetMethod())) {
+                        $newValue->$mappedAddMethod($this);
+                    }
+                    break;
+            }
+        }
+
+        return $this;
     }
 }

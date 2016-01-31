@@ -4,10 +4,14 @@ namespace Accessible\MethodManager;
 
 class CollectionManager extends MethodCallManager
 {
-    public static function assertArgsNumber($numberOfArgs, $args)
+    public static function collectionContains($needle, $haystack)
     {
-        if (sizeof($args) !== $numberOfArgs) {
-            throw new \BadMethodCallException("A wrong number of arguments has been given to the called method.");
+        foreach ($haystack as $value) {
+            if ($value === $needle) {
+                return true;
+            }
         }
+
+        return false;
     }
 }

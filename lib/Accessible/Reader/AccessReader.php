@@ -14,17 +14,6 @@ class AccessReader extends Reader
     private static $accessAnnotationClass = "Accessible\\Annotation\\Access";
 
     /**
-     * The name of the annotation classes that define a collection behavior.
-     *
-     * @var string
-     */
-    private static $collectionAnnotationClasses = array(
-        "list" => "Accessible\\Annotation\\ListBehavior",
-        "map" => "Accessible\\Annotation\\MapBehavior",
-        "set" => "Accessible\\Annotation\\SetBehavior",
-    );
-
-    /**
      * Get a list of properties and the access that are given to them for given object.
      *
      * @param object $object The object to read.

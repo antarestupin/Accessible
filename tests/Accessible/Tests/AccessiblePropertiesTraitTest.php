@@ -72,6 +72,31 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($listItems));
     }
 
+    public function testListRemoveMethodCanBeCalledOnInvertedProperty()
+    {
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
+        $toRemove = new \Accessible\Tests\TestsCases\MappedTestCase();
+        $testCase->addTestItem($toRemove);
+        $this->assertEquals($testCase, $toRemove->getList());
+        $testCase->addTestItem(new \Accessible\Tests\TestsCases\MappedTestCase());
+        $testCase->removeTestItem($toRemove);
+        $this->assertEquals(null, $toRemove->getList());
+        $testItems = $testCase->getTestItems();
+        $this->assertEquals(1, count($testItems));
+    }
+
+    public function testMappedAnnotationWorks()
+    {
+        $testCase = new \Accessible\Tests\TestsCases\MappedTestCase();
+        $mapper = new TestsCases\AccessiblePropertiesTestCase();
+        $testCase->setList($mapper);
+        $this->assertEquals($mapper, $testCase->getList());
+        $this->assertEquals($testCase, $mapper->getTestItems()[0]);
+
+        $testCase->setList(null);
+        $this->assertEquals(0, count($mapper->getTestItems()));
+    }
+
     public function testChildClassCanCallParentMethods()
     {
         $testCase = new TestsCases\AccessiblePropertiesChildTestCase();

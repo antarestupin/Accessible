@@ -7,6 +7,7 @@ use Accessible\Annotation\Access;
 use Accessible\Annotation\ListBehavior;
 use Accessible\Annotation\MapBehavior;
 use Accessible\Annotation\SetBehavior;
+use Accessible\Annotation\Inverted;
 
 class AccessiblePropertiesTestCase
 {
@@ -42,10 +43,18 @@ class AccessiblePropertiesTestCase
      */
     private $setItems;
 
+    /**
+     * @Access({Access::GET, Access::SET})
+     * @ListBehavior
+     * @Inverted(className=MappedTestCase::class, invertedBy="list")
+     */
+    private $testItems;
+
     public function __construct()
     {
         $this->listItems = array();
         $this->mapItems = array();
         $this->setItems = array();
+        $this->testItems = array();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Accessible\MethodManager;
 
-class SetManager extends MethodCallManager
+class SetManager extends CollectionManager
 {
     public static function add(&$list, $args)
     {

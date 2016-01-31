@@ -8,19 +8,11 @@ use Doctrine\Common\Inflector\Inflector;
 class CollectionsReader extends Reader
 {
     /**
-     * The name of the annotation classes that define a collection behavior.
-     *
-     * @var string
-     */
-    private static $collectionAnnotationClasses = array(
-        "list" => "Accessible\\Annotation\\ListBehavior",
-        "map" => "Accessible\\Annotation\\MapBehavior",
-        "set" => "Accessible\\Annotation\\SetBehavior",
-    );
-
-    /**
      * Get a list linking an item name with the property it refers to and what kind of collection it is.
-     * Ex: ["user" => ["property" => "users", "behavior" => "list", "methods" => ["add", "remove"]]]
+     * Ex: [
+     *   "byItemName" => "user" => ["property" => "users", "behavior" => "list", "methods" => ["add", "remove"]],
+     *   "byProperty" => "users" => ["itemName" => "user", "behavior" => "list", "methods" => ["add", "remove"]]
+     * ]
      *
      * @param object $object The object to read.
      *
@@ -45,7 +37,10 @@ class CollectionsReader extends Reader
             }
         }
 
-        $objectCollectionsItemNames = array();
+        $objectCollectionsItemNames = array(
+            "byProperty" => array(),
+            "byItemName" => array()
+        );
         $objectClasses = self::getClassesToRead($reflectionObject);
         array_reverse($objectClasses);
 
@@ -70,8 +65,13 @@ class CollectionsReader extends Reader
                         $itemName = Inflector::singularize($propertyName);
                     }
 
-                    $objectCollectionsItemNames[$itemName] = array(
+                    $objectCollectionsItemNames["byItemName"][$itemName] = array(
                         "property" => $propertyName,
+                        "behavior" => $behavior,
+                        "methods" => $annotation->getMethods()
+                    );
+                    $objectCollectionsItemNames["byProperty"][$propertyName] = array(
+                        "property" => $itemName,
                         "behavior" => $behavior,
                         "methods" => $annotation->getMethods()
                     );

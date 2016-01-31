@@ -2,7 +2,7 @@
 
 namespace Accessible\MethodManager;
 
-class MapManager extends MethodCallManager
+class MapManager extends CollectionManager
 {
     public static function add(&$list, $args)
     {

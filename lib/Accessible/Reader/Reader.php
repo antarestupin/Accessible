@@ -5,6 +5,17 @@ namespace Accessible\Reader;
 class Reader
 {
     /**
+     * The name of the annotation classes that define a collection behavior.
+     *
+     * @var string
+     */
+    protected static $collectionAnnotationClasses = array(
+        "list" => "Accessible\\Annotation\\ListBehavior",
+        "map" => "Accessible\\Annotation\\MapBehavior",
+        "set" => "Accessible\\Annotation\\SetBehavior",
+    );
+
+    /**
      * Get a list of classes and traits to analyze.
      *
      * @param \ReflectionObject $reflectionObject The object to get the parents from.
