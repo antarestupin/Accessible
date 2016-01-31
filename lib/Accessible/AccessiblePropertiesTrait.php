@@ -106,7 +106,7 @@ trait AccessiblePropertiesTrait
 
         $method = $pregMatches[1];
         $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
-        $collectionProperties;
+        $collectionProperties = null;
         if (in_array($method, array('add', 'remove'))) {
             $collectionProperties = $this->_collectionsItemNames[$property];
             $property = $collectionProperties['property'];
