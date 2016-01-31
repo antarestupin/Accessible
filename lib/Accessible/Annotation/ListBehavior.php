@@ -12,7 +12,7 @@ namespace Accessible\Annotation;
  *   @Attribute("methods", type="array<string>")
  * })
  */
-class ListBehavior extends AbstractCollection
+class ListBehavior extends AbstractCollectionBehavior
 {
     /**
      * Initializes the annotation.
@@ -21,7 +21,7 @@ class ListBehavior extends AbstractCollection
      */
     public function __construct($values)
     {
-        $this->defaultMethods = array(AbstractCollection::ADD, AbstractCollection::REMOVE);
+        $this->defaultMethods = array(AbstractCollectionBehavior::ADD, AbstractCollectionBehavior::REMOVE);
         parent::__construct($values);
     }
 }

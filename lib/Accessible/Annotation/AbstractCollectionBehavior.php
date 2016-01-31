@@ -5,7 +5,7 @@ namespace Accessible\Annotation;
 /**
  * This class is the base of the collection-based behavior annotations.
  */
-abstract class AbstractCollection
+abstract class AbstractCollectionBehavior
 {
     /**
      * The property can be accessed through an addX method.
