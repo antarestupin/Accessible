@@ -194,7 +194,6 @@ trait AccessiblePropertiesTrait
         }
 
         $association = $this->_associationsList[$property];
-        //var_dump(empty($association));
         // manage associations
         if (
             in_array($method, array('set', 'add', 'remove'))
