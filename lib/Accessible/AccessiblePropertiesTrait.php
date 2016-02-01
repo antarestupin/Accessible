@@ -138,6 +138,7 @@ trait AccessiblePropertiesTrait
             throw new \BadMethodCallException("Method $name does not exist.");
         }
 
+        $association = $this->_associationsList[$property];
         $oldValue = null;
         $newValue = null;
 
@@ -150,13 +151,29 @@ trait AccessiblePropertiesTrait
             case 'set':
                 // a setter should have exactly one argument
                 MethodCallManager::assertArgsNumber(1, $args);
-                $oldValue = $this->$property;
-                $newValue = $args[0];
-                // check that the setter argument respects the property constraints
-                $this->validatePropertyValue($property, $newValue);
+                // we set a collection here
+                if (!empty($this->_collectionsItemNames['byProperty'][$property])) {
+                    $itemName = $this->_collectionsItemNames['byProperty'][$property]['itemName'];
+                    $propertyAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
+                    $propertyRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
 
-                if ($oldValue !== $newValue) {
-                    $this->$property = $newValue;
+                    foreach ($this->$property as $item) {
+                        $this->$propertyRemoveMethod($item);
+                    }
+                    foreach ($args[0] as $item) {
+                        $this->$propertyAddMethod($item);
+                    }
+                }
+                // we set a regular property here
+                else {
+                    $oldValue = $this->$property;
+                    $newValue = $args[0];
+                    // check that the setter argument respects the property constraints
+                    $this->validatePropertyValue($property, $newValue);
+
+                    if ($oldValue !== $newValue) {
+                        $this->$property = $newValue;
+                    }
                 }
                 break;
 
@@ -193,7 +210,6 @@ trait AccessiblePropertiesTrait
                 break;
         }
 
-        $association = $this->_associationsList[$property];
         // manage associations
         if (
             in_array($method, array('set', 'add', 'remove'))

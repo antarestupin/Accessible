@@ -71,7 +71,7 @@ class CollectionsReader extends Reader
                         "methods" => $annotation->getMethods()
                     );
                     $objectCollectionsItemNames["byProperty"][$propertyName] = array(
-                        "property" => $itemName,
+                        "itemName" => $itemName,
                         "behavior" => $behavior,
                         "methods" => $annotation->getMethods()
                     );

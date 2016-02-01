@@ -78,11 +78,35 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $toRemove = new \Accessible\Tests\TestsCases\MappedTestCase();
         $testCase->addTestItem($toRemove);
         $this->assertEquals($testCase, $toRemove->getList());
+
         $testCase->addTestItem(new \Accessible\Tests\TestsCases\MappedTestCase());
         $testCase->removeTestItem($toRemove);
         $this->assertEquals(null, $toRemove->getList());
-        $testItems = $testCase->getTestItems();
-        $this->assertEquals(1, count($testItems));
+
+        $this->assertEquals(1, count($testCase->getTestItems()));
+    }
+
+    public function testListRemoveMethodCanBeCalledOnDoublyMappedProperties()
+    {
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
+        $toRemove = new \Accessible\Tests\TestsCases\MappedTestCase();
+        $testCase->addCourse($toRemove);
+        $this->assertEquals($testCase, $toRemove->getStudents()[0]);
+
+        $testCase->addCourse(new \Accessible\Tests\TestsCases\MappedTestCase());
+        $testCase->removeCourse($toRemove);
+        $this->assertEquals(0, count($toRemove->getStudents()));
+        $this->assertEquals(1, count($testCase->getCourses()));
+    }
+
+    public function testSetMethodCanBeCalledOnACollection()
+    {
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
+        $toRemove = new \Accessible\Tests\TestsCases\MappedTestCase();
+        $testCase->addCourse($toRemove);
+        $testCase->addCourse(new \Accessible\Tests\TestsCases\MappedTestCase());
+        $testCase->setCourses(array(new \Accessible\Tests\TestsCases\MappedTestCase()));
+        $this->assertEquals(1, count($testCase->getCourses()));
     }
 
     public function testMappedAnnotationWorks()
