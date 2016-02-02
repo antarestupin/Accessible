@@ -27,19 +27,19 @@ class AccessiblePropertiesTestCase
     private $notAccessibleProperty;
 
     /**
-     * @Access({Access::GET})
+     * @Access({Access::GET, Access::SET})
      * @ListBehavior
      */
     private $listItems;
 
     /**
-     * @Access({Access::GET})
+     * @Access({Access::GET, Access::SET})
      * @MapBehavior
      */
     private $mapItems;
 
     /**
-     * @Access({Access::GET})
+     * @Access({Access::GET, Access::SET})
      * @SetBehavior
      */
     private $setItems;

@@ -99,7 +99,15 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($testCase->getCourses()));
     }
 
-    public function testSetMethodCanBeCalledOnACollection()
+    public function testSetMethodCanBeCalledOnAList()
+    {
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
+        $testCase->addListItem("a");
+        $testCase->setListItems(array("b"));
+        $this->assertEquals("b", $testCase->getListItems()[0]);
+    }
+
+    public function testSetMethodCanBeCalledOnAnAssociatedCollection()
     {
         $testCase = new TestsCases\AccessiblePropertiesTestCase();
         $toRemove = new \Accessible\Tests\TestsCases\MappedTestCase();

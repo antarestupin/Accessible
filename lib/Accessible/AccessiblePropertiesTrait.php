@@ -151,8 +151,11 @@ trait AccessiblePropertiesTrait
             case 'set':
                 // a setter should have exactly one argument
                 MethodCallManager::assertArgsNumber(1, $args);
-                // we set a collection here
-                if (!empty($this->_collectionsItemNames['byProperty'][$property])) {
+                // we set a collection here if there is an association with it
+                if (
+                    !empty($this->_collectionsItemNames['byProperty'][$property])
+                    && !(empty($association))
+                ) {
                     $itemName = $this->_collectionsItemNames['byProperty'][$property]['itemName'];
                     $propertyAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
                     $propertyRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
