@@ -43,8 +43,12 @@ trait AutoConstructTrait
 
             $this->$propertyName = $value;
 
-            if (!empty($this->_collectionsItemNames['byProperty'][$propertyName])) {
-                $this->updatePropertyAssociation($propertyName, null, $value);
+            if (empty($collectionsItemNames['byProperty'][$propertyName])) {
+                $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $value));
+            } else {
+                foreach ($value as $newValue) {
+                    $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $newValue));
+                }
             }
         }
 
@@ -67,8 +71,13 @@ trait AutoConstructTrait
 
                 $this->$property = $argument;
 
-                if (!empty($this->_collectionsItemNames['byProperty'][$property])) {
-                    $this->updatePropertyAssociation($property, null, $argument);
+                // Manage associations
+                if (empty($collectionsItemNames['byProperty'][$property])) {
+                    $this->updatePropertyAssociation($property, array("oldValue" => null, "newValue" => $argument));
+                } else {
+                    foreach ($argument as $value) {
+                        $this->updatePropertyAssociation($property, array("oldValue" => null, "newValue" => $value));
+                    }
                 }
             }
         }

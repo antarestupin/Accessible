@@ -217,7 +217,7 @@ trait AccessiblePropertiesTrait
             in_array($method, array('set', 'add', 'remove'))
             && !empty($association)
         ) {
-            $this->updatePropertyAssociation($property, $oldValue, $newValue);
+            $this->updatePropertyAssociation($property, array("oldValue" => $oldValue, "newValue" => $newValue));
         }
 
         return $this;

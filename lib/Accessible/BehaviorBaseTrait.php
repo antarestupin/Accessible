@@ -40,14 +40,16 @@ trait BehaviorBaseTrait
      * Update the associated property.
      *
      * @param  string $property
-     * @param  object $oldValue
-     * @param  object $newValue
+     * @param  object $values
      */
-    protected function updatePropertyAssociation($property, $oldValue = null, $newValue = null)
+    protected function updatePropertyAssociation($property, array $values)
     {
         if ($this->_associationsList === null) {
             $this->_associationsList = AssociationReader::getAssociations($this);
         }
+
+        $oldValue = empty($values['oldValue']) ? null: $values['oldValue'];
+        $newValue = empty($values['newValue']) ? null: $values['newValue'];
 
         $association = $this->_associationsList[$property];
         if (!empty($association)) {
