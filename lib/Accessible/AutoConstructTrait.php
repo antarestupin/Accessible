@@ -4,6 +4,9 @@ namespace Accessible;
 
 use \Accessible\MethodManager\MethodCallManager;
 use \Accessible\Reader\AutoConstructReader;
+use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\AssociationReader;
+use \Accessible\Reader\CollectionsReader;
 use \Accessible\Reader\ConstraintsReader;
 
 trait AutoConstructTrait
@@ -29,6 +32,9 @@ trait AutoConstructTrait
         $initializeValueValidationEnabled = Configuration::isInitializeValuesValidationEnabled();
         $constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
 
+        // Get the list of collections
+        $collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
+
         $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
         foreach ($initialValues as $propertyName => $value) {
             if ($initializeValueValidationEnabled && $constraintsValidationEnabled) {
@@ -36,7 +42,10 @@ trait AutoConstructTrait
             }
 
             $this->$propertyName = $value;
-            $this->updatePropertyAssociation($propertyName, null, $value);
+
+            if (!empty($this->_collectionsItemNames['byProperty'][$propertyName])) {
+                $this->updatePropertyAssociation($propertyName, null, $value);
+            }
         }
 
         // Initialize the propeties using given arguments
@@ -57,7 +66,10 @@ trait AutoConstructTrait
                 }
 
                 $this->$property = $argument;
-                $this->updatePropertyAssociation($property, null, $argument);
+
+                if (!empty($this->_collectionsItemNames['byProperty'][$property])) {
+                    $this->updatePropertyAssociation($property, null, $argument);
+                }
             }
         }
     }

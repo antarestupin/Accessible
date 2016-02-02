@@ -213,7 +213,10 @@ trait AccessiblePropertiesTrait
         }
 
         // manage associations
-        if (in_array($method, array('set', 'add', 'remove'))) {
+        if (
+            in_array($method, array('set', 'add', 'remove'))
+            && !empty($association)
+        ) {
             $this->updatePropertyAssociation($property, $oldValue, $newValue);
         }
 

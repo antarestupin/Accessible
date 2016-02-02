@@ -4,6 +4,7 @@ namespace Accessible;
 
 use \Accessible\Reader\ConstraintsReader;
 use \Accessible\MethodManager\CollectionManager;
+use \Accessible\Reader\AssociationReader;
 
 trait BehaviorBaseTrait
 {
@@ -18,7 +19,7 @@ trait BehaviorBaseTrait
      */
     protected function assertPropertyValue($property, $value, $force=null)
     {
-        $enabled = ($force === null) ? $enabled = $this->_constraintsValidationEnabled: $force;
+        $enabled = ($force === null) ? $this->_constraintsValidationEnabled: $force;
 
         if ($enabled) {
             $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $property, $value);
@@ -35,8 +36,19 @@ trait BehaviorBaseTrait
         }
     }
 
-    protected function updatePropertyAssociation($property, $oldValue, $newValue)
+    /**
+     * Update the associated property.
+     *
+     * @param  string $property
+     * @param  object $oldValue
+     * @param  object $newValue
+     */
+    protected function updatePropertyAssociation($property, $oldValue = null, $newValue = null)
     {
+        if ($this->_associationsList === null) {
+            $this->_associationsList = AssociationReader::getAssociations($this);
+        }
+
         $association = $this->_associationsList[$property];
         if (!empty($association)) {
             $associatedProperty = $association['property'];
