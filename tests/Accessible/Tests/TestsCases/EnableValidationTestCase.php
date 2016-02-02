@@ -4,11 +4,11 @@ namespace Accessible\Tests\TestsCases;
 
 use Accessible\AccessiblePropertiesTrait;
 use Accessible\Annotation\Access;
-use Accessible\Annotation\EnableConstraintsValidation;
+use Accessible\Annotation as Behavior;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @EnableConstraintsValidation
+ * @Behavior\EnableConstraintsValidation
  */
 class EnableValidationTestCase extends DisableValidationTestCase
 {

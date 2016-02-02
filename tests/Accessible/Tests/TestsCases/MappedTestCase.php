@@ -2,25 +2,24 @@
 
 namespace Accessible\Tests\TestsCases;
 
-use Accessible\AccessiblePropertiesTrait;
+use Accessible\AutomatedBehaviorTrait;
 use Accessible\Annotation\Access;
-use Accessible\Annotation\Mapped;
-use Accessible\Annotation\ListBehavior;
+use Accessible\Annotation as Behavior;
 
 class MappedTestCase
 {
-    use AccessiblePropertiesTrait;
+    use AutomatedBehaviorTrait;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Mapped(className=AccessiblePropertiesTestCase::class, mappedBy="testItems")
+     * @Behavior\Mapped(className=AccessiblePropertiesTestCase::class, mappedBy="testItems")
      */
     private $list;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @ListBehavior
-     * @Mapped(className=AccessiblePropertiesTestCase::class, mappedBy="courses")
+     * @Behavior\ListBehavior
+     * @Behavior\Mapped(className=AccessiblePropertiesTestCase::class, mappedBy="courses")
      */
     private $students;
 

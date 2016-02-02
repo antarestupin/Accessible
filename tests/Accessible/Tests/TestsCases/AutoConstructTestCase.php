@@ -2,24 +2,18 @@
 
 namespace Accessible\Tests\TestsCases;
 
-use Accessible\Tests\SampleClasses\Foo;
-use Accessible\AccessiblePropertiesTrait;
-use Accessible\AutoConstructTrait;
+use Accessible\AutomatedBehaviorTrait;
 use Accessible\Annotation\Access;
-use Accessible\Annotation\Construct;
-use Accessible\Annotation\Initialize;
-use Accessible\Annotation\InitializeObject;
-use Accessible\Annotation\ListBehavior;
+use Accessible\Annotation as Behavior;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Construct({"foo", "bar"})
+ * @Behavior\Construct({"foo", "bar"})
  */
 class AutoConstructTestCase
 {
-    use AutoConstructTrait;
-    use AccessiblePropertiesTrait;
+    use AutomatedBehaviorTrait;
 
     /**
      * @Access({Access::GET})
@@ -34,20 +28,20 @@ class AutoConstructTestCase
 
     /**
      * @Access({Access::GET})
-     * @Initialize("baz")
+     * @Behavior\Initialize("baz")
      */
     private $baz;
 
     /**
      * @Access({Access::GET})
-     * @InitializeObject(AccessiblePropertiesTestCase::class)
+     * @Behavior\InitializeObject(AccessiblePropertiesTestCase::class)
      */
     private $object;
 
     /**
      * @Access({Access::GET})
-     * @ListBehavior
-     * @InitializeObject(ArrayCollection::class)
+     * @Behavior\ListBehavior
+     * @Behavior\InitializeObject(ArrayCollection::class)
      */
     private $listItems;
 }

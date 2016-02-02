@@ -14,6 +14,8 @@ use \Accessible\Reader\ConstraintsReader;
 
 trait AccessiblePropertiesTrait
 {
+    use BehaviorBaseTrait;
+
     /**
      * The list of access rights on each property of the object.
      *
@@ -45,31 +47,46 @@ trait AccessiblePropertiesTrait
      *
      * @var boolean
      */
-    private $_enableConstraintsValidation;
+    private $_constraintsValidationEnabled;
+
+    public function isPropertiesConstraintsValidationEnabled()
+    {
+        return $this->_constraintsValidationEnabled;
+    }
+
+    public function setPropertiesConstraintsValidationEnabled($enabled = true)
+    {
+        $this->_constraintsValidationEnabled = $enabled;
+    }
+
+    public function setPropertiesConstraintsValidationDisabled($disabled = true)
+    {
+        $this->_constraintsValidationEnabled = !$enabled;
+    }
 
     /**
-     * Validates the given value compared to given property constraints.
-     * If the value is not valid, an InvalidArgumentException will be thrown.
-     *
-     * @param  string $property The name of the reference property.
-     * @param  mixed  $value    The value to check.
-     *
-     * @throws \InvalidArgumentException If the value is not valid.
+     * Get every information needed from this class.
      */
-    protected function validatePropertyValue($property, $value)
+    private function getPropertiesInfo()
     {
-        if ($this->_enableConstraintsValidation) {
-            $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $property, $value);
-            if ($constraintsViolations->count()) {
-                $errorMessage = "Argument given is invalid; its constraints validation failed with the following messages: \"";
-                $errorMessageList = array();
-                foreach ($constraintsViolations as $violation) {
-                    $errorMessageList[] = $violation->getMessage();
-                }
-                $errorMessage .= implode("\", \n\"", $errorMessageList)."\".";
+        // if we don't already know the access properties, get them
+        if ($this->_accessProperties === null) {
+            $this->_accessProperties = AccessReader::getAccessProperties($this);
+        }
 
-                throw new \InvalidArgumentException($errorMessage);
-            }
+        // if we don't already have the list of collections item names, get it
+        if ($this->_collectionsItemNames === null) {
+            $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
+        }
+
+        // if we don't already have the list of associations, get it
+        if ($this->_associationsList === null) {
+            $this->_associationsList = AssociationReader::getAssociations($this);
+        }
+
+        // if we don't already know wether the constraints should be validated
+        if ($this->_constraintsValidationEnabled === null) {
+            $this->_constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
         }
     }
 
@@ -93,27 +110,9 @@ trait AccessiblePropertiesTrait
      *         								does not satisfy the constraints attached to the property
      *         								to modify.
      */
-    function __call($name, array $args)
+    public function __call($name, array $args)
     {
-        // if we don't already know the access properties, get them
-        if ($this->_accessProperties === null) {
-            $this->_accessProperties = AccessReader::getAccessProperties($this);
-        }
-
-        // if we don't already have the list of collections item names, get it
-        if ($this->_collectionsItemNames === null) {
-            $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
-        }
-
-        // if we don't already have the list of associations, get it
-        if ($this->_associationsList === null) {
-            $this->_associationsList = AssociationReader::getAssociations($this);
-        }
-
-        // if we don't already know wether the constraints should be validated
-        if ($this->_enableConstraintsValidation === null) {
-            $this->_enableConstraintsValidation = ConstraintsReader::isConstraintsValidationEnabled($this);
-        }
+        $this->getPropertiesInfo();
 
         // check that the called method is a valid method name
         // also get the call type and the property to access
@@ -172,7 +171,7 @@ trait AccessiblePropertiesTrait
                     $oldValue = $this->$property;
                     $newValue = $args[0];
                     // check that the setter argument respects the property constraints
-                    $this->validatePropertyValue($property, $newValue);
+                    $this->assertPropertyValue($property, $newValue);
 
                     if ($oldValue !== $newValue) {
                         $this->$property = $newValue;
@@ -214,36 +213,8 @@ trait AccessiblePropertiesTrait
         }
 
         // manage associations
-        if (
-            in_array($method, array('set', 'add', 'remove'))
-            && !empty($association)
-        ) {
-            $associatedProperty = $association['property'];
-            switch ($association['association']) {
-                case 'inverted':
-                    $invertedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
-                    $invertedSetMethod = 'set'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
-                    if ($oldValue !== null && $oldValue->$invertedGetMethod() === $this) {
-                        $oldValue->$invertedSetMethod(null);
-                    }
-                    if ($newValue !== null && $newValue->$invertedGetMethod() !== $this) {
-                        $newValue->$invertedSetMethod($this);
-                    }
-                    break;
-                case 'mapped':
-                    $itemName = $association['itemName'];
-                    $mappedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
-                    $mappedAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
-                    $mappedRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
-
-                    if ($oldValue !== null && CollectionManager::collectionContains($this, $oldValue->$mappedGetMethod())) {
-                        $oldValue->$mappedRemoveMethod($this);
-                    }
-                    if ($newValue !== null && !CollectionManager::collectionContains($this, $newValue->$mappedGetMethod())) {
-                        $newValue->$mappedAddMethod($this);
-                    }
-                    break;
-            }
+        if (in_array($method, array('set', 'add', 'remove'))) {
+            $this->updatePropertyAssociation($property, $oldValue, $newValue);
         }
 
         return $this;

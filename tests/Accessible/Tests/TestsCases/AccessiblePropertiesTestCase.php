@@ -2,20 +2,13 @@
 
 namespace Accessible\Tests\TestsCases;
 
-use Accessible\AccessiblePropertiesTrait;
-use Accessible\AutoConstructTrait;
+use Accessible\AutomatedBehaviorTrait;
 use Accessible\Annotation\Access;
-use Accessible\Annotation\ListBehavior;
-use Accessible\Annotation\MapBehavior;
-use Accessible\Annotation\SetBehavior;
-use Accessible\Annotation\Inverted;
-use Accessible\Annotation\Mapped;
-use Accessible\Annotation\Initialize;
+use Accessible\Annotation as Behavior;
 
 class AccessiblePropertiesTestCase
 {
-    use AccessiblePropertiesTrait;
-    use AutoConstructTrait;
+    use AutomatedBehaviorTrait;
 
     /**
      * @Access({Access::GET, Access::SET})
@@ -31,45 +24,45 @@ class AccessiblePropertiesTestCase
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @ListBehavior
-     * @Initialize({})
+     * @Behavior\ListBehavior
+     * @Behavior\Initialize({})
      */
     private $listItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @MapBehavior
-     * @Initialize({})
+     * @Behavior\MapBehavior
+     * @Behavior\Initialize({})
      */
     private $mapItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @SetBehavior
-     * @Initialize({})
+     * @Behavior\SetBehavior
+     * @Behavior\Initialize({})
      */
     private $setItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @ListBehavior
-     * @Inverted(className=MappedTestCase::class, invertedBy="list")
-     * @Initialize({})
+     * @Behavior\ListBehavior
+     * @Behavior\Inverted(className=MappedTestCase::class, invertedBy="list")
+     * @Behavior\Initialize({})
      */
     private $testItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @ListBehavior
-     * @Mapped(className=MappedTestCase::class, mappedBy="students")
-     * @Initialize({})
+     * @Behavior\ListBehavior
+     * @Behavior\Mapped(className=MappedTestCase::class, mappedBy="students")
+     * @Behavior\Initialize({})
      */
     private $courses;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @ListBehavior
-     * @Initialize({"a"})
+     * @Behavior\ListBehavior
+     * @Behavior\Initialize({"a"})
      */
     private $initializedArray;
 }

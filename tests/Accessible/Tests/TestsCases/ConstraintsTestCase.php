@@ -2,13 +2,13 @@
 
 namespace Accessible\Tests\TestsCases;
 
-use Accessible\AccessiblePropertiesTrait;
+use Accessible\AutomatedBehaviorTrait;
 use Accessible\Annotation\Access;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ConstraintsTestCase
 {
-    use AccessiblePropertiesTrait;
+    use AutomatedBehaviorTrait;
 
     /**
      * @Access({Access::GET, Access::SET})
