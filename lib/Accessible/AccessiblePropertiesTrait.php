@@ -61,7 +61,7 @@ trait AccessiblePropertiesTrait
 
     public function setPropertiesConstraintsValidationDisabled($disabled = true)
     {
-        $this->_constraintsValidationEnabled = !$enabled;
+        $this->_constraintsValidationEnabled = !$disabled;
     }
 
     /**
