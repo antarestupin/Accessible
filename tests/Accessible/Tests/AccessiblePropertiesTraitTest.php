@@ -176,6 +176,13 @@ class AccessiblePropertiesTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("a", $testCase->getFoo());
     }
 
+    public function testConstraintsValidationCanBeDisabled()
+    {
+        $testCase = new TestsCases\ConstraintsTestCase();
+        $testCase->setPropertiesConstraintsValidationDisabled();
+        $testCase->setFoo("a");
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */
