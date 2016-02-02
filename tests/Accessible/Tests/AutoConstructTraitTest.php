@@ -28,4 +28,10 @@ class AutoConstructTraitTest extends \PHPUnit_Framework_TestCase
     {
         $testCase = new TestsCases\AutoConstructTestCase("foo");
     }
+
+    public function testInitializedValuesWorkWithoutConstructAnnotation()
+    {
+        $testCase = new TestsCases\AccessiblePropertiesTestCase();
+        $this->assertEquals("a", $testCase->getInitializedArray()[0]);
+    }
 }
