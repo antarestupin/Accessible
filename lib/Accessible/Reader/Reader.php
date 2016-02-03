@@ -2,6 +2,8 @@
 
 namespace Accessible\Reader;
 
+use \Accessible\Configuration;
+
 class Reader
 {
     /**
@@ -47,5 +49,35 @@ class Reader
         }
 
         return $objectClasses;
+    }
+
+    protected static function getFromCache($id)
+    {
+        $arrayCache = Configuration::getArrayCache();
+        if ($arrayCache->contains($id)) {
+            return $arrayCache->fetch($id);
+        }
+
+        $cacheDriver = Configuration::getCacheDriver();
+        if ($cacheDriver !== null) {
+            $cacheResult = $cacheDriver->fetch($id);
+            if ($cacheResult !== false) {
+                $arrayCache->save($id, $cacheResult);
+                return $cacheResult;
+            }
+        }
+
+        return null;
+    }
+
+    protected static function saveToCache($id, $value)
+    {
+        $arrayCache = Configuration::getArrayCache();
+        $cacheDriver = Configuration::getCacheDriver();
+
+        $arrayCache->save($id, $value);
+        if ($cacheDriver !== null) {
+            $cacheDriver->save($id, $value);
+        }
     }
 }

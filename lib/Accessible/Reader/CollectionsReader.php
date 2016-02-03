@@ -22,19 +22,9 @@ class CollectionsReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheId = md5("collectionItemNames:" . $reflectionObject->getName());
-
-        $arrayCache = Configuration::getArrayCache();
-        if ($arrayCache->contains($cacheId)) {
-            return $arrayCache->fetch($cacheId);
-        }
-
-        $cacheDriver = Configuration::getCacheDriver();
-        if ($cacheDriver !== null) {
-            $objectCollectionsItemNames = $cacheDriver->fetch($cacheId);
-            if ($objectCollectionsItemNames !== false) {
-                $arrayCache->save($cacheId, $objectCollectionsItemNames);
-                return $objectCollectionsItemNames;
-            }
+        $objectCollectionsItemNames = self::getFromCache($cacheId);
+        if ($objectCollectionsItemNames !== null) {
+            return $objectCollectionsItemNames;
         }
 
         $objectCollectionsItemNames = array(
@@ -79,10 +69,7 @@ class CollectionsReader extends Reader
             }
         }
 
-        $arrayCache->save($cacheId, $objectCollectionsItemNames);
-        if ($cacheDriver !== null) {
-            $cacheDriver->save($cacheId, $objectCollectionsItemNames);
-        }
+        self::saveToCache($cacheId, $objectCollectionsItemNames);
 
         return $objectCollectionsItemNames;
     }

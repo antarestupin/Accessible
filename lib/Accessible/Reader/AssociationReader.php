@@ -29,19 +29,9 @@ class AssociationReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheId = md5("association:" . $reflectionObject->getName());
-
-        $arrayCache = Configuration::getArrayCache();
-        if ($arrayCache->contains($cacheId)) {
-            return $arrayCache->fetch($cacheId);
-        }
-
-        $cacheDriver = Configuration::getCacheDriver();
-        if ($cacheDriver !== null) {
-            $objectAssociations = $cacheDriver->fetch($cacheId);
-            if ($objectAssociations !== false) {
-                $arrayCache->save($cacheId, $objectAssociations);
-                return $objectAssociations;
-            }
+        $objectAssociations = self::getFromCache($cacheId);
+        if ($objectAssociations !== null) {
+            return $objectAssociations;
         }
 
         $objectAssociations = array();
@@ -97,10 +87,7 @@ class AssociationReader extends Reader
             }
         }
 
-        $arrayCache->save($cacheId, $objectAssociations);
-        if ($cacheDriver !== null) {
-            $cacheDriver->save($cacheId, $objectAssociations);
-        }
+        self::saveToCache($cacheId, $objectAssociations);
 
         return $objectAssociations;
     }

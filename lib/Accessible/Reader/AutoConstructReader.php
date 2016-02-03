@@ -38,19 +38,9 @@ class AutoConstructReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheId = md5("constructArguments:" . $reflectionObject->getName());
-
-        $arrayCache = Configuration::getArrayCache();
-        if ($arrayCache->contains($cacheId)) {
-            return $arrayCache->fetch($cacheId);
-        }
-
-        $cacheDriver = Configuration::getCacheDriver();
-        if ($cacheDriver !== null) {
-            $constructArguments = $cacheDriver->fetch($cacheId);
-            if ($constructArguments !== false) {
-                $arrayCache->save($cacheId, $constructArguments);
-                return $constructArguments;
-            }
+        $constructArguments = self::getFromCache($cacheId);
+        if ($constructArguments !== null) {
+            return $constructArguments;
         }
 
         $constructArguments = null;
@@ -66,10 +56,7 @@ class AutoConstructReader extends Reader
             }
         }
 
-        $arrayCache->save($cacheId, $constructArguments);
-        if ($cacheDriver !== null) {
-            $cacheDriver->save($cacheId, $constructArguments);
-        }
+        self::saveToCache($cacheId, $constructArguments);
 
         return $constructArguments;
     }
@@ -87,19 +74,9 @@ class AutoConstructReader extends Reader
     {
         $reflectionObject = new \ReflectionObject($object);
         $cacheId = md5("propertiesToInitialize:" . $reflectionObject->getName());
-
-        $arrayCache = Configuration::getArrayCache();
-        if ($arrayCache->contains($cacheId)) {
-            return $arrayCache->fetch($cacheId);
-        }
-
-        $cacheDriver = Configuration::getCacheDriver();
-        if ($cacheDriver !== null) {
-            $propertiesValues = $cacheDriver->fetch($cacheId);
-            if ($propertiesValues !== false) {
-                $arrayCache->save($cacheId, $propertiesValues);
-                return $propertiesValues;
-            }
+        $propertiesValues = self::getFromCache($cacheId);
+        if ($propertiesValues !== null) {
+            return $propertiesValues;
         }
 
         $annotationReader = Configuration::getAnnotationReader();
@@ -129,10 +106,7 @@ class AutoConstructReader extends Reader
             }
         }
 
-        $arrayCache->save($cacheId, $propertiesValues);
-        if ($cacheDriver !== null) {
-            $cacheDriver->save($cacheId, $propertiesValues);
-        }
+        self::saveToCache($cacheId, $propertiesValues);
 
         return $propertiesValues;
     }
