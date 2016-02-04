@@ -49,6 +49,13 @@ trait AutomatedBehaviorTrait
     private $_constraintsValidationEnabled;
 
     /**
+     * Indicates wether getPropertiesInfo() has been called or not.
+     *
+     * @var boolean
+     */
+    private $_automatedBehaviorInitialized = false;
+
+    /**
      * Directly calls the initialization method.
      */
     public function __construct()
@@ -230,6 +237,8 @@ trait AutomatedBehaviorTrait
      */
     protected function assertPropertyValue($property, $value)
     {
+        $this->getPropertiesInfo();
+
         if ($this->_constraintsValidationEnabled) {
             $constraintsViolations = ConstraintsReader::validatePropertyValue($this, $property, $value);
             if ($constraintsViolations->count()) {
@@ -256,6 +265,8 @@ trait AutomatedBehaviorTrait
      */
     protected function updatePropertyAssociation($property, array $values)
     {
+        $this->getPropertiesInfo();
+
         if ($this->_associationsList === null) {
             $this->_associationsList = AssociationReader::getAssociations($this);
         }
@@ -358,24 +369,13 @@ trait AutomatedBehaviorTrait
      */
     private function getPropertiesInfo()
     {
-        // if we don't already know the access properties, get them
-        if ($this->_accessProperties === null) {
+        if (!$this->_automatedBehaviorInitialized) {
             $this->_accessProperties = AccessReader::getAccessProperties($this);
-        }
-
-        // if we don't already have the list of collections item names, get it
-        if ($this->_collectionsItemNames === null) {
             $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
-        }
-
-        // if we don't already have the list of associations, get it
-        if ($this->_associationsList === null) {
             $this->_associationsList = AssociationReader::getAssociations($this);
-        }
-
-        // if we don't already know wether the constraints should be validated
-        if ($this->_constraintsValidationEnabled === null) {
             $this->_constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
+
+            $this->_automatedBehaviorInitialized = true;
         }
     }
 }
