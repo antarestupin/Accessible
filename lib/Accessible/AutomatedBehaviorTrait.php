@@ -117,32 +117,12 @@ trait AutomatedBehaviorTrait
     {
         $this->getPropertiesInfo();
 
-        // check that the called method is a valid method name
-        // also get the call type and the property to access
-        $callIsValid = preg_match("/(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
-        if (!$callIsValid) {
-            throw new \BadMethodCallException("Method $name does not exist.");
-        }
+        $methodCallInfo = $this->getMethodCallInfo($name);
+        $method = $methodCallInfo['method'];
+        $property = $methodCallInfo['property'];
+        $collectionProperties = $methodCallInfo['collectionProperties'];
 
-        $method = $pregMatches[1];
-        $property = strtolower(substr($pregMatches[2], 0, 1)) . substr($pregMatches[2], 1);
-        $collectionProperties = null;
-        if (in_array($method, array('add', 'remove'))) {
-            $collectionProperties = $this->_collectionsItemNames['byItemName'][$property];
-            $property = $collectionProperties['property'];
-        }
-
-        // check that the method is accepted by the targeted property
-        if (
-            empty($this->_accessProperties[$property])
-            || !in_array($method, $this->_accessProperties[$property])
-        ) {
-            throw new \BadMethodCallException("Method $name does not exist.");
-        }
-
-        $association = $this->_associationsList[$property];
-        $oldValue = null;
-        $newValue = null;
+        $valuesToUpdate = array();
 
         switch ($method) {
             case 'get':
@@ -155,7 +135,7 @@ trait AutomatedBehaviorTrait
                 // we set a collection here if there is an association with it
                 if (
                     !empty($this->_collectionsItemNames['byProperty'][$property])
-                    && !(empty($association))
+                    && !(empty($this->_associationsList[$property]))
                 ) {
                     $itemName = $this->_collectionsItemNames['byProperty'][$property]['itemName'];
                     $propertyAddMethod = 'add' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
@@ -172,6 +152,10 @@ trait AutomatedBehaviorTrait
                 else {
                     $oldValue = $this->$property;
                     $newValue = $args[0];
+                    $valuesToUpdate = array(
+                        'oldValue' => $oldValue,
+                        'newValue' => $newValue
+                    );
                     // check that the setter argument respects the property constraints
                     $this->assertPropertyValue($property, $newValue);
 
@@ -182,44 +166,27 @@ trait AutomatedBehaviorTrait
                 break;
 
             case 'add':
-                switch ($collectionProperties['behavior']) {
-                    case 'list':
-                        ListManager::add($this->$property, $args);
-                        $newValue = $args[0];
-                        break;
-                    case 'map':
-                        MapManager::add($this->$property, $args);
-                        break;
-                    case 'set':
-                        SetManager::add($this->$property, $args);
-                        $newValue = $args[0];
-                        break;
-                }
-                break;
-
             case 'remove':
+                $valueToUpdate = ($method === 'add') ? 'newValue' : 'oldValue';
                 switch ($collectionProperties['behavior']) {
                     case 'list':
-                        ListManager::remove($this->$property, $args);
-                        $oldValue = $args[0];
+                        ListManager::$method($this->$property, $args);
+                        $valuesToUpdate[$valueToUpdate] = $args[0];
                         break;
                     case 'map':
-                        MapManager::remove($this->$property, $args);
+                        MapManager::$method($this->$property, $args);
                         break;
                     case 'set':
-                        SetManager::remove($this->$property, $args);
-                        $oldValue = $args[0];
+                        SetManager::$method($this->$property, $args);
+                        $valuesToUpdate[$valueToUpdate] = $args[0];
                         break;
                 }
                 break;
         }
 
         // manage associations
-        if (
-            in_array($method, array('set', 'add', 'remove'))
-            && !empty($association)
-        ) {
-            $this->updatePropertyAssociation($property, array("oldValue" => $oldValue, "newValue" => $newValue));
+        if (in_array($method, array('set', 'add', 'remove'))) {
+            $this->updatePropertyAssociation($property, $valuesToUpdate);
         }
 
         return $this;
@@ -376,5 +343,37 @@ trait AutomatedBehaviorTrait
 
             $this->_automatedBehaviorInitialized = true;
         }
+    }
+
+    private function getMethodCallInfo($name)
+    {
+        // check that the called method is a valid method name
+        // also get the call type and the property to access
+        $callIsValid = preg_match("/(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
+        if (!$callIsValid) {
+            throw new \BadMethodCallException("Method $name does not exist.");
+        }
+
+        $method = $pregMatches[1];
+        $property = strtolower(substr($pregMatches[2], 0, 1)) . substr($pregMatches[2], 1);
+        $collectionProperties = null;
+        if (in_array($method, array('add', 'remove'))) {
+            $collectionProperties = $this->_collectionsItemNames['byItemName'][$property];
+            $property = $collectionProperties['property'];
+        }
+
+        // check that the method is accepted by the targeted property
+        if (
+            empty($this->_accessProperties[$property])
+            || !in_array($method, $this->_accessProperties[$property])
+        ) {
+            throw new \BadMethodCallException("Method $name does not exist.");
+        }
+
+        return array(
+            'method' => $method,
+            'property' => $property,
+            'collectionProperties' => $collectionProperties
+        );
     }
 }
