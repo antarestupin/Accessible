@@ -26,6 +26,12 @@ class Reader
      */
     public static function getClassesToRead(\ReflectionObject $reflectionObject)
     {
+        $cacheId = md5("classesToRead:" . $reflectionObject->getName());
+        $objectClasses = self::getFromCache($cacheId);
+        if ($objectClasses !== null) {
+            return $objectClasses;
+        }
+
         $objectClasses = array($reflectionObject);
         $objectTraits = $reflectionObject->getTraits();
         if (!empty($objectTraits)) {
@@ -47,6 +53,8 @@ class Reader
 
             $parentClass = $parentClass->getParentClass();
         }
+
+        self::saveToCache($cacheId, $objectClasses);
 
         return $objectClasses;
     }
