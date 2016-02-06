@@ -155,10 +155,10 @@ class Configuration
     }
 
     /**
-    * Get the cache driver that will be used.
-    *
-    * @return Cache The cache driver.
-    */
+     * Get the cache driver that will be used.
+     *
+     * @return Cache The cache driver.
+     */
     public static function getCacheDriver()
     {
         return self::$cacheDriver;
