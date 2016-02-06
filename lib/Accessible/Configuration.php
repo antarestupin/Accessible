@@ -125,7 +125,7 @@ class Configuration
      */
     public static function setInitializeValuesValidationEnabled($enabled)
     {
-        if (!in_array($enabled, array(true, false))) {
+        if (!in_bool($enabled)) {
             throw new \InvalidArgumentException("This value must be a boolean.");
         }
 
@@ -143,6 +143,28 @@ class Configuration
     }
 
     /**
+     * Set a cache driver.
+     *
+     * @param Cache  $cacheToChange The cache to change.
+     * @param Cache  $cache The cache driver.
+     * @param string $namespace The cache namespace.
+     */
+    private static function setCache(Cache &$cacheToChange = null, Cache $cache = null, $namespace = null)
+    {
+        if ($namespace === null) {
+            $namespace = self::$cacheDefaultNamespace;
+        }
+        if (!is_string($namespace)) {
+            throw new \InvalidArgumentException("The namespace must be a string.");
+        }
+
+        $cacheToChange = $cache;
+        if ($cache !== null) {
+            $cacheToChange->setNamespace($namespace);
+        }
+    }
+
+    /**
      * Set the cache driver that will be used.
      *
      * @param Cache  $cache The cache driver.
@@ -150,16 +172,7 @@ class Configuration
      */
     public static function setCacheDriver(Cache $cache, $namespace = null)
     {
-        if ($namespace === null) {
-            $namespace = self::$cacheDefaultNamespace;
-        }
-
-        if (!is_string($namespace)) {
-            throw new \InvalidArgumentException("The namespace must be a string.");
-        }
-
-        self::$cacheDriver = $cache;
-        self::$cacheDriver->setNamespace($namespace);
+        self::setCache(self::$cacheDriver, $cache, $namespace);
     }
 
     /**
@@ -184,15 +197,6 @@ class Configuration
      * @param string $namespace The cache namespace.
      */
     public static function setArrayCache(Cache $cache, $namespace = null) {
-        if ($namespace === null) {
-            $namespace = self::$cacheDefaultNamespace;
-        }
-
-        if (!is_string($namespace)) {
-            throw new \InvalidArgumentException("The namespace must be a string.");
-        }
-
-        self::$arrayCache = $cache;
-        self::$arrayCache->setNamespace($namespace);
+        self::setCache(self::$arrayCache, $cache, $namespace);
     }
 }
