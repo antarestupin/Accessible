@@ -51,4 +51,13 @@ class CollectionsTest extends \PHPUnit_Framework_TestCase
         $testCase->setListItems(array("b"));
         $this->assertEquals("b", $testCase->getListItems()[0]);
     }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testMapAddMethodCannotAcceptOneArgument()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->addMapItem("item1");
+    }
 }
