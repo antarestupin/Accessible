@@ -88,19 +88,23 @@ class AutoConstructReader extends Reader
         foreach ($objectClasses as $class) {
             foreach ($class->getProperties() as $property) {
                 $propertyName = $property->getName();
-                $initializeAnnotation = $annotationReader->getPropertyAnnotation($property, self::$initializeAnnotationClass);
-                $initializeObjectAnnotation = $annotationReader->getPropertyAnnotation($property, self::$initializeObjectAnnotationClass);
 
-                if ($initializeAnnotation !== null && $initializeObjectAnnotation !== null) {
-                    throw new \LogicException("Two initial values are given for property $propertyName.");
+                $annotation = $annotationReader->getPropertyAnnotation($property, self::$initializeAnnotationClass);
+                $annotationType = "initialize";
+                if ($annotation === null) {
+                    $annotation = $annotationReader->getPropertyAnnotation($property, self::$initializeObjectAnnotationClass);
+                    $annotationType = "initializeObject";
                 }
 
-                if (empty($propertiesValues[$propertyName])) {
-                    if ($initializeAnnotation !== null) {
-                        $propertiesValues[$propertyName] = $initializeAnnotation->getValue();
-                    } else if ($initializeObjectAnnotation !== null) {
-                        $className = $initializeObjectAnnotation->getClassName();
-                        $propertiesValues[$propertyName] = new $className();
+                if (empty($propertiesValues[$propertyName]) && $annotation !== null) {
+                    switch ($annotationType) {
+                        case "initialize":
+                            $propertiesValues[$propertyName] = $annotation->getValue();
+                            break;
+                        case "initializeAnnotation":
+                            $className = $annotation->getClassName();
+                            $propertiesValues[$propertyName] = new $className();
+                            break;
                     }
                 }
             }
