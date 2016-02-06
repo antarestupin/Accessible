@@ -304,15 +304,14 @@ trait AutomatedBehaviorTrait
         // Initialize the propeties using given arguments
         $neededArguments = AutoConstructReader::getConstructArguments($this);
 
-        if ($neededArguments !== null) {
-            $givenArguments = $properties;
+        if ($neededArguments !== null && $properties !== null) {
             $numberOfNeededArguments = count($neededArguments);
 
-            MethodCallManager::assertArgsNumber($numberOfNeededArguments, $givenArguments);
+            MethodCallManager::assertArgsNumber($numberOfNeededArguments, $properties);
 
             for ($i = 0; $i < $numberOfNeededArguments; $i++) {
                 $property = $neededArguments[$i];
-                $argument = $givenArguments[$i];
+                $argument = $properties[$i];
 
                 $this->assertPropertyValue($property, $argument);
 
@@ -345,6 +344,13 @@ trait AutomatedBehaviorTrait
         }
     }
 
+    /**
+     * Extract the info about the method called.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
     private function getMethodCallInfo($name)
     {
         // check that the called method is a valid method name
