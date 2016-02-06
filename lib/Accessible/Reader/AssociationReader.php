@@ -10,7 +10,7 @@ class AssociationReader extends Reader
     /**
      * The name of the annotation classes that define an association.
      *
-     * @var string
+     * @var array<string>
      */
     private static $associationAnnotationClasses = array(
         "inverted" => "Accessible\\Annotation\\Inverted",
