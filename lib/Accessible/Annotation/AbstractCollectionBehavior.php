@@ -32,7 +32,7 @@ abstract class AbstractCollectionBehavior
     /**
      * The list of methods that can be used with the collection.
      *
-     * @var array<string>
+     * @var array
      */
     protected $methods;
 
@@ -60,11 +60,21 @@ abstract class AbstractCollectionBehavior
         }
     }
 
+    /**
+     * Get the item name.
+     *
+     * @return string
+     */
     public function getItemName()
     {
         return $this->itemName;
     }
 
+    /**
+     * Get the list of methods that can be used.
+     *
+     * @return array<string>
+     */
     public function getMethods()
     {
         return $this->methods;

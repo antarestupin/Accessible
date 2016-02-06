@@ -18,7 +18,7 @@ class InitializeObject
     /**
      * Initializes the annotation.
      *
-     * @param mixed $className The name of the class.
+     * @param mixed $className The annotation's parameters.
      */
     public function __construct($className)
     {

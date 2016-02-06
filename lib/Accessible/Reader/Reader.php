@@ -59,6 +59,13 @@ class Reader
         return $objectClasses;
     }
 
+    /**
+     * Get a value from the cache.
+     *
+     * @param  string $id
+     *
+     * @return mixed
+     */
     public static function getFromCache($id)
     {
         $arrayCache = Configuration::getArrayCache();
@@ -78,6 +85,12 @@ class Reader
         return null;
     }
 
+    /**
+     * Save a value to the cache.
+     *
+     * @param  string $id
+     * @param  mixed $value
+     */
     public static function saveToCache($id, $value)
     {
         $arrayCache = Configuration::getArrayCache();

@@ -4,20 +4,32 @@ namespace Accessible\MethodManager;
 
 class MapManager extends CollectionManager
 {
-    public static function add(&$list, $args)
+    /**
+     * Adds an element to the map.
+     *
+     * @param array|Traversable $map
+     * @param array $args
+     */
+    public static function add(&$map, $args)
     {
         self::assertArgsNumber(2, $args);
 
-        $list[$args[0]] = $args[1];
+        $map[$args[0]] = $args[1];
     }
 
-    public static function remove(&$list, $args)
+    /**
+     * Removes an element from the map.
+     *
+     * @param  array|Traversable $map
+     * @param  array $args
+     */
+    public static function remove(&$map, $args)
     {
         self::assertArgsNumber(1, $args);
 
         $key = $args[0];
-        if (isset($list[$key])) {
-            unset($list[$key]);
+        if (isset($map[$key])) {
+            unset($map[$key]);
         }
     }
 }

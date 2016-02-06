@@ -18,7 +18,7 @@ class Initialize
     /**
      * Initializes the annotation.
      *
-     * @param mixed $value The value to give to the property.
+     * @param mixed $value The annotation's parameters.
      */
     public function __construct($value)
     {
