@@ -74,21 +74,21 @@ class BaseTestCase
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy=invertedOneToOneProperty)
+     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="invertedOneToOneProperty")
      */
     private $invertedOneToOneProperty;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\List
+     * @Behavior\ListBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy=invertedManyToOneProperty)
+     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="mappedManyToOneProperty")
      */
     private $invertedManyToOnePropertyItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy=invertedReversedOneToOneProperty)
+     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="invertedReversedOneToOneProperty")
      */
     private $invertedReversedOneToOneProperty;
 
@@ -96,7 +96,7 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy=mappedReversedManyToOneProperty)
+     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="mappedReversedManyToOneProperty")
      */
     private $invertedReversedManyToOnePropertyItems;
 
@@ -104,7 +104,26 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Mapped(className=AssociationTestCase::class, invertedBy=mappedReversedManyToManyProperty)
+     * @Behavior\Mapped(className=AssociationTestCase::class, mappedBy="mappedManyToManyPropertyItems")
+     */
+    private $mappedManyToManyPropertyItems;
+
+    /**
+     * @Access({Access::GET, Access::SET})
+     * @Behavior\SetBehavior
+     * @Behavior\Initialize({})
+     * @Behavior\Mapped(className=AssociationTestCase::class, mappedBy="mappedReversedManyToManyPropertyItems")
      */
     private $mappedReversedManyToManyPropertyItems;
+
+    public function testPropertyAssertion($value)
+    {
+        $this->assertPropertyValue("constrainedProperty", $value);
+    }
+
+    public function testPropertyAssociationUpdate($value)
+    {
+        $this->invertedOneToOneProperty = $value;
+        $this->updatePropertyAssociation("invertedOneToOneProperty", array('newValue' => $value));
+    }
 }

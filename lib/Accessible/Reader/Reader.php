@@ -24,7 +24,7 @@ class Reader
      *
      * @return array The list of classes to read.
      */
-    protected static function getClassesToRead(\ReflectionObject $reflectionObject)
+    public static function getClassesToRead(\ReflectionObject $reflectionObject)
     {
         $objectClasses = array($reflectionObject);
         $objectTraits = $reflectionObject->getTraits();
@@ -51,7 +51,7 @@ class Reader
         return $objectClasses;
     }
 
-    protected static function getFromCache($id)
+    public static function getFromCache($id)
     {
         $arrayCache = Configuration::getArrayCache();
         if ($arrayCache->contains($id)) {
@@ -70,7 +70,7 @@ class Reader
         return null;
     }
 
-    protected static function saveToCache($id, $value)
+    public static function saveToCache($id, $value)
     {
         $arrayCache = Configuration::getArrayCache();
         $cacheDriver = Configuration::getCacheDriver();

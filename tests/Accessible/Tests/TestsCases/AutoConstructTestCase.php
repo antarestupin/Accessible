@@ -5,7 +5,7 @@ namespace Accessible\Tests\TestsCases;
 use Accessible\Annotation as Behavior;
 
 /**
- * @Behavior\Construct({"accessibleProperty"})
+ * @Behavior\Construct({"constrainedProperty"})
  */
 class AutoConstructTestCase extends BaseTestCase
 {

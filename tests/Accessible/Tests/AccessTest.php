@@ -24,15 +24,15 @@ class AccessTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAndSetMethodsCanBeCalled()
     {
-        $testCase = new TestCases\BaseTestCase();
+        $testCase = new TestsCases\BaseTestCase();
         $this->assertEquals($testCase, $testCase->setAccessibleProperty("foo"));
         $this->assertEquals("foo", $testCase->getAccessibleProperty());
     }
 
     public function testIsMethodCanBeCalled()
     {
-        $testCase = new TestCases\BaseTestCase();
+        $testCase = new TestsCases\BaseTestCase();
         $testCase->setBooleanProperty(true);
-        $this->assertEquals(true, $testCase->getBooleanProperty());
+        $this->assertEquals(true, $testCase->isBooleanProperty());
     }
 }
