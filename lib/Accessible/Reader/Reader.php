@@ -35,7 +35,7 @@ class Reader
         }
 
         $parentClass = $reflectionObject->getParentClass();
-        while($parentClass) {
+        while ($parentClass) {
             $objectClasses[] = $parentClass;
 
             $parentTraits = $parentClass->getTraits();

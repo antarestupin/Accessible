@@ -56,7 +56,7 @@ abstract class AbstractCollectionBehavior
         );
 
         foreach ($defaults as $property => $defaultValue) {
-            $this->$property = (empty($values[$property])) ? $defaultValue: $values[$property];
+            $this->$property = (empty($values[$property])) ? $defaultValue : $values[$property];
         }
     }
 

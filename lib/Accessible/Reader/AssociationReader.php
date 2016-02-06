@@ -21,7 +21,7 @@ class AssociationReader extends Reader
      * Get a list linking a property with association between the property's class and the current class.
      * Ex: ["products" => ["property" => "cart", "association" => "inverted"]]
      *
-     * @param object $object The object to read.
+     * @param \Accessible\AutomatedBehaviorTrait $object The object to read.
      *
      * @return array The described list.
      */
@@ -39,7 +39,7 @@ class AssociationReader extends Reader
         array_reverse($objectClasses);
 
         $annotationReader = Configuration::getAnnotationReader();
-        foreach($objectClasses as $class) {
+        foreach ($objectClasses as $class) {
             foreach ($class->getProperties() as $property) {
                 $propertyName = $property->getName();
                 $annotation = null;

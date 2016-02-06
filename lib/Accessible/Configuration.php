@@ -99,7 +99,7 @@ class Configuration
     /**
      * Set the constraints validator that will be used.
      *
-     * @param ConstraintValidator $constraintsValidator The annotation reader.
+     * @param ValidatorInterface $constraintsValidator The annotation reader.
      */
     public static function setConstraintsValidator(ValidatorInterface $constraintsValidator)
     {

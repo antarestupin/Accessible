@@ -34,7 +34,7 @@ class AccessReader extends Reader
         array_reverse($objectClasses);
 
         $annotationReader = Configuration::getAnnotationReader();
-        foreach($objectClasses as $class) {
+        foreach ($objectClasses as $class) {
             foreach ($class->getProperties() as $property) {
                 $propertyName = $property->getName();
 

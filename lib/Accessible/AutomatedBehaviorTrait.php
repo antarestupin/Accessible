@@ -125,7 +125,7 @@ trait AutomatedBehaviorTrait
         }
 
         $method = $pregMatches[1];
-        $property = strtolower(substr($pregMatches[2], 0, 1)).substr($pregMatches[2], 1);
+        $property = strtolower(substr($pregMatches[2], 0, 1)) . substr($pregMatches[2], 1);
         $collectionProperties = null;
         if (in_array($method, array('add', 'remove'))) {
             $collectionProperties = $this->_collectionsItemNames['byItemName'][$property];
@@ -144,7 +144,7 @@ trait AutomatedBehaviorTrait
         $oldValue = null;
         $newValue = null;
 
-        switch($method) {
+        switch ($method) {
             case 'get':
             case 'is':
                 return $this->$property;
@@ -158,8 +158,8 @@ trait AutomatedBehaviorTrait
                     && !(empty($association))
                 ) {
                     $itemName = $this->_collectionsItemNames['byProperty'][$property]['itemName'];
-                    $propertyAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
-                    $propertyRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
+                    $propertyAddMethod = 'add' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
+                    $propertyRemoveMethod = 'remove' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
 
                     foreach ($this->$property as $item) {
                         $this->$propertyRemoveMethod($item);
@@ -246,7 +246,7 @@ trait AutomatedBehaviorTrait
                 foreach ($constraintsViolations as $violation) {
                     $errorMessageList[] = $violation->getMessage();
                 }
-                $errorMessage .= implode("\", \n\"", $errorMessageList)."\".";
+                $errorMessage .= implode("\", \n\"", $errorMessageList) . "\".";
 
                 throw new \InvalidArgumentException($errorMessage);
             }
@@ -270,16 +270,16 @@ trait AutomatedBehaviorTrait
             $this->_associationsList = AssociationReader::getAssociations($this);
         }
 
-        $oldValue = empty($values['oldValue']) ? null: $values['oldValue'];
-        $newValue = empty($values['newValue']) ? null: $values['newValue'];
+        $oldValue = empty($values['oldValue']) ? null : $values['oldValue'];
+        $newValue = empty($values['newValue']) ? null : $values['newValue'];
 
         $association = $this->_associationsList[$property];
         if (!empty($association)) {
             $associatedProperty = $association['property'];
             switch ($association['association']) {
                 case 'inverted':
-                    $invertedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
-                    $invertedSetMethod = 'set'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
+                    $invertedGetMethod = 'get' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
+                    $invertedSetMethod = 'set' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
                     if ($oldValue !== null && $oldValue->$invertedGetMethod() === $this) {
                         $oldValue->$invertedSetMethod(null);
                     }
@@ -290,9 +290,9 @@ trait AutomatedBehaviorTrait
 
                 case 'mapped':
                     $itemName = $association['itemName'];
-                    $mappedGetMethod = 'get'.strtoupper(substr($associatedProperty, 0, 1)).substr($associatedProperty, 1);
-                    $mappedAddMethod = 'add'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
-                    $mappedRemoveMethod = 'remove'.strtoupper(substr($itemName, 0, 1)).substr($itemName, 1);
+                    $mappedGetMethod = 'get' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
+                    $mappedAddMethod = 'add' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
+                    $mappedRemoveMethod = 'remove' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
 
                     if ($oldValue !== null && CollectionManager::collectionContains($this, $oldValue->$mappedGetMethod())) {
                         $oldValue->$mappedRemoveMethod($this);
@@ -352,7 +352,7 @@ trait AutomatedBehaviorTrait
                 $this->$property = $argument;
 
                 // Manage associations
-                if (empty($thid->_collectionsItemNames['byProperty'][$property])) {
+                if (empty($this->_collectionsItemNames['byProperty'][$property])) {
                     $this->updatePropertyAssociation($property, array("oldValue" => null, "newValue" => $argument));
                 } else {
                     foreach ($argument as $value) {
