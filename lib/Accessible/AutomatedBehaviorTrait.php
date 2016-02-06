@@ -148,7 +148,6 @@ trait AutomatedBehaviorTrait
             case 'get':
             case 'is':
                 return $this->$property;
-                break;
 
             case 'set':
                 // a setter should have exactly one argument
@@ -326,7 +325,7 @@ trait AutomatedBehaviorTrait
 
             $this->$propertyName = $value;
 
-            if (empty($thid->_collectionsItemNames['byProperty'][$propertyName])) {
+            if (empty($this->_collectionsItemNames['byProperty'][$propertyName])) {
                 $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $value));
             } else {
                 foreach ($value as $newValue) {

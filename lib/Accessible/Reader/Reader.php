@@ -9,7 +9,7 @@ class Reader
     /**
      * The name of the annotation classes that define a collection behavior.
      *
-     * @var string
+     * @var array<string>
      */
     protected static $collectionAnnotationClasses = array(
         "list" => "Accessible\\Annotation\\ListBehavior",

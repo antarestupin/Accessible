@@ -66,7 +66,6 @@ class AssociationReader extends Reader
                         $associatedClass = new \ReflectionClass($annotation->getClassName());
                         $associatedPropertyReflection = $associatedClass->getProperty($associatedPropertyName);
 
-                        $collectionAnnotation = null;
                         $itemName = null;
                         foreach (self::$collectionAnnotationClasses as $annotationBehavior => $annotationClass) {
                             $collectionAnnotation = $annotationReader->getPropertyAnnotation($associatedPropertyReflection, $annotationClass);

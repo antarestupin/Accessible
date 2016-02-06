@@ -15,7 +15,7 @@ class Inverted extends AbstractAssociation
     /**
      * Initializes the annotation.
      *
-     * @param mixed $value The name of the property that refers to the current class.
+     * @param mixed $values The name of the property that refers to the current class.
      */
     public function __construct($values)
     {
