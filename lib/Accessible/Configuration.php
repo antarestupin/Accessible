@@ -125,21 +125,11 @@ class Configuration
      */
     public static function setInitializeValuesValidationEnabled($enabled)
     {
-        if (!in_bool($enabled)) {
+        if (!is_bool($enabled)) {
             throw new \InvalidArgumentException("This value must be a boolean.");
         }
 
         self::$initializeValuesValidationEnabled = $enabled;
-    }
-
-    /**
-     * Get the cache driver that will be used.
-     *
-     * @return Cache The cache driver.
-     */
-    public static function getCacheDriver()
-    {
-        return self::$cacheDriver;
     }
 
     /**
@@ -165,12 +155,22 @@ class Configuration
     }
 
     /**
+    * Get the cache driver that will be used.
+    *
+    * @return Cache The cache driver.
+    */
+    public static function getCacheDriver()
+    {
+        return self::$cacheDriver;
+    }
+
+    /**
      * Set the cache driver that will be used.
      *
      * @param Cache  $cache The cache driver.
      * @param string $namespace The cache namespace.
      */
-    public static function setCacheDriver(Cache $cache, $namespace = null)
+    public static function setCacheDriver(Cache $cache = null, $namespace = null)
     {
         self::setCache(self::$cacheDriver, $cache, $namespace);
     }
@@ -196,7 +196,7 @@ class Configuration
      * @param Cache  $cache The cache driver.
      * @param string $namespace The cache namespace.
      */
-    public static function setArrayCache(Cache $cache, $namespace = null) {
+    public static function setArrayCache(Cache $cache = null, $namespace = null) {
         self::setCache(self::$arrayCache, $cache, $namespace);
     }
 }
