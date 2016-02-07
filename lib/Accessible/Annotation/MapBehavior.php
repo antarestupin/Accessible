@@ -14,14 +14,5 @@ namespace Accessible\Annotation;
  */
 class MapBehavior extends AbstractCollectionBehavior
 {
-    /**
-     * Initializes the annotation.
-     *
-     * @param mixed $values The annotation's parameters.
-     */
-    public function __construct($values)
-    {
-        $this->defaultMethods = array(AbstractCollectionBehavior::ADD, AbstractCollectionBehavior::REMOVE);
-        parent::__construct($values);
-    }
+
 }

@@ -50,6 +50,8 @@ abstract class AbstractCollectionBehavior
      */
     public function __construct($values)
     {
+        $this->defaultMethods = array(AbstractCollectionBehavior::ADD, AbstractCollectionBehavior::REMOVE);
+
         $defaults = array(
             'itemName' => null,
             'methods' => $this->defaultMethods
