@@ -1,16 +1,16 @@
-## How to define properties access
+## How to define getters and setters
 
 ### Basic use
 
-Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `AccessiblePropertiesTrait` trait.
+Add the annotation `@Access` in your class' properties as following. Don't forget to add the use of the `AutomatedBehaviorTrait` trait.
 
 ```php
-use Accessible\AccessiblePropertiesTrait;
-use use Accessible\Annotation\Access;
+use Accessible\AutomatedBehaviorTrait;
+use Accessible\Annotation\Access;
 
 class Foo
 {
-  use AccessiblePropertiesTrait;
+  use AutomatedBehaviorTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -64,7 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Foo
 {
-  use AccessiblePropertiesTrait;
+  use AutomatedBehaviorTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -110,13 +110,11 @@ class Foo
 
   public function setBar($newValue)
   {
-    if ($this->validatePropertyValue('bar', $newValue)->count()) {
-      throw new \InvalidArgumentException("The value passsed to Foo#setBar() is not valid.");
-    }
+    $this->assertPropertyValue('bar', $newValue);
     $this->bar = $newValue;
     return $this;
   }
 }
 ```
 
-The method `validatePropertyValue()` returns a `ConstraintViolationList`, which `count()` will equal 0 if the value to check is ok with your property constraints.
+The method `assertPropertyValue()` will throw an `\InvalidArgumentException` if `$newValue` violates the property constraints.

@@ -51,3 +51,5 @@ Accessible\Configuration::setCacheDriver(
     new Doctrine\Common\Cache\ApcCache()
 );
 ```
+
+Note that an another cache is used to store the annotations information in the memory, so that every class is parsed only once per request. So, if you add a custom cache driver, for each time the script is launched, the annotations information will be extracted first from the cache driver, and then directly from the memory.

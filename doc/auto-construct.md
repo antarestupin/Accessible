@@ -1,19 +1,20 @@
 ## How to define the class constructor
 
-Sometimes your classes `__construct` simply consist in taking some arguments and apply them directly as the values of the class' properties; eventually you could also give a fixed initial value to some properties. In these cases you may find useful the `AutoConstructTrait` trait, which will make your class more concise and readable.
+Sometimes your classes `__construct` simply consist in taking some arguments and applying them directly as the values of the class' properties; eventually you could also give a fixed initial value to some properties. In these cases you may find useful the `@Construct`, `@Initialize` and `@InitializeObject` annotations, which will make your class more concise and readable.
 
 ### The `@Construct` annotation
 
 The `@Construct` annotation defines which properties will be initialized by the constructor. Take this example:
 
 ```php
+use Accessible\Annotation\Construct;
+
 /**
  * @Construct({"bar", "baz"})
  */
 class Foo
 {
-  use Accessible\AutoConstructTrait;
-  use Accessible\AccessiblePropertiesTrait;
+  use Accessible\AutomatedBehaviorTrait;
 
   /**
    * @Access({Access::GET})
@@ -56,7 +57,7 @@ class Foo
 $foo = new Foo(42, "sandwich"); // Throws an \InvalidArgumentException as 42 is not a string
 ```
 
-When using `AutoConstructTrait`, if no `@Construct` has been added, the constructor will be the equivalent of `public function __construct() {}`.
+If no `@Construct` has been added, the constructor will be the equivalent of `public function __construct() {}`.
 
 ### The `@Initialize` and `@InitializeObject` annotations
 
@@ -71,7 +72,7 @@ use Accessible\Annotation\Initialize;
 
 class Foo
 {
-  use Accessible\AutoConstructTrait;
+  use Accessible\AutomatedBehaviorTrait;
 
   /**
    * @Initialize("baz")
@@ -88,7 +89,7 @@ The advantage of using `@Initialize` over the native way to set the default valu
 ```php
 class Foo
 {
-  use Accessible\AutoConstructTrait;
+  use Accessible\AutomatedBehaviorTrait;
 
   /**
    * @Assert\Type("string")
@@ -99,7 +100,7 @@ class Foo
    * @Assert\Type("string")
    * @Initialize(true)
    */
-  private $baz; // A LogicException will be thrown
+  private $baz; // An \InvalidArgumentException will be thrown
 }
 ```
 
@@ -112,7 +113,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class Foo
 {
-  use Accessible\AutoConstructTrait;
+  use Accessible\AutomatedBehaviorTrait;
 
   /**
    * @InitializeObject(ArrayCollection::class)
@@ -130,4 +131,33 @@ As the values given to `@Initialize` and `@InitializeObject` are fixed, they sho
 ```php
 $debug = true;
 Accessible\Configuration::setInitializeValuesValidationEnabled($debug);
+```
+
+### Use a custom constructor
+
+If you want to add a custom `__construct` method in your class but want to use the annotations described in this page, you will simply need to add a call to `initializeProperties()`. Here is an example:
+
+```php
+/**
+ * @Construct({"bar"})
+ */
+class Foo
+{
+  use AutomatedBehaviorTrait;
+
+  /** @Access({Access::GET}) **/
+  private $bar;
+
+  /**
+   * @Access({Access::GET})
+   * @Initialize(42)
+   */
+  private $baz;
+
+  public function __construct()
+  {
+    $this->initializeProperties(['blablabla']); // This will set $bar to 'blablabla' and $baz to 42
+    // custom code
+  }
+}
 ```

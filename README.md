@@ -2,11 +2,15 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98/mini.png)](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98)
 [![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antares993/Accessible)
+[![Code Coverage](https://scrutinizer-ci.com/g/antares993/Accessible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/antares993/Accessible/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/antares993/Accessible/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/antares993/Accessible/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/antares/accessible/v/stable)](https://packagist.org/packages/antares/accessible)
 [![License](https://poser.pugx.org/antares/accessible/license)](https://packagist.org/packages/antares/accessible)
 
 
-Accessible is a PHP library that allows you to define your class' getters, setters and constructor in an elegant and powerful way using docblock annotations.
+Accessible is a PHP library that allows you to define your class behavior in an elegant and powerful way using docblock annotations.
+
+This way, you can define your class' getters, setters and constructor, and automate collections and association management.
 
 Quick example:
 
@@ -16,8 +20,7 @@ Quick example:
  */
 class Server
 {
-  use AccessiblePropertiesTrait;
-  use AutoConstructTrait;
+  use AutomatedBehaviorTrait;
 
   /**
    * @Access({Access::GET, Access::SET})
@@ -64,9 +67,11 @@ You may want to change the default configuration, to do this see the [Configurat
 
 ## Documentation
 
-- [How to define properties access](https://github.com/antares993/Accessible/tree/master/doc/accessible.md)
+- [How to define getters and setters](https://github.com/antares993/Accessible/tree/master/doc/accessible.md)
 - [How to define the class constructor](https://github.com/antares993/Accessible/tree/master/doc/auto-construct.md)
 - [How to enable / disable the constraints validation](https://github.com/antares993/Accessible/tree/master/doc/constraints-validation.md)
+- [How to manage collections](https://github.com/antares993/Accessible/tree/master/doc/collections.md)
+- [How to manage associations](https://github.com/antares993/Accessible/tree/master/doc/associations.md)
 - [How to modify the default configuration](https://github.com/antares993/Accessible/tree/master/doc/configuration.md)
 
 ## Compatibility
