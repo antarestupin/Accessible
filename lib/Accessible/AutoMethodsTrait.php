@@ -43,10 +43,10 @@ trait AutoMethodsTrait
         switch ($method) {
             case 'get':
             case 'is':
+                MethodCallManager::assertArgsNumber(0, $args);
                 return $this->$property;
 
             case 'set':
-                // a setter should have exactly one argument
                 MethodCallManager::assertArgsNumber(1, $args);
                 // we set a collection here if there is an association with it
                 if (
@@ -74,10 +74,7 @@ trait AutoMethodsTrait
                     );
                     // check that the setter argument respects the property constraints
                     $this->assertPropertyValue($property, $newValue);
-
-                    if ($oldValue !== $newValue) {
-                        $this->$property = $newValue;
-                    }
+                    $this->$property = $newValue;
                 }
                 break;
 

@@ -10,6 +10,15 @@ class AccessTest extends \PHPUnit_Framework_TestCase
     public function testUnavailableMethodCallThrowsAnException()
     {
         $testCase = new TestsCases\BaseTestCase();
+        $testCase->bla();
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testUnavailablePropertyGetterCallThrowsAnException()
+    {
+        $testCase = new TestsCases\BaseTestCase();
         $testCase->getNotAccessibleProperty();
     }
 
@@ -20,6 +29,24 @@ class AccessTest extends \PHPUnit_Framework_TestCase
     {
         $testCase = new TestsCases\BaseTestCase();
         $testCase->getInexistentProperty();
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testCallGetterWithTheWrongNumberOfArgumentsThrowsAnException()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->getAccessibleProperty("a");
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testCallSetterWithTheWrongNumberOfArgumentsThrowsAnException()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->setAccessibleProperty("a", "b");
     }
 
     public function testGetAndSetMethodsCanBeCalled()
@@ -34,5 +61,12 @@ class AccessTest extends \PHPUnit_Framework_TestCase
         $testCase = new TestsCases\BaseTestCase();
         $testCase->setBooleanProperty(true);
         $this->assertEquals(true, $testCase->isBooleanProperty());
+    }
+
+    public function testTraitsAreNotForgotten()
+    {
+        $testCase = new TestsCases\TraitTestCase();
+        $this->assertEquals($testCase, $testCase->setTraitProperty("foo"));
+        $this->assertEquals("foo", $testCase->getTraitProperty());
     }
 }

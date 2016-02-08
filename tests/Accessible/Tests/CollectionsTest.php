@@ -33,6 +33,8 @@ class CollectionsTest extends \PHPUnit_Framework_TestCase
         $testCase->removeSetItem("item1");
         $listItems = $testCase->getSetItems();
         $this->assertEquals(1, count($listItems));
+        $testCase->removeSetItem("item1");
+        $this->assertEquals(1, count($listItems));
     }
 
     public function testListRemoveMethodCanBeCalledOnTraversableObjects()
@@ -50,6 +52,14 @@ class CollectionsTest extends \PHPUnit_Framework_TestCase
         $testCase->addListItem("a");
         $testCase->setListItems(array("b"));
         $this->assertEquals("b", $testCase->getListItems()[0]);
+    }
+
+    public function testSetMethodCanBeCalledOnAMap()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->addMapItem("a", "b");
+        $testCase->setMapItems(array("c" => "d"));
+        $this->assertEquals("d", $testCase->getMapItems()["c"]);
     }
 
     /**
