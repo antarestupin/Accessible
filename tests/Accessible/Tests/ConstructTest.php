@@ -29,4 +29,20 @@ class ConstructTest extends \PHPUnit_Framework_TestCase
         $testCase = new TestsCases\ManualInitializationTestCase();
         $this->assertEquals(50, $testCase->getConstrainedProperty());
     }
+
+    public function testInitializedObjectsDifferAtEachInitialization()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->getInitializedObjectProperty()->add("foo");
+        $testCase2 = new TestsCases\BaseTestCase();
+        $this->assertEquals(0, count($testCase2->getInitializedObjectProperty()));
+    }
+
+    public function testInitializedArraysDifferAtEachInitialization()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->addListItem("foo");
+        $testCase2 = new TestsCases\BaseTestCase();
+        $this->assertEquals(0, count($testCase2->getListItems()));
+    }
 }

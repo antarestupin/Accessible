@@ -71,13 +71,16 @@ class AutoConstructReader extends Reader
                 throw new \LogicException("Two initial values are given for property $propertyName.");
             }
 
-            if (empty($propertiesValues[$propertyName])) {
-                if ($initializeAnnotation !== null) {
-                    $propertiesValues[$propertyName] = $initializeAnnotation->getValue();
-                } else if ($initializeObjectAnnotation !== null) {
-                    $className = $initializeObjectAnnotation->getClassName();
-                    $propertiesValues[$propertyName] = new $className();
-                }
+            if ($initializeAnnotation !== null) {
+                $propertiesValues[$propertyName] = array(
+                    'type' => 'initialize',
+                    'value' => $initializeAnnotation->getValue()
+                );
+            } else if ($initializeObjectAnnotation !== null) {
+                $propertiesValues[$propertyName] = array(
+                    'type' => 'initializeObject',
+                    'value' => $initializeObjectAnnotation->getClassName()
+                );
             }
         }
 

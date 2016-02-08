@@ -25,8 +25,18 @@ trait AutoConstructTrait
 
         // Initialize the properties that were defined using the Initialize / InitializeObject annotations
         $initializeValueValidationEnabled = Configuration::isInitializeValuesValidationEnabled();
+        foreach ($this->_initialPropertiesValues as $propertyName => $initialization) {
+            $value = null;
+            switch ($initialization['type']) {
+                case 'initialize':
+                    $value = $initialization['value'];
+                    break;
+                default:
+                    $className = $initialization['value'];
+                    $value = new $className();
+                    break;
+            }
 
-        foreach ($this->_initialPropertiesValues as $propertyName => $value) {
             if ($initializeValueValidationEnabled) {
                 $this->assertPropertyValue($propertyName, $value);
             }
