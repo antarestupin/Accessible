@@ -4,7 +4,6 @@ namespace Accessible;
 
 use \Accessible\MethodManager\CollectionManager;
 use \Accessible\Reader\Reader;
-use \Accessible\Reader\AssociationReader;
 use \Accessible\Reader\ConstraintsReader;
 
 trait AutomatedBehaviorTrait
@@ -135,10 +134,6 @@ trait AutomatedBehaviorTrait
     protected function updatePropertyAssociation($property, array $values)
     {
         $this->getPropertiesInfo();
-
-        if ($this->_associationsList === null) {
-            $this->_associationsList = AssociationReader::getAssociations($this);
-        }
 
         $oldValue = empty($values['oldValue']) ? null : $values['oldValue'];
         $newValue = empty($values['newValue']) ? null : $values['newValue'];
