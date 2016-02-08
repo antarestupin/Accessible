@@ -15,7 +15,7 @@ class AccessReader extends Reader
      * Get a list of properties and the access that are given to them for given object.
      *
      * @param array  $properties The properties of the object to read.
-     * @param Reader $objectClasses The annotation reader to use.
+     * @param Reader $annotationReader The annotation reader to use.
      *
      * @return array The list of properties and their access.
      */

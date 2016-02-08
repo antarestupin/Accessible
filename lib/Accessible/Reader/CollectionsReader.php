@@ -14,7 +14,7 @@ class CollectionsReader extends Reader
      * ]
      *
      * @param array  $properties The properties of the object to read.
-     * @param Reader $annotationReader The annotation reader to use.
+     * @param \Doctrine\Common\Annotations\Reader $annotationReader The annotation reader to use.
      *
      * @return array The described list.
      */
