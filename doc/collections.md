@@ -59,7 +59,7 @@ $student->removeCourse($course);
 
 $task = new Task();
 $student->addTask($task);
-$student->getTasks(); // -> [$task]
+$student->getHomework(); // -> [$task]
 $student->removeTask($task);
 
 $note = new Note();
