@@ -2,8 +2,6 @@
 
 namespace Accessible\Reader;
 
-use \Accessible\Configuration;
-
 class AutoConstructReader extends Reader
 {
     /**
@@ -31,7 +29,7 @@ class AutoConstructReader extends Reader
      * Get the list of needed arguments for given object's constructor.
      *
      * @param array  $objectClasses The classes of the object to read.
-     * @param Reader $objectClasses The annotation reader to use.
+     * @param Reader $annotationReader The annotation reader to use.
      *
      * @return array The list of arguments.
      */
@@ -56,7 +54,7 @@ class AutoConstructReader extends Reader
      * during the object construction, plus their value.
      *
      * @param array  $properties The properties of the object to read.
-     * @param Reader $objectClasses The annotation reader to use.
+     * @param Reader $annotationReader The annotation reader to use.
      *
      * @return array The list of properties and values,
      *               in the form ["property" => "value"].

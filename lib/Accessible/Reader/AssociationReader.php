@@ -2,7 +2,6 @@
 
 namespace Accessible\Reader;
 
-use \Accessible\Configuration;
 use Doctrine\Common\Inflector\Inflector;
 
 class AssociationReader extends Reader
@@ -22,7 +21,7 @@ class AssociationReader extends Reader
      * Ex: ["products" => ["property" => "cart", "association" => "inverted"]]
      *
      * @param array  $properties The properties of the object to read.
-     * @param Reader $objectClasses The annotation reader to use.
+     * @param Reader $annotationReader The annotation reader to use.
      *
      * @return array The described list.
      */

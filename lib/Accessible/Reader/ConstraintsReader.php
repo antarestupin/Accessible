@@ -24,7 +24,7 @@ class ConstraintsReader extends Reader
      * Indicates wether the constraints validation is enabled or not for the given object.
      *
      * @param array  $objectClasses The classes of the object to read.
-     * @param Reader $objectClasses The annotation reader to use.
+     * @param Reader $annotationReader The annotation reader to use.
      *
      * @return boolean True if the validation is enabled, else false.
      */

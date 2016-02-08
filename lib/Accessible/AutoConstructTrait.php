@@ -3,7 +3,6 @@
 namespace Accessible;
 
 use \Accessible\MethodManager\MethodCallManager;
-use \Accessible\Reader\AutoConstructReader;
 
 trait AutoConstructTrait
 {
