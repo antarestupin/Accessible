@@ -31,14 +31,17 @@ class Server
   /**
    * @Access({Access::GET})
    * @InitializeObject(ArrayCollection::class)
+   * @ListBehavior
    */
-  private $collection;
+  private $processes;
 }
 
 $server = new Server("192.30.252.128");
 
 $server->getIpAdress();   // 192.30.252.128
-$server->getCollection(); // Instance of ArrayCollection
+
+$server->getProcesses(); // Instance of ArrayCollection
+$server->addProcess(new Process());
 
 $server->setIpAdress("127.0.0.1");
 $ip = $server->getIpAdress(); // 127.0.0.1
