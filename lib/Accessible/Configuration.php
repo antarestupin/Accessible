@@ -196,7 +196,7 @@ class Configuration
      * @param Cache  $cache The cache driver.
      * @param string $namespace The cache namespace.
      */
-    public static function setArrayCache(Cache $cache = null, $namespace = null) {
+    public static function setArrayCache(Cache $cache, $namespace = null) {
         self::setCache(self::$arrayCache, $cache, $namespace);
     }
 }
