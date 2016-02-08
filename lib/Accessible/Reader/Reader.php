@@ -60,6 +60,60 @@ class Reader
     }
 
     /**
+     * Get the properties from a list of classes.
+     *
+     * @param array $classes
+     *
+     * @return array
+     */
+    public static function getProperties($classes)
+    {
+        array_reverse($classes);
+        $properties = array();
+        foreach ($classes as $class) {
+            foreach ($class->getProperties() as $property) {
+                $properties[$property->getName()] = $property;
+            }
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Get the information on a class from its instance.
+     *
+     * @param  object $object
+     *
+     * @return array
+     */
+    public static function getClassInformation($object)
+    {
+        $reflectionObject = new \ReflectionObject($object);
+        $cacheId = md5("classInformation:" . $reflectionObject->getName());
+        $classInfo = self::getFromCache($cacheId);
+        if ($classInfo !== null) {
+            return $classInfo;
+        }
+
+        $objectClasses = self::getClassesToRead($reflectionObject);
+        $objectProperties = self::getProperties($objectClasses);
+        $annotationReader = Configuration::getAnnotationReader();
+
+        $classInfo = array(
+            'accessProperties' => AccessReader::getAccessProperties($objectProperties, $annotationReader),
+            'collectionsItemNames' => CollectionsReader::getCollectionsItemNames($objectProperties, $annotationReader),
+            'associationsList' => AssociationReader::getAssociations($objectProperties, $annotationReader),
+            'constraintsValidationEnabled' => ConstraintsReader::isConstraintsValidationEnabled($objectClasses, $annotationReader),
+            'initialPropertiesValues' => AutoConstructReader::getPropertiesToInitialize($objectProperties, $annotationReader),
+            'initializationNeededArguments' => AutoConstructReader::getConstructArguments($objectClasses, $annotationReader)
+        );
+
+        self::saveToCache($cacheId, $classInfo);
+
+        return $classInfo;
+    }
+
+    /**
      * Get a value from the cache.
      *
      * @param  string $id

@@ -27,8 +27,7 @@ trait AutoConstructTrait
         // Initialize the properties that were defined using the Initialize / InitializeObject annotations
         $initializeValueValidationEnabled = Configuration::isInitializeValuesValidationEnabled();
 
-        $initialValues = AutoConstructReader::getPropertiesToInitialize($this);
-        foreach ($initialValues as $propertyName => $value) {
+        foreach ($this->_initialPropertiesValues as $propertyName => $value) {
             if ($initializeValueValidationEnabled) {
                 $this->assertPropertyValue($propertyName, $value);
             }
@@ -45,15 +44,13 @@ trait AutoConstructTrait
         }
 
         // Initialize the propeties using given arguments
-        $neededArguments = AutoConstructReader::getConstructArguments($this);
-
-        if ($neededArguments !== null && $properties !== null) {
-            $numberOfNeededArguments = count($neededArguments);
+        if ($this->_initializationNeededArguments !== null && $properties !== null) {
+            $numberOfNeededArguments = count($this->_initializationNeededArguments);
 
             MethodCallManager::assertArgsNumber($numberOfNeededArguments, $properties);
 
             for ($i = 0; $i < $numberOfNeededArguments; $i++) {
-                $property = $neededArguments[$i];
+                $property = $this->_initializationNeededArguments[$i];
                 $argument = $properties[$i];
 
                 $this->assertPropertyValue($property, $argument);

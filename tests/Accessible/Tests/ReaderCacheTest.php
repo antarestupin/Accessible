@@ -10,11 +10,11 @@ class ReaderCacheTest extends \PHPUnit_Framework_TestCase
     public function testReaderResultIsCached()
     {
         $testCase = new TestsCases\BaseTestCase();
-        $propertiesAccessList = AccessReader::getAccessProperties($testCase);
+        $classInformation = Reader::getClassInformation($testCase);
 
         $reflectionObject = new \ReflectionObject($testCase);
-        $cacheId = md5("accessProperties:" . $reflectionObject->getName());
+        $cacheId = md5("classInformation:" . $reflectionObject->getName());
 
-        $this->assertEquals($propertiesAccessList, Reader::getFromCache($cacheId));
+        $this->assertEquals($classInformation, Reader::getFromCache($cacheId));
     }
 }

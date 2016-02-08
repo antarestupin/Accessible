@@ -3,10 +3,9 @@
 namespace Accessible;
 
 use \Accessible\MethodManager\CollectionManager;
-use \Accessible\Reader\AccessReader;
+use \Accessible\Reader\Reader;
 use \Accessible\Reader\AssociationReader;
 use \Accessible\Reader\ConstraintsReader;
-use \Accessible\Reader\CollectionsReader;
 
 trait AutomatedBehaviorTrait
 {
@@ -44,6 +43,20 @@ trait AutomatedBehaviorTrait
      * @var boolean
      */
     private $_constraintsValidationEnabled;
+
+    /**
+     * The initial values of the properties that use Initialize and InitializeObject annotations.
+     *
+     * @var array
+     */
+    private $_initialPropertiesValues;
+
+    /**
+     * The arguments needed for the constructor.
+     *
+     * @var array
+     */
+    private $_initializationNeededArguments;
 
     /**
      * Indicates wether getPropertiesInfo() has been called or not.
@@ -168,10 +181,14 @@ trait AutomatedBehaviorTrait
     private function getPropertiesInfo()
     {
         if (!$this->_automatedBehaviorInitialized) {
-            $this->_accessProperties = AccessReader::getAccessProperties($this);
-            $this->_collectionsItemNames = CollectionsReader::getCollectionsItemNames($this);
-            $this->_associationsList = AssociationReader::getAssociations($this);
-            $this->_constraintsValidationEnabled = ConstraintsReader::isConstraintsValidationEnabled($this);
+            $classInfo = Reader::getClassInformation($this);
+
+            $this->_accessProperties = $classInfo['accessProperties'];
+            $this->_collectionsItemNames = $classInfo['collectionsItemNames'];
+            $this->_associationsList = $classInfo['associationsList'];
+            $this->_constraintsValidationEnabled = $classInfo['constraintsValidationEnabled'];
+            $this->_initialPropertiesValues = $classInfo['initialPropertiesValues'];
+            $this->_initializationNeededArguments = $classInfo['initializationNeededArguments'];
 
             $this->_automatedBehaviorInitialized = true;
         }
