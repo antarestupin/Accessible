@@ -32,14 +32,7 @@ trait AutoConstructTrait
             }
 
             $this->$propertyName = $value;
-
-            if (empty($this->_collectionsItemNames['byProperty'][$propertyName])) {
-                $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $value));
-            } else {
-                foreach ($value as $newValue) {
-                    $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $newValue));
-                }
-            }
+            $this->updateInitializedPropertyValue($propertyName, $value);
         }
 
         // Initialize the propeties using given arguments
@@ -49,21 +42,29 @@ trait AutoConstructTrait
             MethodCallManager::assertArgsNumber($numberOfNeededArguments, $properties);
 
             for ($i = 0; $i < $numberOfNeededArguments; $i++) {
-                $property = $this->_initializationNeededArguments[$i];
+                $propertyName = $this->_initializationNeededArguments[$i];
                 $argument = $properties[$i];
 
-                $this->assertPropertyValue($property, $argument);
+                $this->assertPropertyValue($propertyName, $argument);
+                $this->$propertyName = $argument;
+                $this->updateInitializedPropertyValue($propertyName, $argument);
+            }
+        }
+    }
 
-                $this->$property = $argument;
-
-                // Manage associations
-                if (empty($this->_collectionsItemNames['byProperty'][$property])) {
-                    $this->updatePropertyAssociation($property, array("oldValue" => null, "newValue" => $argument));
-                } else {
-                    foreach ($argument as $value) {
-                        $this->updatePropertyAssociation($property, array("oldValue" => null, "newValue" => $value));
-                    }
-                }
+    /**
+     * Update an initialized value.
+     *
+     * @param  string $propertyName
+     * @param  mixed $value
+     */
+    private function updateInitializedPropertyValue($propertyName, $value)
+    {
+        if (empty($this->_collectionsItemNames['byProperty'][$propertyName])) {
+            $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $value));
+        } else {
+            foreach ($value as $newValue) {
+                $this->updatePropertyAssociation($propertyName, array("oldValue" => null, "newValue" => $newValue));
             }
         }
     }
