@@ -11,7 +11,7 @@ These annotations add two methods to the class:
 - `addX`: Add an item to the collection.
 - `removeX`: Remove an item from the collection.
 
-The 'X' in these methods is the name of an item in the collection. The item name may be defined in the annotation by setting its `itemName` property. By default, the item name will be the singular version of the property.
+The 'X' in these methods is the name of an item in the collection. The item name may be defined in the annotation by setting its `itemName` property. By default, the item name will be the singular version of the property (determined using [Doctrine's Inflector library](https://github.com/doctrine/inflector)).
 
 Here is an example:
 
