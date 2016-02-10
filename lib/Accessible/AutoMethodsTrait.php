@@ -55,8 +55,8 @@ trait AutoMethodsTrait
                     && !(empty($this->_associationsList[$property]))
                 ) {
                     $itemName = $this->_collectionsItemNames['byProperty'][$property]['itemName'];
-                    $propertyAddMethod = 'add' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
-                    $propertyRemoveMethod = 'remove' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
+                    $propertyAddMethod = 'add' . ucfirst($itemName);
+                    $propertyRemoveMethod = 'remove' . ucfirst($itemName);
 
                     foreach ($this->$property as $item) {
                         $this->$propertyRemoveMethod($item);

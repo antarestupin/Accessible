@@ -143,8 +143,8 @@ trait AutomatedBehaviorTrait
             $associatedProperty = $association['property'];
             switch ($association['association']) {
                 case 'inverted':
-                    $invertedGetMethod = 'get' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
-                    $invertedSetMethod = 'set' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
+                    $invertedGetMethod = 'get' . ucfirst($associatedProperty);
+                    $invertedSetMethod = 'set' . ucfirst($associatedProperty);
                     if ($oldValue !== null && $oldValue->$invertedGetMethod() === $this) {
                         $oldValue->$invertedSetMethod(null);
                     }
@@ -155,9 +155,9 @@ trait AutomatedBehaviorTrait
 
                 case 'mapped':
                     $itemName = $association['itemName'];
-                    $mappedGetMethod = 'get' . strtoupper(substr($associatedProperty, 0, 1)) . substr($associatedProperty, 1);
-                    $mappedAddMethod = 'add' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
-                    $mappedRemoveMethod = 'remove' . strtoupper(substr($itemName, 0, 1)) . substr($itemName, 1);
+                    $mappedGetMethod = 'get' . ucfirst($associatedProperty);
+                    $mappedAddMethod = 'add' . ucfirst($itemName);
+                    $mappedRemoveMethod = 'remove' . ucfirst($itemName);
 
                     if ($oldValue !== null && CollectionManager::collectionContains($this, $oldValue->$mappedGetMethod())) {
                         $oldValue->$mappedRemoveMethod($this);
