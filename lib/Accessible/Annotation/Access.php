@@ -23,6 +23,11 @@ class Access
     const IS = 'is';
 
     /**
+     * The property X can be accessed through an X method.
+     */
+    const CALL = 'call';
+
+    /**
      * The property can be modified through a setX method.
      *
      * @var string

@@ -51,6 +51,7 @@ Let's take again the `Foo` class with its `$bar` property. Here are the values y
 
 - `Access::GET`: This will allow the property `$bar` to be accessed through the `Foo#getBar()` method.
 - `Access::IS`: This will allow the property `$bar` to be accessed through the `Foo#isBar()` method.
+- `Access::CALL`: This will allow the property `$bar` to be accessed through the `Foo#bar()` method (it can be useful in some specific cases, for example when using Twig).
 - `Access::SET`: This will allow the property `$bar` to be modified through the `Foo#setBar($newVal)` method.
 
 ### Add constraints on properties

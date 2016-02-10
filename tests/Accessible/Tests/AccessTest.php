@@ -63,6 +63,13 @@ class AccessTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $testCase->isBooleanProperty());
     }
 
+    public function testDirectMethodCanBeCalled()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->setCallProperty(42);
+        $this->assertEquals(42, $testCase->callProperty());
+    }
+
     public function testTraitsAreNotForgotten()
     {
         $testCase = new TestsCases\TraitTestCase();

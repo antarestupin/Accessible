@@ -25,6 +25,11 @@ class BaseTestCase
     private $booleanProperty;
 
     /**
+     * @Access({Access::CALL, Access::SET})
+     */
+    private $callProperty;
+
+    /**
      * @Access({Access::GET, Access::SET})
      * @Assert\Type("integer")
      * @Assert\GreaterThan(42)

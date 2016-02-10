@@ -43,6 +43,7 @@ trait AutoMethodsTrait
         switch ($method) {
             case 'get':
             case 'is':
+            case 'call':
                 MethodCallManager::assertArgsNumber(0, $args);
                 return $this->$property;
 
@@ -114,15 +115,15 @@ trait AutoMethodsTrait
      */
     private function getMethodCallInfo($name)
     {
-        // check that the called method is a valid method name
-        // also get the call type and the property to access
-        $callIsValid = preg_match("/(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
-        if (!$callIsValid) {
-            throw new \BadMethodCallException("Method $name does not exist.");
+        $extractedMethod = preg_match("/^(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
+        if ($extractedMethod) {
+            $method = $pregMatches[1];
+            $property = lcfirst($pregMatches[2]);
+        } else {
+            $method = 'call';
+            $property = $name;
         }
 
-        $method = $pregMatches[1];
-        $property = strtolower(substr($pregMatches[2], 0, 1)) . substr($pregMatches[2], 1);
         $collectionProperties = null;
         if (in_array($method, array('add', 'remove'))) {
             $collectionProperties = $this->_collectionsItemNames['byItemName'][$property];
