@@ -52,7 +52,9 @@ class Server
 $server = new Server();
 
 $server->getProcesses(); // Instance of ArrayCollection
-$server->addProcess(new Process());
+$process = new Process();
+$server->addProcess($process);
+$server->removeProcess($process);
 ```
 
 More complex examples, such as association management, are available in the doc.
