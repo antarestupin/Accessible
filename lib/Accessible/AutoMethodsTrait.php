@@ -95,6 +95,7 @@ trait AutoMethodsTrait
                         $valuesToUpdate[$valueToUpdate] = $args[0];
                         break;
                 }
+                $this->assertPropertyValue($property, $this->$property);
                 break;
         }
 

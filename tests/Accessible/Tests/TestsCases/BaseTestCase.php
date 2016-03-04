@@ -53,6 +53,7 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\ListBehavior
      * @Behavior\Initialize({})
+     * @Assert\Count(max=4)
      */
     private $listItems;
 

@@ -61,4 +61,17 @@ class ConstraintsValidationTest extends \PHPUnit_Framework_TestCase
         $testCase = new TestsCases\BaseTestCase();
         $testCase->testPropertyAssertion(10);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstraintsValidationCanBeUsedOnCollections()
+    {
+        $testCase = new TestsCases\BaseTestCase();
+        $testCase->addListItem(1);
+        $testCase->addListItem(2);
+        $testCase->addListItem(3);
+        $testCase->addListItem(4);
+        $testCase->addListItem(5);
+    }
 }
