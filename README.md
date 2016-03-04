@@ -12,21 +12,34 @@ Accessible is a PHP library that allows you to define your class behavior in an 
 
 This way, you can define your class' getters, setters and constructor, and automate collections and association management.
 
-Quick example:
+Here is a (very) basic example with getters and setters:
 
 ```php
-/**
- * @Construct({"ipAddress"})
- */
+class Customer
+{
+  use AutomatedBehaviorTrait;
+  
+  /**
+   * @Access({Access::GET, Access::SET})
+   * @Assert\Email
+   */
+  private $email;
+}
+
+
+$bob = new Customer();
+
+$bob->setEmail('bob@example.com');
+$bob->getEmail(); // bob@example.com
+$bob->setEmail('not an email address'); // throws an InvalidArgumentException
+```
+
+Another example using collections related annotations:
+
+```php
 class Server
 {
   use AutomatedBehaviorTrait;
-
-  /**
-   * @Access({Access::GET, Access::SET})
-   * @Assert\Ip
-   */
-  private $ipAddress;
 
   /**
    * @Access({Access::GET})
@@ -36,18 +49,15 @@ class Server
   private $processes;
 }
 
-$server = new Server("192.30.252.128");
-
-$server->getIpAdress();   // 192.30.252.128
+$server = new Server();
 
 $server->getProcesses(); // Instance of ArrayCollection
 $server->addProcess(new Process());
-
-$server->setIpAdress("127.0.0.1");
-$ip = $server->getIpAdress(); // 127.0.0.1
-
-$server->setIpAddress("foo"); // Throws \InvalidArgumentException
 ```
+
+More complex examples, such as association management, are available in the doc.
+
+**Suggestions and contributions are welcome!**
 
 ## Install
 
