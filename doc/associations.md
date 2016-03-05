@@ -139,7 +139,9 @@ class Teacher
 {
   /**
    * @Access({Access:GET, Access::SET})
+   * @SetBehavior
    * @InCollection(className=Student::class, propertyName="teachers")
+   * @Initialize({})
    */
   private $students;
 }
