@@ -102,7 +102,7 @@ class Book
 {
   /**
    * @Access({Access:GET, Access::SET})
-   * @Mapped(className=Student::class, invertedBy="books")
+   * @Mapped(className=Student::class, mappedBy="books")
    */
   private $owner;
 }
@@ -129,7 +129,7 @@ class Student
   /**
    * @Access({Access:GET, Access::SET})
    * @SetBehavior
-   * @Mapped(className=Teacher::class, invertedBy="students")
+   * @Mapped(className=Teacher::class, mappedBy="students")
    * @Initialize({})
    */
   private $teachers;
@@ -139,7 +139,7 @@ class Teacher
 {
   /**
    * @Access({Access:GET, Access::SET})
-   * @Mapped(className=Student::class, invertedBy="teachers")
+   * @Mapped(className=Student::class, mappedBy="teachers")
    */
   private $students;
 }
