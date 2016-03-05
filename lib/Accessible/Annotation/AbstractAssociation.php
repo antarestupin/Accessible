@@ -26,6 +26,7 @@ abstract class AbstractAssociation
     public function __construct($values)
     {
         $this->className = $values['className'];
+        $this->associatedProperty = $values['propertyName'];
     }
 
     /**

@@ -22,13 +22,13 @@ class AssociationTestCase
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Inverted(className=BaseTestCase::class, invertedBy="invertedReversedOneToOneProperty")
+     * @Behavior\Referenced(className=BaseTestCase::class, propertyName="invertedReversedOneToOneProperty")
      */
     private $invertedReversedOneToOneProperty;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Mapped(className=BaseTestCase::class, mappedBy="invertedReversedManyToOnePropertyItems")
+     * @Behavior\InCollection(className=BaseTestCase::class, propertyName="invertedReversedManyToOnePropertyItems")
      */
     private $mappedReversedManyToOneProperty;
 
@@ -43,7 +43,7 @@ class AssociationTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Mapped(className=BaseTestCase::class, mappedBy="mappedReversedManyToManyPropertyItems")
+     * @Behavior\InCollection(className=BaseTestCase::class, propertyName="mappedReversedManyToManyPropertyItems")
      */
     private $mappedReversedManyToManyPropertyItems;
 }

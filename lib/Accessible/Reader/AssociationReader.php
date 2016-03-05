@@ -12,8 +12,8 @@ class AssociationReader extends Reader
      * @var array<string>
      */
     private static $associationAnnotationClasses = array(
-        "inverted" => "Accessible\\Annotation\\Inverted",
-        "mapped" => "Accessible\\Annotation\\Mapped",
+        "inverted" => "Accessible\\Annotation\\Referenced",
+        "mapped" => "Accessible\\Annotation\\InCollection",
     );
 
     /**

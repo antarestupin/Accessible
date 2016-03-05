@@ -80,7 +80,7 @@ class BaseTestCase
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="invertedOneToOneProperty")
+     * @Behavior\Referenced(className=AssociationTestCase::class, propertyName="invertedOneToOneProperty")
      */
     private $invertedOneToOneProperty;
 
@@ -88,13 +88,13 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\ListBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="mappedManyToOneProperty")
+     * @Behavior\Referenced(className=AssociationTestCase::class, propertyName="mappedManyToOneProperty")
      */
     private $invertedManyToOnePropertyItems;
 
     /**
      * @Access({Access::GET, Access::SET})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="invertedReversedOneToOneProperty")
+     * @Behavior\Referenced(className=AssociationTestCase::class, propertyName="invertedReversedOneToOneProperty")
      */
     private $invertedReversedOneToOneProperty;
 
@@ -102,7 +102,7 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Inverted(className=AssociationTestCase::class, invertedBy="mappedReversedManyToOneProperty")
+     * @Behavior\Referenced(className=AssociationTestCase::class, propertyName="mappedReversedManyToOneProperty")
      */
     private $invertedReversedManyToOnePropertyItems;
 
@@ -110,7 +110,7 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Mapped(className=AssociationTestCase::class, mappedBy="mappedManyToManyPropertyItems")
+     * @Behavior\InCollection(className=AssociationTestCase::class, propertyName="mappedManyToManyPropertyItems")
      */
     private $mappedManyToManyPropertyItems;
 
@@ -118,7 +118,7 @@ class BaseTestCase
      * @Access({Access::GET, Access::SET})
      * @Behavior\SetBehavior
      * @Behavior\Initialize({})
-     * @Behavior\Mapped(className=AssociationTestCase::class, mappedBy="mappedReversedManyToManyPropertyItems")
+     * @Behavior\InCollection(className=AssociationTestCase::class, propertyName="mappedReversedManyToManyPropertyItems")
      */
     private $mappedReversedManyToManyPropertyItems;
 
