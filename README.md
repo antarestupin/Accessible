@@ -18,7 +18,7 @@ Here is a (very) basic example with getters and setters:
 class Customer
 {
   use AutomatedBehaviorTrait;
-  
+
   /**
    * @Access({Access::GET, Access::SET})
    * @Assert\Email
@@ -88,6 +88,7 @@ You may want to change the default configuration, to do this see the [Configurat
 - [How to manage collections](https://github.com/antares993/Accessible/tree/master/doc/collections.md)
 - [How to manage associations](https://github.com/antares993/Accessible/tree/master/doc/associations.md)
 - [How to modify the default configuration](https://github.com/antares993/Accessible/tree/master/doc/configuration.md)
+- [Compatibility issues (and how to solve them)](https://github.com/antares993/Accessible/tree/master/doc/compatibility.md)
 
 ## Compatibility
 
