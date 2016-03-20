@@ -1,8 +1,8 @@
 ## Compatibility issues (and how to solve them)
 
-### Symfony's `PropertyAccess` component
+### Symfony's PropertyAccess component
 
-By default, the `PropertyAccess` component does not work with `__call`. The accessor must be configured to accept it. You can do it this way.
+By default, the PropertyAccess component does not work with `__call`. The accessor must be configured to accept it. You can do it this way.
 
 ```php
 $accessor = PropertyAccess::createPropertyAccessorBuilder()
@@ -21,6 +21,6 @@ framework:
 
 ### Twig
 
-Although Twig allows the use of `__call`, its use of the magic method is different from what you could expect. For example, for `{{ foo.bar }}`, if there is a `__call` method, Twig will call `$foo->bar()`.
+Although Twig allows the use of `__call`, its use of the magic method is different from the one in PropertyAccess. For example, for `{{ foo.bar }}`, if there is a `__call` method, Twig will call `$foo->bar()` while PropertyAccess will call `$foo->getBar()`.
 
 To deal with this logic, you can use `Access::CALL` to give an access to the property through `$foo->bar()`.
