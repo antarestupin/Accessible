@@ -57,9 +57,28 @@ $server->addProcess($process);
 $server->removeProcess($process);
 ```
 
-More complex examples, such as association management, are available in the doc.
+More complex examples are available in the doc.
+
+What this library can manage in your classes:
+
+- Getters and setters
+- Validation on setters parameters using Symfony's Assertion annotations
+- Constructor and properties initialization
+- Collections
+- Associations between classes
 
 **Suggestions and contributions are welcome!**
+
+
+## Documentation
+
+- [How to define getters and setters](https://github.com/antares993/Accessible/tree/master/doc/accessible.md)
+- [How to define the class constructor and the properties initialization](https://github.com/antares993/Accessible/tree/master/doc/auto-construct.md)
+- [How to enable / disable the constraints validation](https://github.com/antares993/Accessible/tree/master/doc/constraints-validation.md)
+- [How to manage collections](https://github.com/antares993/Accessible/tree/master/doc/collections.md)
+- [How to manage associations](https://github.com/antares993/Accessible/tree/master/doc/associations.md)
+- [How to modify the default configuration](https://github.com/antares993/Accessible/tree/master/doc/configuration.md)
+- [Compatibility issues (and how to solve them)](https://github.com/antares993/Accessible/tree/master/doc/compatibility.md)
 
 ## Install
 
@@ -79,16 +98,6 @@ Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'l
 ```
 
 You may want to change the default configuration, to do this see the [Configuration dedicated page](https://github.com/antares993/Accessible/tree/master/doc/configuration.md).
-
-## Documentation
-
-- [How to define getters and setters](https://github.com/antares993/Accessible/tree/master/doc/accessible.md)
-- [How to define the class constructor](https://github.com/antares993/Accessible/tree/master/doc/auto-construct.md)
-- [How to enable / disable the constraints validation](https://github.com/antares993/Accessible/tree/master/doc/constraints-validation.md)
-- [How to manage collections](https://github.com/antares993/Accessible/tree/master/doc/collections.md)
-- [How to manage associations](https://github.com/antares993/Accessible/tree/master/doc/associations.md)
-- [How to modify the default configuration](https://github.com/antares993/Accessible/tree/master/doc/configuration.md)
-- [Compatibility issues (and how to solve them)](https://github.com/antares993/Accessible/tree/master/doc/compatibility.md)
 
 ## Compatibility
 
