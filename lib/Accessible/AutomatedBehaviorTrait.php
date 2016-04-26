@@ -41,7 +41,7 @@ trait AutomatedBehaviorTrait
      *
      * @var boolean
      */
-    private $_constraintsValidationEnabled;
+    private $_constraintsValidationEnabled = null;
 
     /**
      * The initial values of the properties that use Initialize and InitializeObject annotations.
@@ -185,9 +185,12 @@ trait AutomatedBehaviorTrait
             $this->_accessProperties = $classInfo['accessProperties'];
             $this->_collectionsItemNames = $classInfo['collectionsItemNames'];
             $this->_associationsList = $classInfo['associationsList'];
-            $this->_constraintsValidationEnabled = $classInfo['constraintsValidationEnabled'];
             $this->_initialPropertiesValues = $classInfo['initialPropertiesValues'];
             $this->_initializationNeededArguments = $classInfo['initializationNeededArguments'];
+
+            if ($this->_constraintsValidationEnabled === null) {
+                $this->_constraintsValidationEnabled = $classInfo['constraintsValidationEnabled'];
+            }
 
             $this->_automatedBehaviorInitialized = true;
         }
