@@ -39,6 +39,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($validator, $returnedValidator);
     }
 
+    public function testConstraintsValidationCanBeModified()
+    {
+        Configuration::setConstraintsValidationEnabled(false);
+        $this->assertEquals(false, Configuration::isConstraintsValidationEnabled());
+        Configuration::setConstraintsValidationEnabled(true);
+    }
+
     public function testInitializeValuesValidationCanBeModified()
     {
         Configuration::setInitializeValuesValidationEnabled(false);

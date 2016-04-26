@@ -30,7 +30,7 @@ class ConstraintsReader extends Reader
      */
     public static function isConstraintsValidationEnabled($objectClasses, $annotationReader)
     {
-        $enabled = true;
+        $enabled = Configuration::isConstraintsValidationEnabled();
 
         foreach ($objectClasses as $class) {
             if ($annotationReader->getClassAnnotation($class, self::$disableConstraintsValidationAnnotationClass) !== null) {

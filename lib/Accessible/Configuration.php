@@ -27,6 +27,13 @@ class Configuration
     private static $constraintsValidator;
 
     /**
+     * Says if the setter values have to be validated.
+     *
+     * @var bool
+     */
+    private static $constraintsValidationEnabled = true;
+
+    /**
      * Says if the Initialize and InitializeObject values have to
      * be validated with constraints.
      *
@@ -104,6 +111,30 @@ class Configuration
     public static function setConstraintsValidator(ValidatorInterface $constraintsValidator)
     {
         self::$constraintsValidator = $constraintsValidator;
+    }
+
+    /**
+     * Indicates if the constraints validation is enabled for the setters.
+     *
+     * @return boolean True if enabled, else false.
+     */
+    public static function isConstraintsValidationEnabled()
+    {
+        return self::$constraintsValidationEnabled;
+    }
+
+    /**
+     * Enable or disable the constraints validation for setters.
+     *
+     * @param bool $enabled True for enable, false for disable.
+     */
+    public static function setConstraintsValidationEnabled($enabled)
+    {
+        if (!is_bool($enabled)) {
+            throw new \InvalidArgumentException("This value must be a boolean.");
+        }
+
+        self::$constraintsValidationEnabled = $enabled;
     }
 
     /**

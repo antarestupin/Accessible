@@ -82,6 +82,8 @@ trait AutomatedBehaviorTrait
     public function setPropertiesConstraintsValidationEnabled($enabled = true)
     {
         $this->_constraintsValidationEnabled = $enabled;
+
+        return $this;
     }
 
     /**
@@ -92,6 +94,8 @@ trait AutomatedBehaviorTrait
     public function setPropertiesConstraintsValidationDisabled($disabled = true)
     {
         $this->_constraintsValidationEnabled = !$disabled;
+
+        return $this;
     }
 
     /**
