@@ -112,3 +112,11 @@ public function newAction(Request $request)
   ));
 }
 ```
+
+### Specify the default behavior
+
+By default, constraints validation is enabled. This behavior can be changed by changing the global configuration:
+
+```php
+Configuration::setConstraintsValidationEnabled(false);
+```
