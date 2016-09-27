@@ -1,7 +1,7 @@
 # Accessible
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98/mini.png)](https://insight.sensiolabs.com/projects/d0791b98-cd96-453a-bf89-39ddcc672c98)
-[![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antares993/Accessible)
+[![Build Status](https://travis-ci.org/antares993/Accessible.svg?branch=master)](https://travis-ci.org/antarestupin/Accessible)
 [![Code Coverage](https://scrutinizer-ci.com/g/antares993/Accessible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/antares993/Accessible/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/antares993/Accessible/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/antares993/Accessible/?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/57228491ba37ce004309ecb3/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57228491ba37ce004309ecb3)
