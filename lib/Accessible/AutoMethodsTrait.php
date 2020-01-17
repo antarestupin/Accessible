@@ -116,7 +116,7 @@ trait AutoMethodsTrait
      */
     private function getMethodCallInfo($name)
     {
-        $extractedMethod = preg_match("/^(set|get|is|add|remove)([A-Z].*)/", $name, $pregMatches);
+        $extractedMethod = preg_match("/^(set|get|is|add|remove)([A-Za-z].*)/", $name, $pregMatches);
         if ($extractedMethod) {
             $method = $pregMatches[1];
             $property = lcfirst($pregMatches[2]);
